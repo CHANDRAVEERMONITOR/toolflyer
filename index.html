@@ -3,90 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ToolFlyer - Free Online PDF, Image & Utility Tools</title>
-
-<meta name="description" content="ToolFlyer offers free online tools for PDF, images, calculators and utilities. Compress PDF, convert images, generate QR codes and more. Fast tools that work directly in your browser.">
+<title>ToolFlyer Tools</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
 
-body{background:#f4f6fb;color:#333;}
+body{
+background:#f5f6fb;
+}
 
 nav{
-background:#fff;
-padding:12px 5%;
+background:white;
+padding:15px 5%;
 display:flex;
-align-items:center;
 justify-content:space-between;
+align-items:center;
 box-shadow:0 2px 10px rgba(0,0,0,0.08);
-position:sticky;
-top:0;
-z-index:1000;
 }
 
 .logo{
-font-size:1.5rem;
 font-weight:700;
+font-size:22px;
 color:#6c5ce7;
 text-decoration:none;
 }
 
-.nav-right{
+/* TAB MENU */
+
+.tabs{
 display:flex;
 gap:20px;
-align-items:center;
+padding:20px 5%;
+background:white;
+border-bottom:1px solid #eee;
 }
 
-.search-box input{
-padding:8px 12px;
-border:1px solid #ddd;
+.tab{
+cursor:pointer;
+padding:8px 15px;
 border-radius:6px;
-width:200px;
-}
-
-.hero{
-text-align:center;
-padding:80px 20px;
-background:#fff;
-}
-
-.hero h1{
-font-size:2.4rem;
-margin-bottom:10px;
-}
-
-.hero p{
-color:#666;
-}
-
-.section-title{
-font-size:1.5rem;
-margin:40px 5% 10px;
 font-weight:600;
+color:#555;
+}
+
+.tab.active{
+background:#6c5ce7;
+color:white;
+}
+
+/* GRID */
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:40px 5%;
 }
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
 gap:20px;
-padding:20px 5%;
-max-width:1200px;
-margin:auto;
 }
 
 .card{
-background:#fff;
-padding:25px;
-border-radius:10px;
+background:white;
 border:1px solid #eee;
+padding:20px;
+border-radius:10px;
 text-decoration:none;
 color:#333;
-transition:.3s;
+transition:0.3s;
 }
 
 .card:hover{
@@ -94,49 +88,24 @@ border-color:#6c5ce7;
 box-shadow:0 5px 15px rgba(0,0,0,0.05);
 }
 
-.card i{
-font-size:1.8rem;
-color:#6c5ce7;
-margin-bottom:10px;
-}
-
 .card h3{
-font-size:1rem;
+font-size:16px;
+margin-bottom:5px;
 }
 
-.ad-space{
-margin:40px auto;
-max-width:1000px;
-height:90px;
-background:#e9ecf7;
-display:flex;
-align-items:center;
-justify-content:center;
-color:#777;
-border-radius:8px;
+.card p{
+font-size:13px;
+color:#666;
 }
 
-.seo{
-max-width:900px;
-margin:60px auto;
-background:#fff;
-padding:30px;
-border-radius:10px;
-line-height:1.7;
+/* Hide sections */
+
+.section{
+display:none;
 }
 
-footer{
-background:#fff;
-margin-top:40px;
-padding:40px;
-text-align:center;
-border-top:1px solid #eee;
-}
-
-footer a{
-color:#6c5ce7;
-text-decoration:none;
-margin:0 10px;
+.section.active{
+display:block;
 }
 
 </style>
@@ -146,144 +115,176 @@ margin:0 10px;
 
 <nav>
 
-<a href="#" class="logo">TOOLFLYER</a>
-
-<div class="nav-right">
-
-<div class="search-box">
-<input type="text" placeholder="Search tools...">
-</div>
-
-</div>
+<a class="logo" href="#">TOOLFLYER</a>
 
 </nav>
 
+<!-- TABS -->
 
-<div class="hero">
+<div class="tabs">
 
-<h1>Every tool for your PDF & Image tasks</h1>
-
-<p>Free online tools for PDF, images, converters, utilities and calculators.</p>
+<div class="tab active" onclick="openTab('compress')">Compress</div>
+<div class="tab" onclick="openTab('convert')">Convert</div>
+<div class="tab" onclick="openTab('merge')">Merge</div>
+<div class="tab" onclick="openTab('edit')">Edit</div>
 
 </div>
 
 
-<div class="ad-space">
-Ad Space (Google AdSense)
-</div>
+<div class="container">
 
+<!-- COMPRESS -->
 
-<h2 class="section-title">PDF Tools</h2>
+<div id="compress" class="section active">
 
 <div class="grid">
 
-<a href="#" class="card"><i class="fas fa-file-pdf"></i><h3>Compress PDF</h3></a>
+<a href="#" class="card">
+<h3>Compress PDF</h3>
+<p>Reduce the size of your PDF without losing quality</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-object-group"></i><h3>Merge PDF</h3></a>
+<a href="#" class="card">
+<h3>Compress Image</h3>
+<p>Reduce image size while keeping quality</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-file-word"></i><h3>PDF to Word</h3></a>
+<a href="#" class="card">
+<h3>Compress JPG</h3>
+<p>Optimize JPG images instantly</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-file-image"></i><h3>PDF to JPG</h3></a>
+<a href="#" class="card">
+<h3>Compress PNG</h3>
+<p>Reduce PNG file size easily</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-unlock"></i><h3>Unlock PDF</h3></a>
-
-<a href="#" class="card"><i class="fas fa-shield-alt"></i><h3>Protect PDF</h3></a>
+</div>
 
 </div>
 
 
-<h2 class="section-title">Image Tools</h2>
+<!-- CONVERT -->
+
+<div id="convert" class="section">
 
 <div class="grid">
 
-<a href="#" class="card"><i class="fas fa-expand-arrows-alt"></i><h3>Image Resizer</h3></a>
+<a href="#" class="card">
+<h3>PDF to Word</h3>
+<p>Convert PDF files to editable Word</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-compress"></i><h3>Compress Image</h3></a>
+<a href="#" class="card">
+<h3>Word to PDF</h3>
+<p>Convert DOC files to PDF</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-crop"></i><h3>Crop Image</h3></a>
+<a href="#" class="card">
+<h3>JPG to PDF</h3>
+<p>Transform images into PDF</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-user-slash"></i><h3>Remove Background</h3></a>
+<a href="#" class="card">
+<h3>PDF to JPG</h3>
+<p>Extract images from PDF</p>
+</a>
+
+<a href="#" class="card">
+<h3>Excel to PDF</h3>
+<p>Convert Excel sheets to PDF</p>
+</a>
+
+<a href="#" class="card">
+<h3>PDF to Excel</h3>
+<p>Convert PDF tables to Excel</p>
+</a>
+
+</div>
 
 </div>
 
 
-<h2 class="section-title">Image Converters</h2>
+<!-- MERGE -->
+
+<div id="merge" class="section">
 
 <div class="grid">
 
-<a href="#" class="card"><i class="fas fa-exchange-alt"></i><h3>JPG to PNG</h3></a>
+<a href="#" class="card">
+<h3>Merge PDF</h3>
+<p>Combine multiple PDFs into one file</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-exchange-alt"></i><h3>PNG to JPG</h3></a>
+<a href="#" class="card">
+<h3>Split PDF</h3>
+<p>Split PDF into multiple pages</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-sync"></i><h3>WebP to JPG</h3></a>
+<a href="#" class="card">
+<h3>Extract Pages</h3>
+<p>Extract selected pages from PDF</p>
+</a>
+
+</div>
 
 </div>
 
 
-<h2 class="section-title">Utility Tools</h2>
+<!-- EDIT -->
+
+<div id="edit" class="section">
 
 <div class="grid">
 
-<a href="#" class="card"><i class="fas fa-qrcode"></i><h3>QR Code Generator</h3></a>
+<a href="#" class="card">
+<h3>Edit PDF</h3>
+<p>Add text and images to PDF</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-key"></i><h3>Password Generator</h3></a>
+<a href="#" class="card">
+<h3>Rotate PDF</h3>
+<p>Rotate pages inside PDF</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-font"></i><h3>Word Counter</h3></a>
+<a href="#" class="card">
+<h3>Watermark PDF</h3>
+<p>Add watermark to your document</p>
+</a>
 
-<a href="#" class="card"><i class="fas fa-align-left"></i><h3>Text Case Converter</h3></a>
+<a href="#" class="card">
+<h3>Protect PDF</h3>
+<p>Add password to secure PDF</p>
+</a>
 
-</div>
-
-
-<h2 class="section-title">Calculator Tools</h2>
-
-<div class="grid">
-
-<a href="#" class="card"><i class="fas fa-percentage"></i><h3>Percentage Calculator</h3></a>
-
-<a href="#" class="card"><i class="fas fa-birthday-cake"></i><h3>Age Calculator</h3></a>
-
-<a href="#" class="card"><i class="fas fa-money-bill"></i><h3>EMI Calculator</h3></a>
-
-<a href="#" class="card"><i class="fas fa-receipt"></i><h3>GST Calculator</h3></a>
-
-</div>
-
-
-<div class="seo">
-
-<h2>Free Online Tools by ToolFlyer</h2>
-
-<p>
-ToolFlyer provides fast and secure online tools that run directly in your browser.
-You can compress PDF files, convert images, generate QR codes, and use helpful
-calculators without installing any software.
-</p>
-
-<p>
-Our tools are designed to work quickly on both mobile and desktop devices.
-All processing happens locally in your browser which keeps your files private
-and ensures faster performance.
-</p>
+<a href="#" class="card">
+<h3>Unlock PDF</h3>
+<p>Remove password protection</p>
+</a>
 
 </div>
 
-
-<footer>
-
-<p>© 2026 ToolFlyer. All rights reserved.</p>
-
-<div>
-
-<a href="#">About</a>
-
-<a href="#">Privacy</a>
-
-<a href="#">Contact</a>
+</div>
 
 </div>
 
-</footer>
+<script>
+
+function openTab(tab){
+
+let sections=document.querySelectorAll(".section");
+let tabs=document.querySelectorAll(".tab");
+
+sections.forEach(s=>s.classList.remove("active"));
+tabs.forEach(t=>t.classList.remove("active"));
+
+document.getElementById(tab).classList.add("active");
+
+event.target.classList.add("active");
+
+}
+
+</script>
 
 </body>
 </html>
