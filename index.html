@@ -1,133 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolFlyer - Professional PDF & Image Tools</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #f8f9fa; color: #333; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* SmallPDF Style Navigation */
-        nav { 
-            background: #fff; padding: 10px 5%; display: flex; align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
-        }
-        .logo { font-size: 1.4rem; font-weight: 700; color: #6c5ce7; text-decoration: none; margin-right: 30px; }
-        
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .dropdown { position: relative; display: inline-block; }
-        .dropbtn { 
-            background: #6c5ce7; color: white; padding: 8px 15px; border-radius: 5px; 
-            font-size: 0.9rem; cursor: pointer; border: none; font-weight: 600;
-        }
+<title>ToolFlyer - Free Online PDF, Image & Utility Tools</title>
 
-        /* Full Screen Dropdown Content */
-        .dropdown-content {
-            display: none; position: fixed; left: 0; top: 60px; width: 100%; height: auto;
-            background-color: #fff; box-shadow: 0px 8px 16px rgba(0,0,0,0.1); padding: 30px 5%;
-            z-index: 999; border-top: 1px solid #eee;
-        }
-        .dropdown:hover .dropdown-content { display: block; }
+<meta name="description" content="ToolFlyer offers free online tools for PDF, images, calculators and utilities. Compress PDF, convert images, generate QR codes and more. Fast tools that work directly in your browser.">
 
-        /* Grid inside Dropdown */
-        .mega-menu {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;
-        }
-        .menu-category h4 { font-size: 0.8rem; color: #999; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid #eee; }
-        .menu-item { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #444; font-size: 0.85rem; padding: 5px 0; }
-        .menu-item:hover { color: #6c5ce7; }
-        .menu-item i { width: 20px; color: #6c5ce7; }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-        /* Main Page Content */
-        .hero { text-align: center; padding: 80px 20px; background: #fff; }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 50px 5%; max-width: 1200px; margin: 0 auto; }
-        
-        .tool-card { 
-            background: #fff; padding: 25px; border-radius: 10px; border: 1px solid #eee; 
-            text-align: left; text-decoration: none; transition: 0.3s;
-        }
-        .tool-card:hover { border-color: #6c5ce7; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .tool-card i { font-size: 1.8rem; color: #6c5ce7; margin-bottom: 15px; }
-        .tool-card h3 { font-size: 1rem; color: #2d3436; }
+<style>
 
-        footer { text-align: center; padding: 40px; background: #fff; border-top: 1px solid #eee; font-size: 0.8rem; }
-    </style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+
+body{background:#f4f6fb;color:#333;}
+
+nav{
+background:#fff;
+padding:12px 5%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:1.5rem;
+font-weight:700;
+color:#6c5ce7;
+text-decoration:none;
+}
+
+.nav-right{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+.search-box input{
+padding:8px 12px;
+border:1px solid #ddd;
+border-radius:6px;
+width:200px;
+}
+
+.hero{
+text-align:center;
+padding:80px 20px;
+background:#fff;
+}
+
+.hero h1{
+font-size:2.4rem;
+margin-bottom:10px;
+}
+
+.hero p{
+color:#666;
+}
+
+.section-title{
+font-size:1.5rem;
+margin:40px 5% 10px;
+font-weight:600;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:20px;
+padding:20px 5%;
+max-width:1200px;
+margin:auto;
+}
+
+.card{
+background:#fff;
+padding:25px;
+border-radius:10px;
+border:1px solid #eee;
+text-decoration:none;
+color:#333;
+transition:.3s;
+}
+
+.card:hover{
+border-color:#6c5ce7;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.card i{
+font-size:1.8rem;
+color:#6c5ce7;
+margin-bottom:10px;
+}
+
+.card h3{
+font-size:1rem;
+}
+
+.ad-space{
+margin:40px auto;
+max-width:1000px;
+height:90px;
+background:#e9ecf7;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#777;
+border-radius:8px;
+}
+
+.seo{
+max-width:900px;
+margin:60px auto;
+background:#fff;
+padding:30px;
+border-radius:10px;
+line-height:1.7;
+}
+
+footer{
+background:#fff;
+margin-top:40px;
+padding:40px;
+text-align:center;
+border-top:1px solid #eee;
+}
+
+footer a{
+color:#6c5ce7;
+text-decoration:none;
+margin:0 10px;
+}
+
+</style>
 </head>
+
 <body>
 
 <nav>
-    <a href="index.html" class="logo">TOOLFLYER</a>
-    <div class="nav-links">
-        <div class="dropdown">
-            <button class="dropbtn"><i class="fas fa-th"></i> Tools</button>
-            <div class="dropdown-content">
-                <div class="mega-menu">
-                    <div class="menu-category">
-                        <h4>PDF Tools</h4>
-                        <a href="compress-pdf.html" class="menu-item"><i class="fas fa-file-contract"></i> Compress PDF</a>
-                        <a href="merge-pdf.html" class="menu-item"><i class="fas fa-object-group"></i> Merge PDF</a>
-                        <a href="pdf-to-word.html" class="menu-item"><i class="fas fa-file-word"></i> PDF to Word</a>
-                        <a href="pdf-to-jpg.html" class="menu-item"><i class="fas fa-file-image"></i> PDF to JPG</a>
-                    </div>
-                    <div class="menu-category">
-                        <h4>Image Tools</h4>
-                        <a href="bg-remover.html" class="menu-item"><i class="fas fa-user-slash"></i> BG Remover</a>
-                        <a href="image-resizer.html" class="menu-item"><i class="fas fa-expand-arrows-alt"></i> Image Resizer</a>
-                        <a href="crop-image.html" class="menu-item"><i class="fas fa-crop-alt"></i> Crop Image</a>
-                        <a href="compress-image.html" class="menu-item"><i class="fas fa-compress-arrows-alt"></i> Compress Image</a>
-                    </div>
-                    <div class="menu-category">
-                        <h4>Conversion</h4>
-                        <a href="jpg-to-png.html" class="menu-item"><i class="fas fa-exchange-alt"></i> JPG to PNG</a>
-                        <a href="png-to-jpg.html" class="menu-item"><i class="fas fa-exchange-alt"></i> PNG to JPG</a>
-                        <a href="webp-to-jpg.html" class="menu-item"><i class="fas fa-sync"></i> WebP to JPG</a>
-                        <a href="heic-to-jpg.html" class="menu-item"><i class="fas fa-file-import"></i> HEIC to JPG</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <a href="compress-pdf.html" style="text-decoration:none; color:#666; font-size:0.9rem;">Compress</a>
-    </div>
+
+<a href="#" class="logo">TOOLFLYER</a>
+
+<div class="nav-right">
+
+<div class="search-box">
+<input type="text" placeholder="Search tools...">
+</div>
+
+</div>
+
 </nav>
 
+
 <div class="hero">
-    <h1>Every tool for your PDF & Image tasks</h1>
-    <p>Simplified digital solutions for a global audience.</p>
+
+<h1>Every tool for your PDF & Image tasks</h1>
+
+<p>Free online tools for PDF, images, converters, utilities and calculators.</p>
+
 </div>
 
-<div class="grid-container">
-    <a href="compress-pdf.html" class="tool-card"><i class="fas fa-file-pdf"></i><h3>Compress PDF</h3></a>
-    <a href="merge-pdf.html" class="tool-card"><i class="fas fa-object-group"></i><h3>Merge PDF</h3></a>
-    <a href="pdf-to-word.html" class="tool-card"><i class="fas fa-file-word"></i><h3>PDF to Word</h3></a>
-    <a href="pdf-to-jpg.html" class="tool-card"><i class="fas fa-file-image"></i><h3>PDF to JPG</h3></a>
-    <a href="bg-remover.html" class="tool-card"><i class="fas fa-user-slash"></i><h3>Remove Background</h3></a>
-    <a href="image-resizer.html" class="tool-card"><i class="fas fa-expand-arrows-alt"></i><h3>Image Resizer</h3></a>
-    <a href="compress-image.html" class="tool-card"><i class="fas fa-compress-arrows-alt"></i><h3>Compress Image</h3></a>
-    <a href="jpg-to-png.html" class="tool-card"><i class="fas fa-exchange-alt"></i><h3>JPG to PNG</h3></a>
-    <a href="png-to-jpg.html" class="tool-card"><i class="fas fa-exchange-alt"></i><h3>PNG to JPG</h3></a>
-    <a href="webp-to-jpg.html" class="tool-card"><i class="fas fa-sync"></i><h3>WebP to JPG</h3></a>
-    <a href="crop-image.html" class="tool-card"><i class="fas fa-crop-alt"></i><h3>Crop Image</h3></a>
-    <a href="pdf-ocr.html" class="tool-card"><i class="fas fa-search"></i><h3>PDF OCR</h3></a>
-    <a href="word-to-pdf.html" class="tool-card"><i class="fas fa-file-export"></i><h3>Word to PDF</h3></a>
-    <a href="excel-to-pdf.html" class="tool-card"><i class="fas fa-file-excel"></i><h3>Excel to PDF</h3></a>
-    <a href="watermark-pdf.html" class="tool-card"><i class="fas fa-stamp"></i><h3>Watermark PDF</h3></a>
-    <a href="rotate-pdf.html" class="tool-card"><i class="fas fa-redo"></i><h3>Rotate PDF</h3></a>
-    <a href="unlock-pdf.html" class="tool-card"><i class="fas fa-unlock"></i><h3>Unlock PDF</h3></a>
-    <a href="protect-pdf.html" class="tool-card"><i class="fas fa-shield-alt"></i><h3>Protect PDF</h3></a>
-    <a href="image-to-text.html" class="tool-card"><i class="fas fa-align-left"></i><h3>Image to Text</h3></a>
-    <a href="qr-generator.html" class="tool-card"><i class="fas fa-qrcode"></i><h3>QR Generator</h3></a>
+
+<div class="ad-space">
+Ad Space (Google AdSense)
 </div>
+
+
+<h2 class="section-title">PDF Tools</h2>
+
+<div class="grid">
+
+<a href="#" class="card"><i class="fas fa-file-pdf"></i><h3>Compress PDF</h3></a>
+
+<a href="#" class="card"><i class="fas fa-object-group"></i><h3>Merge PDF</h3></a>
+
+<a href="#" class="card"><i class="fas fa-file-word"></i><h3>PDF to Word</h3></a>
+
+<a href="#" class="card"><i class="fas fa-file-image"></i><h3>PDF to JPG</h3></a>
+
+<a href="#" class="card"><i class="fas fa-unlock"></i><h3>Unlock PDF</h3></a>
+
+<a href="#" class="card"><i class="fas fa-shield-alt"></i><h3>Protect PDF</h3></a>
+
+</div>
+
+
+<h2 class="section-title">Image Tools</h2>
+
+<div class="grid">
+
+<a href="#" class="card"><i class="fas fa-expand-arrows-alt"></i><h3>Image Resizer</h3></a>
+
+<a href="#" class="card"><i class="fas fa-compress"></i><h3>Compress Image</h3></a>
+
+<a href="#" class="card"><i class="fas fa-crop"></i><h3>Crop Image</h3></a>
+
+<a href="#" class="card"><i class="fas fa-user-slash"></i><h3>Remove Background</h3></a>
+
+</div>
+
+
+<h2 class="section-title">Image Converters</h2>
+
+<div class="grid">
+
+<a href="#" class="card"><i class="fas fa-exchange-alt"></i><h3>JPG to PNG</h3></a>
+
+<a href="#" class="card"><i class="fas fa-exchange-alt"></i><h3>PNG to JPG</h3></a>
+
+<a href="#" class="card"><i class="fas fa-sync"></i><h3>WebP to JPG</h3></a>
+
+</div>
+
+
+<h2 class="section-title">Utility Tools</h2>
+
+<div class="grid">
+
+<a href="#" class="card"><i class="fas fa-qrcode"></i><h3>QR Code Generator</h3></a>
+
+<a href="#" class="card"><i class="fas fa-key"></i><h3>Password Generator</h3></a>
+
+<a href="#" class="card"><i class="fas fa-font"></i><h3>Word Counter</h3></a>
+
+<a href="#" class="card"><i class="fas fa-align-left"></i><h3>Text Case Converter</h3></a>
+
+</div>
+
+
+<h2 class="section-title">Calculator Tools</h2>
+
+<div class="grid">
+
+<a href="#" class="card"><i class="fas fa-percentage"></i><h3>Percentage Calculator</h3></a>
+
+<a href="#" class="card"><i class="fas fa-birthday-cake"></i><h3>Age Calculator</h3></a>
+
+<a href="#" class="card"><i class="fas fa-money-bill"></i><h3>EMI Calculator</h3></a>
+
+<a href="#" class="card"><i class="fas fa-receipt"></i><h3>GST Calculator</h3></a>
+
+</div>
+
+
+<div class="seo">
+
+<h2>Free Online Tools by ToolFlyer</h2>
+
+<p>
+ToolFlyer provides fast and secure online tools that run directly in your browser.
+You can compress PDF files, convert images, generate QR codes, and use helpful
+calculators without installing any software.
+</p>
+
+<p>
+Our tools are designed to work quickly on both mobile and desktop devices.
+All processing happens locally in your browser which keeps your files private
+and ensures faster performance.
+</p>
+
+</div>
+
 
 <footer>
-    <p>&copy; 2026 ToolFlyer. All rights reserved.</p>
-    <div style="margin-top:10px;">
-        <a href="about.html" style="color:#6c5ce7; text-decoration:none;">About</a> | 
-        <a href="privacy-policy.html" style="color:#6c5ce7; text-decoration:none;">Privacy</a>
-    </div>
+
+<p>© 2026 ToolFlyer. All rights reserved.</p>
+
+<div>
+
+<a href="#">About</a>
+
+<a href="#">Privacy</a>
+
+<a href="#">Contact</a>
+
+</div>
+
 </footer>
 
 </body>
