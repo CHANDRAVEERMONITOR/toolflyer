@@ -3,21 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolFlyer - Fastest Digital Tools Online</title>
+    <title>ToolFlyer - World Class Digital Utilities</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; color: #2d3436; }
-        nav { background: #6c5ce7; color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; }
-        .hero { text-align: center; padding: 50px 5%; background: white; border-bottom: 1px solid #eee; }
-        .hero h2 { font-size: 2.5rem; margin-bottom: 10px; color: #2d3436; }
-        .container { padding: 40px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .tool-card { background: white; padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; border: 1px solid #eee; }
-        .tool-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(108, 92, 231, 0.1); border-color: #6c5ce7; }
-        .tool-card h3 { margin-bottom: 10px; color: #6c5ce7; }
-        footer { background: #2d3436; color: white; padding: 30px 5%; text-align: center; margin-top: 50px; }
-        .footer-links a { color: #aaa; text-decoration: none; margin: 0 10px; font-size: 0.9rem; }
-        .footer-links a:hover { color: white; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body { background: #f0f2f5; color: #1a1a1a; }
+
+        /* Header Styling */
+        nav { 
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe); 
+            padding: 1.5rem 5%; 
+            color: white; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .logo { font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; }
+
+        /* Hero Section */
+        .hero { 
+            padding: 60px 5%; 
+            background: #ffffff; 
+            text-align: center;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .hero h2 { font-size: 2.2rem; color: #2d3436; margin-bottom: 15px; }
+        .hero p { color: #636e72; font-size: 1.1rem; }
+
+        /* Container & Cards */
+        .container { 
+            padding: 50px 8%; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .tool-card { 
+            background: #ffffff; 
+            padding: 40px 30px; 
+            border-radius: 20px; 
+            text-align: center; 
+            transition: all 0.4s ease; 
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Card Hover Effect */
+        .tool-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.15);
+            border-color: #6c5ce7;
+        }
+
+        .tool-card h3 { font-size: 1.4rem; color: #6c5ce7; margin-bottom: 12px; }
+        .tool-card p { font-size: 0.95rem; color: #636e72; margin-bottom: 20px; line-height: 1.5; }
+
+        .btn-start {
+            display: inline-block;
+            padding: 10px 25px;
+            background: #6c5ce7;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .btn-start:hover { background: #a29bfe; }
+
+        .status-badge {
+            background: #ffeaa7;
+            color: #d63031;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        footer { 
+            background: #2d3436; 
+            color: #dfe6e9; 
+            padding: 40px 5%; 
+            text-align: center; 
+            margin-top: 60px;
+        }
+        .footer-links a { color: #a29bfe; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        .footer-links a:hover { color: white; text-decoration: underline; }
+        .copyright { margin-top: 20px; font-size: 0.85rem; opacity: 0.7; }
+
+        /* Responsive Fix */
+        @media (max-width: 600px) {
+            .hero h2 { font-size: 1.6rem; }
+            .container { padding: 30px 5%; }
+        }
     </style>
 </head>
 <body>
@@ -27,36 +111,40 @@
 </nav>
 
 <div class="hero">
-    <h2>Smart Tools for a Global Audience</h2>
-    <p>Fast. Free. Precise. No Installation Required.</p>
+    <h2>Global Utilities at Your Fingertips</h2>
+    <p>Premium, precise, and 100% free digital tools for everyone.</p>
 </div>
 
 <div class="container">
     <div class="tool-card">
+        <span class="status-badge">New</span>
         <h3>Age Calculator</h3>
-        <p>Calculate your exact age in years, months, and days.</p>
-        <p style="margin-top:15px; font-weight:bold; color:#6c5ce7;">Coming Soon</p>
+        <p>Determine exact age in years, months, and days with a single click.</p>
+        <a href="#" class="btn-start">Launch Tool</a>
     </div>
     
     <div class="tool-card">
+        <span class="status-badge">Hot</span>
         <h3>Loan EMI Calculator</h3>
-        <p>Plan your finances with our easy-to-use interest calculator.</p>
-        <p style="margin-top:15px; font-weight:bold; color:#6c5ce7;">Coming Soon</p>
+        <p>Plan your global investments and home loans with accuracy.</p>
+        <a href="#" class="btn-start">Launch Tool</a>
     </div>
 
     <div class="tool-card">
+        <span class="status-badge">Popular</span>
         <h3>Unit Converter</h3>
-        <p>Convert distance, weight, and temperature instantly.</p>
-        <p style="margin-top:15px; font-weight:bold; color:#6c5ce7;">Coming Soon</p>
+        <p>Switch between Metric and Imperial units instantly from anywhere.</p>
+        <a href="#" class="btn-start">Launch Tool</a>
     </div>
 </div>
 
 <footer>
-    <p>&copy; 2026 ToolFlyer. All Rights Reserved.</p>
     <div class="footer-links">
-        <a href="about.html">About Us</a> | 
+        <a href="about.html">About Us</a>
         <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="#">Contact</a>
     </div>
+    <p class="copyright">&copy; 2026 ToolFlyer. Developed for a Global Audience.</p>
 </footer>
 
 </body>
