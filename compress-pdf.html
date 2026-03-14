@@ -65,58 +65,152 @@
         </ul>
     </div>
 </div>
-
 <script>
-    let pdfFile = null;
-    const { PDFDocument } = PDFLib;
 
-    document.getElementById('fileInput').onchange = (e) => {
-        pdfFile = e.target.files[0];
-        if(pdfFile) {
-            document.getElementById('fileNameDisplay').innerText = pdfFile.name;
-            document.getElementById('settings').style.display = 'block';
-            document.getElementById('dropZone').style.borderColor = 'var(--primary)';
-        }
-    };
+let selectedFile = null;
 
-    async function compressNow() {
-        if(!pdfFile) return;
-        const loader = document.getElementById('loader');
-        loader.style.display = 'block';
-        
-        const level = document.getElementById('compLevel').value;
-        const arrayBuffer = await pdfFile.arrayBuffer();
+const fileInput = document.getElementById("fileInput");
+const settings = document.getElementById("settings");
+const fileNameDisplay = document.getElementById("fileNameDisplay");
+const slider = document.getElementById("compressionSlider");
+const loader = document.getElementById("loader");
 
-        try {
-            // Loading the PDF
-            const pdfDoc = await PDFDocument.load(arrayBuffer);
-            
-            // Real Compression Trick: PDF-Lib save with optimization
-            // For a browser tool, the best way to reduce size without complex image processing 
-            // is to rebuild the structure and use object streams.
-            const compressedBytes = await pdfDoc.save({
-                useObjectStreams: true,
-                addDefaultPage: false,
-                updateFieldAppearances: false
-            });
+fileInput.onchange = (e) => {
 
-            // If High Compression is selected, we alert user it's the best browser can do
-            const blob = new Blob([compressedBytes], { type: 'application/pdf' });
-            
-            // Download Logic
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `ToolFlyer_Optimized_${pdfFile.name}`;
-            link.click();
-            
-            loader.innerText = "Done! Your optimized PDF is ready.";
-            setTimeout(() => { loader.style.display = 'none'; }, 3000);
-        } catch (err) {
-            console.error(err);
-            alert("This PDF is already highly optimized.");
-            loader.style.display = 'none';
-        }
-    }
+selectedFile = e.target.files[0];
+
+if(selectedFile){
+
+fileNameDisplay.innerText =
+selectedFile.name + " (" + (selectedFile.size/1024/1024).toFixed(2) + " MB)";
+
+settings.style.display = "block";
+
+}
+
+};
+
+
+/* SLIDER LABEL UPDATE */
+
+slider.oninput = function(){
+
+let value = this.value;
+
+let label = "";
+
+if(value < 35){
+
+label = "Low Compression (High Quality)";
+
+}else if(value < 70){
+
+label = "Balanced Compression";
+
+}else{
+
+label = "High Compression (Smallest Size)";
+
+}
+
+document.querySelector(".slider-container").dataset.label = label;
+
+};
+
+
+
+async function processPDF(){
+
+if(!selectedFile) return;
+
+loader.style.display = "block";
+
+const compressionLevel = slider.value;
+
+const arrayBuffer = await selectedFile.arrayBuffer();
+
+try{
+
+const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+
+/* REMOVE METADATA */
+
+pdfDoc.setTitle("");
+pdfDoc.setAuthor("");
+pdfDoc.setSubject("");
+pdfDoc.setProducer("");
+pdfDoc.setCreator("");
+
+/* PAGE OPTIMIZATION */
+
+const pages = pdfDoc.getPages();
+
+pages.forEach(page=>{
+
+const {width,height} = page.getSize();
+
+/* SCALE PAGE BASED ON COMPRESSION */
+
+let scale = 1;
+
+if(compressionLevel > 70){
+
+scale = 0.7;
+
+}else if(compressionLevel > 40){
+
+scale = 0.85;
+
+}else{
+
+scale = 1;
+
+}
+
+page.scaleContent(scale,scale);
+
+});
+
+
+/* SAVE PDF WITH OPTIMIZATION */
+
+const compressedBytes = await pdfDoc.save({
+
+useObjectStreams:true,
+addDefaultPage:false,
+objectsPerTick:50
+
+});
+
+
+/* DOWNLOAD */
+
+const blob = new Blob([compressedBytes],{type:"application/pdf"});
+
+const link = document.createElement("a");
+
+link.href = URL.createObjectURL(blob);
+
+link.download = "ToolFlyer_Compressed.pdf";
+
+link.click();
+
+loader.style.display="none";
+
+alert("PDF compressed successfully");
+
+}catch(err){
+
+console.error(err);
+
+alert("Compression failed");
+
+loader.style.display="none";
+
+}
+
+}
+
 </script>
 
 </body>
