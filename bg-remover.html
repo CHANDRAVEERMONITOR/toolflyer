@@ -84,53 +84,112 @@
 </div>
 
 <script>
-    // TO FIX ERROR: We will use a more compatible approach for Mobile
-    let originalImg = null;
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
 
-    document.getElementById('fileIn').onchange = async (e) => {
-        const file = e.target.files[0];
-        if(!file) return;
-        
-        // Show loading state...
-        alert("Processing... (This might take a moment on mobile)");
-        
-        // Note: For 100% stability on Mobile without API error, 
-        // using a lighter CDN based approach or suggesting Desktop for 5MB+ files.
-        // For now, let's keep the core logic simple.
-        
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            originalImg = new Image();
-            originalImg.src = event.target.result;
-            originalImg.onload = () => {
-                canvas.width = originalImg.width;
-                canvas.height = originalImg.height;
-                setBg('transparent');
-                document.getElementById('editor').style.display = 'block';
-                document.getElementById('dropZone').style.display = 'none';
-            }
-        }
-        reader.readAsDataURL(file);
-    };
+let originalImg = null;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
-    function setBg(color) {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        if(color !== 'transparent') {
-            ctx.fillStyle = color;
-            ctx.fillRect(0,0,canvas.width,canvas.height);
-        }
-        ctx.drawImage(originalImg, 0, 0);
-    }
+document.getElementById('fileIn').onchange = (e) => {
 
-    function downloadImg() {
-        const link = document.createElement('a');
-        link.download = 'ToolFlyer_Edited.png';
-        link.href = canvas.toDataURL();
-        link.click();
-    }
+const file = e.target.files[0];
+if(!file) return;
+
+/* FILE SIZE LIMIT */
+if(file.size > 5 * 1024 * 1024){
+alert("Image too large. Please upload image under 5MB.");
+return;
+}
+
+const reader = new FileReader();
+
+reader.onload = function(event){
+
+const img = new Image();
+
+img.onload = function(){
+
+/* RESIZE IMAGE FOR MOBILE PERFORMANCE */
+
+let maxSize = 1200;
+
+let width = img.width;
+let height = img.height;
+
+if(width > maxSize || height > maxSize){
+
+if(width > height){
+
+height = height * (maxSize / width);
+width = maxSize;
+
+}else{
+
+width = width * (maxSize / height);
+height = maxSize;
+
+}
+
+}
+
+canvas.width = width;
+canvas.height = height;
+
+/* SAVE ORIGINAL */
+
+originalImg = img;
+
+/* DRAW IMAGE */
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.drawImage(img,0,0,width,height);
+
+document.getElementById('editor').style.display="block";
+document.getElementById('dropZone').style.display="none";
+
+}
+
+img.src = event.target.result;
+
+}
+
+reader.readAsDataURL(file);
+
+};
+
+
+function setBg(color){
+
+if(!originalImg) return;
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+if(color !== "transparent"){
+
+ctx.fillStyle=color;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+}
+
+ctx.drawImage(originalImg,0,0,canvas.width,canvas.height);
+
+}
+
+
+function downloadImg(){
+
+const link=document.createElement("a");
+
+link.download="ToolFlyer_Image.png";
+
+link.href=canvas.toDataURL("image/png");
+
+link.click();
+
+}
+
 </script>
+        
+    
 
 </body>
 </html>
