@@ -3,131 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compress PDF Online - Reduce File Size Fast | ToolFlyer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Extreme PDF Compressor - ToolFlyer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #e74c3c; --bg: #f5f6fa; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); text-align: center; padding: 20px; margin:0; }
-        nav { background: #fff; padding: 15px 5%; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; margin-bottom: 30px;}
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
-        .upload { border: 2px dashed #ccc; padding: 40px; border-radius: 15px; cursor: pointer; background: white; max-width: 600px; margin: auto; transition: 0.3s; }
-        .upload:hover { border-color: var(--primary); background: #fffafa; }
-        .sliderBox { margin-top: 30px; display: none; background: white; padding: 25px; border-radius: 15px; max-width: 600px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        input[type=range] { width: 100%; accent-color: var(--primary); margin: 15px 0; }
-        .progress { width: 100%; height: 10px; background: #ddd; margin: 20px auto; border-radius: 20px; overflow: hidden; display: none; max-width: 600px; }
-        .bar { height: 100%; width: 0%; background: var(--primary); transition: 0.3s; }
-        button { padding: 14px 40px; border: none; background: var(--primary); color: white; font-size: 16px; border-radius: 50px; cursor: pointer; font-weight: 600; margin-top: 15px; }
-        #result { margin-top: 20px; font-weight: 600; color: #2d3436; }
-        .seo-section { max-width: 800px; margin: 50px auto; text-align: left; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .faq-item { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-        .faq-item h3 { color: var(--primary); font-size: 1.1rem; margin-bottom: 5px; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); text-align: center; padding: 20px; }
+        .upload-box { border: 2px dashed #ccc; padding: 40px; border-radius: 15px; background: white; max-width: 500px; margin: auto; cursor: pointer; }
+        .slider-box { margin-top: 20px; background: white; padding: 20px; border-radius: 15px; display: none; max-width: 500px; margin-left: auto; margin-right: auto; }
+        input[type=range] { width: 100%; accent-color: var(--primary); }
+        button { padding: 12px 30px; border: none; background: var(--primary); color: white; border-radius: 25px; cursor: pointer; margin-top: 15px; font-weight: 600; }
+        #status { margin-top: 20px; font-weight: bold; color: var(--primary); }
     </style>
 </head>
 <body>
 
-<nav><a href="index.html" class="logo">TOOLFLYER</a></nav>
+<h1>Extreme PDF Compressor</h1>
+<p>PDF to Image reconstruction for maximum size reduction.</p>
 
-<h1>Advanced PDF Compressor</h1>
-<p>Reduce file size instantly without losing quality.</p>
-
-<div class="upload" onclick="document.getElementById('fileInput').click()">
-    <p id="fileNameDisplay">Click to Upload PDF or Drag & Drop</p>
+<div class="upload-box" onclick="document.getElementById('fileInput').click()">
+    <p id="fileName">Select PDF to Shrink</p>
     <input type="file" id="fileInput" hidden accept="application/pdf">
 </div>
 
-<div class="sliderBox" id="sliderBox">
-    <p>Compression Level: <span id="percent">50%</span></p>
-    <input type="range" min="10" max="95" value="50" id="slider">
-    <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
-    <button onclick="compressPDF()">Compress My PDF</button>
+<div class="slider-box" id="controls">
+    <p>Compression Quality: <span id="qVal">0.5</span></p>
+    <input type="range" id="quality" min="0.1" max="0.9" step="0.1" value="0.5">
+    <br>
+    <button onclick="processExtremeCompression()">Start Extreme Compression</button>
 </div>
 
+<div id="status"></div>
 <div id="result"></div>
 
-<div class="seo-section">
-    <h2>World-Class PDF Compression</h2>
-    <p>ToolFlyer's advanced algorithm helps you reduce PDF sizes for government portals like Bihar land records (Dakhil Kharij) or email attachments. Our browser-side processing ensures 100% privacy.</p>
-
-    <div class="faq-section">
-        <h3>Frequently Asked Questions</h3>
-        <div class="faq-item">
-            <h3>Is this PDF compressor free?</h3>
-            <p>Yes, ToolFlyer provides 100% free and unlimited PDF compression with no hidden charges.</p>
-        </div>
-        <div class="faq-item">
-            <h3>Will it work on mobile?</h3>
-            <p>Absolutely! We have optimized the code to run smoothly on mobile browsers by managing memory efficiently.</p>
-        </div>
-        <div class="faq-item">
-            <h3>Why is my size not changing?</h3>
-            <p>If a PDF is already highly compressed or contains only text, the difference might be small. Our tool works best on PDFs with many images.</p>
-        </div>
-    </div>
-</div>
-
 <script>
-let file = null;
-const fileInput = document.getElementById("fileInput");
-const slider = document.getElementById("slider");
-const percent = document.getElementById("percent");
-const sliderBox = document.getElementById("sliderBox");
-const progress = document.getElementById("progress");
-const bar = document.getElementById("bar");
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
-slider.oninput = function() { percent.innerText = this.value + "%"; }
+let selectedFile = null;
+const qualitySlider = document.getElementById('quality');
+const qVal = document.getElementById('qVal');
 
-fileInput.onchange = function(e) {
-    file = e.target.files[0];
-    if (file) {
-        document.getElementById("fileNameDisplay").innerText = file.name;
-        sliderBox.style.display = "block";
+qualitySlider.oninput = function() { qVal.innerText = this.value; }
+
+document.getElementById('fileInput').onchange = (e) => {
+    selectedFile = e.target.files[0];
+    if(selectedFile) {
+        document.getElementById('fileName').innerText = selectedFile.name;
+        document.getElementById('controls').style.display = 'block';
     }
+};
+
+async function processExtremeCompression() {
+    const status = document.getElementById('status');
+    status.innerText = "Step 1: Converting PDF to Images...";
+    
+    const fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(selectedFile);
+    
+    fileReader.onload = async function() {
+        const typedarray = new Uint8Array(this.result);
+        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+        const outPdfDoc = await PDFLib.PDFDocument.create();
+        const quality = parseFloat(qualitySlider.value);
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+            status.innerText = `Processing Page ${i} of ${pdf.numPages}...`;
+            
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 1.5 }); // Lower scale = Smaller size
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            await page.render({ canvasContext: context, viewport: viewport }).promise;
+
+            // Step 2: Convert Canvas to Compressed Image (JPEG)
+            const imgData = canvas.toDataURL('image/jpeg', quality);
+            const img = await outPdfDoc.embedImg(imgData);
+
+            // Step 3: Add back to new PDF
+            const newPage = outPdfDoc.addPage([img.width, img.height]);
+            newPage.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+        }
+
+        const pdfBytes = await outPdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: "application/pdf" });
+        
+        status.innerText = "Compression Complete!";
+        const oldSize = (selectedFile.size / 1024).toFixed(0);
+        const newSize = (blob.size / 1024).toFixed(0);
+
+        document.getElementById('result').innerHTML = `
+            <div style="margin-top:20px; padding:20px; background:white; border-radius:10px;">
+                <p>Old Size: ${oldSize} KB | New Size: ${newSize} KB</p>
+                <button onclick="downloadFinal('${URL.createObjectURL(blob)}')">Download PDF</button>
+            </div>
+        `;
+    };
 }
 
-async function compressPDF() {
-    if (!file) return;
-    progress.style.display = "block";
-    bar.style.width = "30%";
-
-    const arrayBuffer = await file.arrayBuffer();
-    const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-    
-    // Cleaning metadata to save space
-    pdfDoc.setTitle("");
-    pdfDoc.setAuthor("");
-    pdfDoc.setProducer("");
-    
-    bar.style.width = "70%";
-
-    // SAVING WITH MAXIMUM OPTIMIZATION
-    const compressedBytes = await pdfDoc.save({
-        useObjectStreams: true,
-        addDefaultPage: false,
-        objectsPerTick: 20
-    });
-
-    bar.style.width = "100%";
-    const blob = new Blob([compressedBytes], { type: "application/pdf" });
-    const newSize = (blob.size / 1024 / 1024).toFixed(2);
-    const oldSize = (file.size / 1024 / 1024).toFixed(2);
-
-    document.getElementById("result").innerHTML = `
-        <div style="background:#e3f2fd; padding:15px; border-radius:10px; display:inline-block;">
-            Original: ${oldSize} MB | Optimized: ${newSize} MB<br>
-            <button onclick="downloadFile()">Download Optimized PDF</button>
-        </div>
-    `;
-    window.compressedBlob = blob;
-}
-
-function downloadFile() {
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(window.compressedBlob);
-    link.download = "ToolFlyer_Optimized.pdf";
-    link.click();
+function downloadFinal(url) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "ToolFlyer_Extreme_Compressed.pdf";
+    a.click();
 }
 </script>
-
 </body>
 </html>
