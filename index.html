@@ -3,148 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolFlyer - World Class Digital Utilities</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>ToolFlyer - All-in-One Digital Toolbox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        
-        body { background: #f0f2f5; color: #1a1a1a; }
+        body { background: #f4f7fa; color: #333; }
 
-        /* Header Styling */
+        /* Header like PDF24/SmallPDF */
         nav { 
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe); 
-            padding: 1.5rem 5%; 
-            color: white; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .logo { font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; }
-
-        /* Hero Section */
-        .hero { 
-            padding: 60px 5%; 
             background: #ffffff; 
-            text-align: center;
-            border-bottom-left-radius: 50px;
-            border-bottom-right-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 1000;
         }
-        .hero h2 { font-size: 2.2rem; color: #2d3436; margin-bottom: 15px; }
-        .hero p { color: #636e72; font-size: 1.1rem; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #6c5ce7; text-decoration: none; }
 
-        /* Container & Cards */
-        .container { 
-            padding: 50px 8%; 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 25px; 
-        }
+        /* Main Heading Area */
+        .hero { text-align: center; padding: 40px 20px; }
+        .hero h1 { font-size: 2rem; color: #2d3436; margin-bottom: 10px; }
+        .hero p { color: #636e72; font-size: 1rem; }
 
-        .tool-card { 
-            background: #ffffff; 
-            padding: 40px 30px; 
-            border-radius: 20px; 
-            text-align: center; 
-            transition: all 0.4s ease; 
-            border: 1px solid rgba(108, 92, 231, 0.1);
-            position: relative;
-            overflow: hidden;
+        /* The Grid System - Inspired by SmallPDF */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 20px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Card Hover Effect */
-        .tool-card:hover { 
-            transform: translateY(-10px); 
-            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.15);
-            border-color: #6c5ce7;
-        }
-
-        .tool-card h3 { font-size: 1.4rem; color: #6c5ce7; margin-bottom: 12px; }
-        .tool-card p { font-size: 0.95rem; color: #636e72; margin-bottom: 20px; line-height: 1.5; }
-
-        .btn-start {
-            display: inline-block;
-            padding: 10px 25px;
-            background: #6c5ce7;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-        .btn-start:hover { background: #a29bfe; }
-
-        .status-badge {
-            background: #ffeaa7;
-            color: #d63031;
-            padding: 5px 12px;
+        .tool-box {
+            background: #fff;
+            border: 1px solid #e0e6ed;
             border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tool-box:hover {
+            border-color: #6c5ce7;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .tool-box i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #6c5ce7; /* Primary Color */
+        }
+
+        .tool-box h3 {
+            font-size: 0.95rem;
+            color: #2d3436;
+            font-weight: 600;
         }
 
         /* Footer */
-        footer { 
-            background: #2d3436; 
-            color: #dfe6e9; 
-            padding: 40px 5%; 
-            text-align: center; 
-            margin-top: 60px;
-        }
-        .footer-links a { color: #a29bfe; text-decoration: none; margin: 0 15px; font-weight: 500; }
-        .footer-links a:hover { color: white; text-decoration: underline; }
-        .copyright { margin-top: 20px; font-size: 0.85rem; opacity: 0.7; }
+        footer { background: #fff; padding: 30px; text-align: center; border-top: 1px solid #eee; margin-top: 50px; }
+        .footer-links a { margin: 0 10px; color: #6c5ce7; text-decoration: none; font-size: 0.9rem; }
 
-        /* Responsive Fix */
-        @media (max-width: 600px) {
-            .hero h2 { font-size: 1.6rem; }
-            .container { padding: 30px 5%; }
+        @media (max-width: 480px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">TOOLFLYER</div>
+    <a href="index.html" class="logo">TOOLFLYER</a>
 </nav>
 
 <div class="hero">
-    <h2>Global Utilities at Your Fingertips</h2>
-    <p>Premium, precise, and 100% free digital tools for everyone.</p>
+    <h1>All ToolFlyer Solutions</h1>
+    <p>Every digital tool you need, in one place.</p>
 </div>
 
-<div class="container">
-    <div class="tool-card">
-        <span class="status-badge">New</span>
-        <h3>Age Calculator</h3>
-        <p>Determine exact age in years, months, and days with a single click.</p>
-        <a href="#" class="btn-start">Launch Tool</a>
-    </div>
+<div class="grid-container">
     
-    <div class="tool-card">
-        <span class="status-badge">Hot</span>
-        <h3>Loan EMI Calculator</h3>
-        <p>Plan your global investments and home loans with accuracy.</p>
-        <a href="#" class="btn-start">Launch Tool</a>
-    </div>
+    <a href="age-calculator.html" class="tool-box">
+        <i class="fas fa-birthday-cake"></i>
+        <h3>Age Calculator</h3>
+    </a>
 
-    <div class="tool-card">
-        <span class="status-badge">Popular</span>
+    <a href="word-counter.html" class="tool-box">
+        <i class="fas fa-file-word"></i>
+        <h3>Word Counter</h3>
+    </a>
+
+    <a href="sip-calculator.html" class="tool-box">
+        <i class="fas fa-chart-line"></i>
+        <h3>SIP Calculator</h3>
+    </a>
+
+    <a href="unit-converter.html" class="tool-box">
+        <i class="fas fa-ruler-combined"></i>
         <h3>Unit Converter</h3>
-        <p>Switch between Metric and Imperial units instantly from anywhere.</p>
-        <a href="#" class="btn-start">Launch Tool</a>
-    </div>
+    </a>
+
+    <a href="emi-calculator.html" class="tool-box">
+        <i class="fas fa-calculator"></i>
+        <h3>EMI Calculator</h3>
+    </a>
+
+    <a href="gst-calculator.html" class="tool-box">
+        <i class="fas fa-percent"></i>
+        <h3>GST Calculator</h3>
+    </a>
+
+    <a href="discount-calculator.html" class="tool-box">
+        <i class="fas fa-tags"></i>
+        <h3>Discount Calc</h3>
+    </a>
+
+    <a href="percentage-calculator.html" class="tool-box">
+        <i class="fas fa-percentage"></i>
+        <h3>Percentage Calc</h3>
+    </a>
+
+    <a href="image-resizer.html" class="tool-box">
+        <i class="fas fa-expand-arrows-alt"></i>
+        <h3>Image Resizer</h3>
+    </a>
+
+    <a href="pdf-to-word.html" class="tool-box">
+        <i class="fas fa-file-pdf"></i>
+        <h3>PDF to Word</h3>
+    </a>
+
+    <a href="jpg-to-pdf.html" class="tool-box">
+        <i class="fas fa-image"></i>
+        <h3>JPG to PDF</h3>
+    </a>
+
+    <a href="password-generator.html" class="tool-box">
+        <i class="fas fa-lock"></i>
+        <h3>Password Gen</h3>
+    </a>
+
+    <a href="html-formatter.html" class="tool-box">
+        <i class="fas fa-code"></i>
+        <h3>HTML Formatter</h3>
+    </a>
+
+    <a href="qr-code-generator.html" class="tool-box">
+        <i class="fas fa-qrcode"></i>
+        <h3>QR Generator</h3>
+    </a>
+
+    <a href="lorem-ipsum.html" class="tool-box">
+        <i class="fas fa-align-left"></i>
+        <h3>Lorem Ipsum</h3>
+    </a>
+
+    <a href="binary-converter.html" class="tool-box">
+        <i class="fas fa-robot"></i>
+        <h3>Binary Conv</h3>
+    </a>
+
+    <a href="bmi-calculator.html" class="tool-box">
+        <i class="fas fa-heartbeat"></i>
+        <h3>BMI Calculator</h3>
+    </a>
+
+    <a href="bmr-calculator.html" class="tool-box">
+        <i class="fas fa-fire"></i>
+        <h3>BMR Calculator</h3>
+    </a>
+
+    <a href="love-calculator.html" class="tool-box">
+        <i class="fas fa-heart"></i>
+        <h3>Love Calculator</h3>
+    </a>
+
+    <a href="currency-converter.html" class="tool-box">
+        <i class="fas fa-coins"></i>
+        <h3>Currency Conv</h3>
+    </a>
+
 </div>
 
 <footer>
     <div class="footer-links">
-        <a href="about.html">About Us</a>
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="#">Contact</a>
+        <a href="about.html">About</a>
+        <a href="privacy-policy.html">Privacy</a>
     </div>
-    <p class="copyright">&copy; 2026 ToolFlyer. Developed for a Global Audience.</p>
+    <p style="margin-top: 15px; font-size: 0.8rem; color: #999;">&copy; 2026 ToolFlyer. Digital Solutions Simplified.</p>
 </footer>
 
 </body>
