@@ -1,217 +1,180 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>High-Speed PDF Compressor | ToolFlyer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    
-    <style>
-        :root { --primary: #e74c3c; --bg: #f8f9fa; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg); color: #333; line-height: 1.6; }
-        nav { background: #fff; padding: 15px 5%; display: flex; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top:0; z-index:100; }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
-        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: center; }
-        .upload-card { background: #fff; padding: 60px; border-radius: 24px; border: 2px dashed #ddd; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .upload-card:hover { border-color: var(--primary); background: #fffafa; }
-        .settings-panel { display: none; margin-top: 30px; background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .btn-action { background: var(--primary); color: white; padding: 15px 50px; border-radius: 50px; border: none; font-weight: 600; cursor: pointer; font-size: 1.1rem; width: 100%; transition: 0.3s; }
-        .btn-action:hover { background: #c0392b; transform: scale(1.02); }
-        .loader { display: none; margin-top: 20px; color: var(--primary); font-weight: 600; }
-        input[type=range] { width: 100%; margin: 20px 0; accent-color: var(--primary); }
-        .labels { display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; font-weight: 600; margin-bottom: 20px; }
-        .seo-content { text-align: left; margin-top: 60px; background: white; padding: 40px; border-radius: 20px; }
-    </style>
-</head>
-<body>
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Advanced PDF Compressor - ToolFlyer</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script><style>
 
-<nav><a href="index.html" class="logo">TOOLFLYER</a></nav>
+body{
+font-family:Poppins;
+background:#f5f6fa;
+text-align:center;
+padding:20px;
+}
 
-<div class="container">
-    <h1>Compress PDF Online</h1>
-    <p style="color:#666; margin-bottom: 30px;">Professional tool to reduce PDF size without losing readability.</p>
+h1{
+margin-bottom:10px;
+}
 
-    <div class="upload-card" id="dropZone" onclick="document.getElementById('fileInput').click()">
-        <i class="fas fa-cloud-upload-alt" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
-        <h2>Choose PDF File</h2>
-        <p id="fileNameDisplay">or drag and drop your file here</p>
-        <input type="file" id="fileInput" hidden accept="application/pdf">
-    </div>
+.upload{
+border:2px dashed #ccc;
+padding:40px;
+border-radius:15px;
+cursor:pointer;
+background:white;
+max-width:500px;
+margin:auto;
+}
 
-    <div class="settings-panel" id="settings">
-        <h3 style="margin-bottom: 10px;">Select Compression Level</h3>
-        <input type="range" id="compLevel" min="1" max="3" step="1" value="2">
-        <div class="labels">
-            <span>Low<br>(Clear Images)</span>
-            <span>Medium<br>(Balanced)</span>
-            <span>High<br>(Smallest Size)</span>
-        </div>
-        <button class="btn-action" onclick="compressNow()">COMPRESS PDF</button>
-        <div class="loader" id="loader"><i class="fas fa-circle-notch fa-spin"></i> Analyzing and Shrinking PDF...</div>
-    </div>
+.upload:hover{
+border-color:#e74c3c;
+}
 
-    <div class="seo-content">
-        <h2>World-Class PDF Compression Technology</h2>
-        <p>ToolFlyer uses advanced object-stream compression to ensure your files are optimized for the web. Our tool works similarly to <strong>SmallPDF</strong> and <strong>PDF24</strong>, providing a seamless experience for global users.</p>
-        
-        <h3>Why choose ToolFlyer?</h3>
-        <ul>
-            <li><strong>Instant Shrinking:</strong> Perfect for email attachments and portal uploads like Bihar Land Records.</li>
-            <li><strong>Browser-Based:</strong> No files are stored on our servers, keeping your privacy 100% intact.</li>
-            <li><strong>No Limits:</strong> Use it as many times as you need without hitting API limits.</li>
-        </ul>
-    </div>
-</div>
-<script>
+.sliderBox{
+margin-top:30px;
+display:none;
+}
 
-let selectedFile = null;
+input[type=range]{
+width:90%;
+}
 
-const fileInput = document.getElementById("fileInput");
-const settings = document.getElementById("settings");
-const fileNameDisplay = document.getElementById("fileNameDisplay");
-const slider = document.getElementById("compressionSlider");
-const loader = document.getElementById("loader");
+.progress{
+width:90%;
+height:10px;
+background:#ddd;
+margin:20px auto;
+border-radius:20px;
+overflow:hidden;
+display:none;
+}
 
-fileInput.onchange = (e) => {
+.bar{
+height:100%;
+width:0%;
+background:#e74c3c;
+}
 
-selectedFile = e.target.files[0];
+button{
+padding:14px 30px;
+border:none;
+background:#e74c3c;
+color:white;
+font-size:16px;
+border-radius:25px;
+cursor:pointer;
+margin-top:20px;
+}
 
-if(selectedFile){
+#result{
+margin-top:20px;
+font-weight:600;
+}
 
-fileNameDisplay.innerText =
-selectedFile.name + " (" + (selectedFile.size/1024/1024).toFixed(2) + " MB)";
+</style></head>
+<body><h1>ToolFlyer PDF Compressor</h1>
+<p>Reduce PDF size instantly with adjustable compression</p><div class="upload" onclick="fileInput.click()">Upload PDF File
 
-settings.style.display = "block";
+<input type="file" id="fileInput" hidden accept="application/pdf"></div><div class="sliderBox" id="sliderBox"><p>Compression Level: <span id="percent">50%</span></p><input type="range" min="10" max="90" value="50" id="slider"><br><button onclick="compressPDF()">Compress PDF</button>
+
+</div><div class="progress" id="progress"><div class="bar" id="bar"></div></div><div id="result"></div><script>
+
+let file=null
+
+const fileInput=document.getElementById("fileInput")
+const slider=document.getElementById("slider")
+const percent=document.getElementById("percent")
+const sliderBox=document.getElementById("sliderBox")
+const progress=document.getElementById("progress")
+const bar=document.getElementById("bar")
+
+slider.oninput=function(){
+
+percent.innerText=this.value+"%"
 
 }
 
-};
+fileInput.onchange=function(e){
 
+file=e.target.files[0]
 
-/* SLIDER LABEL UPDATE */
+if(file){
 
-slider.oninput = function(){
-
-let value = this.value;
-
-let label = "";
-
-if(value < 35){
-
-label = "Low Compression (High Quality)";
-
-}else if(value < 70){
-
-label = "Balanced Compression";
-
-}else{
-
-label = "High Compression (Smallest Size)";
+sliderBox.style.display="block"
 
 }
 
-document.querySelector(".slider-container").dataset.label = label;
+}
 
-};
+async function compressPDF(){
 
+if(!file) return
 
+progress.style.display="block"
 
-async function processPDF(){
+bar.style.width="10%"
 
-if(!selectedFile) return;
+const compression=slider.value
 
-loader.style.display = "block";
+const arrayBuffer=await file.arrayBuffer()
 
-const compressionLevel = slider.value;
+bar.style.width="30%"
 
-const arrayBuffer = await selectedFile.arrayBuffer();
+const pdfDoc=await PDFLib.PDFDocument.load(arrayBuffer)
 
-try{
+bar.style.width="50%"
 
-const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+pdfDoc.setTitle("")
+pdfDoc.setAuthor("")
+pdfDoc.setSubject("")
+pdfDoc.setCreator("")
+pdfDoc.setProducer("")
 
-/* REMOVE METADATA */
-
-pdfDoc.setTitle("");
-pdfDoc.setAuthor("");
-pdfDoc.setSubject("");
-pdfDoc.setProducer("");
-pdfDoc.setCreator("");
-
-/* PAGE OPTIMIZATION */
-
-const pages = pdfDoc.getPages();
+const pages=pdfDoc.getPages()
 
 pages.forEach(page=>{
 
-const {width,height} = page.getSize();
+let scale=1-(compression/150)
 
-/* SCALE PAGE BASED ON COMPRESSION */
+page.scaleContent(scale,scale)
 
-let scale = 1;
+})
 
-if(compressionLevel > 70){
+bar.style.width="70%"
 
-scale = 0.7;
-
-}else if(compressionLevel > 40){
-
-scale = 0.85;
-
-}else{
-
-scale = 1;
-
-}
-
-page.scaleContent(scale,scale);
-
-});
-
-
-/* SAVE PDF WITH OPTIMIZATION */
-
-const compressedBytes = await pdfDoc.save({
+const compressedBytes=await pdfDoc.save({
 
 useObjectStreams:true,
-addDefaultPage:false,
 objectsPerTick:50
 
-});
+})
 
+bar.style.width="100%"
 
-/* DOWNLOAD */
+const blob=new Blob([compressedBytes],{type:"application/pdf"})
 
-const blob = new Blob([compressedBytes],{type:"application/pdf"});
+const newSize=(blob.size/1024/1024).toFixed(2)
 
-const link = document.createElement("a");
+const oldSize=(file.size/1024/1024).toFixed(2)
 
-link.href = URL.createObjectURL(blob);
+document.getElementById("result").innerHTML=
 
-link.download = "ToolFlyer_Compressed.pdf";
+"Original Size: "+oldSize+" MB<br>"+
+"Compressed Size: "+newSize+" MB<br><br>"+
+"<button onclick='downloadFile()'>Download PDF</button>"
 
-link.click();
-
-loader.style.display="none";
-
-alert("PDF compressed successfully");
-
-}catch(err){
-
-console.error(err);
-
-alert("Compression failed");
-
-loader.style.display="none";
+window.compressedBlob=blob
 
 }
 
+function downloadFile(){
+
+const link=document.createElement("a")
+
+link.href=URL.createObjectURL(window.compressedBlob)
+
+link.download="ToolFlyer_Compressed.pdf"
+
+link.click()
+
 }
 
-</script>
-
-</body>
+</script></body>
 </html>
