@@ -1,290 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ToolFlyer Tools</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolFlyer - All-in-One Digital Toolbox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #f4f7fa; color: #333; }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        /* Header like PDF24/SmallPDF */
+        nav { 
+            background: #ffffff; 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #6c5ce7; text-decoration: none; }
 
-<style>
+        /* Main Heading Area */
+        .hero { text-align: center; padding: 40px 20px; }
+        .hero h1 { font-size: 2rem; color: #2d3436; margin-bottom: 10px; }
+        .hero p { color: #636e72; font-size: 1rem; }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
-}
+        /* The Grid System - Inspired by SmallPDF */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 20px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-body{
-background:#f5f6fb;
-}
+        .tool-box {
+            background: #fff;
+            border: 1px solid #e0e6ed;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-nav{
-background:white;
-padding:15px 5%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.08);
-}
+        .tool-box:hover {
+            border-color: #6c5ce7;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.1);
+            transform: translateY(-3px);
+        }
 
-.logo{
-font-weight:700;
-font-size:22px;
-color:#6c5ce7;
-text-decoration:none;
-}
+        .tool-box i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #6c5ce7; /* Primary Color */
+        }
 
-/* TAB MENU */
+        .tool-box h3 {
+            font-size: 0.95rem;
+            color: #2d3436;
+            font-weight: 600;
+        }
 
-.tabs{
-display:flex;
-gap:20px;
-padding:20px 5%;
-background:white;
-border-bottom:1px solid #eee;
-}
+        /* Footer */
+        footer { background: #fff; padding: 30px; text-align: center; border-top: 1px solid #eee; margin-top: 50px; }
+        .footer-links a { margin: 0 10px; color: #6c5ce7; text-decoration: none; font-size: 0.9rem; }
 
-.tab{
-cursor:pointer;
-padding:8px 15px;
-border-radius:6px;
-font-weight:600;
-color:#555;
-}
-
-.tab.active{
-background:#6c5ce7;
-color:white;
-}
-
-/* GRID */
-
-.container{
-max-width:1200px;
-margin:auto;
-padding:40px 5%;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-gap:20px;
-}
-
-.card{
-background:white;
-border:1px solid #eee;
-padding:20px;
-border-radius:10px;
-text-decoration:none;
-color:#333;
-transition:0.3s;
-}
-
-.card:hover{
-border-color:#6c5ce7;
-box-shadow:0 5px 15px rgba(0,0,0,0.05);
-}
-
-.card h3{
-font-size:16px;
-margin-bottom:5px;
-}
-
-.card p{
-font-size:13px;
-color:#666;
-}
-
-/* Hide sections */
-
-.section{
-display:none;
-}
-
-.section.active{
-display:block;
-}
-
-</style>
+        @media (max-width: 480px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 1.5rem; }
+        }
+    </style>
 </head>
-
 <body>
 
 <nav>
-
-<a class="logo" href="#">TOOLFLYER</a>
-
+    <a href="index.html" class="logo">TOOLFLYER</a>
 </nav>
 
-<!-- TABS -->
+<div class="hero">
+    <h1>All ToolFlyer Solutions</h1>
+    <p>Every digital tool you need, in one place.</p>
+</div>
 
-<div class="tabs">
+<div class="grid-container">
+    
+    <a href="age-calculator.html" class="tool-box">
+        <i class="fas fa-birthday-cake"></i>
+        <h3>Age Calculator</h3>
+    </a>
 
-<div class="tab active" onclick="openTab('compress')">Compress</div>
-<div class="tab" onclick="openTab('convert')">Convert</div>
-<div class="tab" onclick="openTab('merge')">Merge</div>
-<div class="tab" onclick="openTab('edit')">Edit</div>
+    <a href="word-counter.html" class="tool-box">
+        <i class="fas fa-file-word"></i>
+        <h3>Word Counter</h3>
+    </a>
+
+    <a href="sip-calculator.html" class="tool-box">
+        <i class="fas fa-chart-line"></i>
+        <h3>SIP Calculator</h3>
+    </a>
+
+    <a href="unit-converter.html" class="tool-box">
+        <i class="fas fa-ruler-combined"></i>
+        <h3>Unit Converter</h3>
+    </a>
+
+    <a href="emi-calculator.html" class="tool-box">
+        <i class="fas fa-calculator"></i>
+        <h3>EMI Calculator</h3>
+    </a>
+
+    <a href="gst-calculator.html" class="tool-box">
+        <i class="fas fa-percent"></i>
+        <h3>GST Calculator</h3>
+    </a>
+
+    <a href="discount-calculator.html" class="tool-box">
+        <i class="fas fa-tags"></i>
+        <h3>Discount Calc</h3>
+    </a>
+
+    <a href="percentage-calculator.html" class="tool-box">
+        <i class="fas fa-percentage"></i>
+        <h3>Percentage Calc</h3>
+    </a>
+
+    <a href="image-resizer.html" class="tool-box">
+        <i class="fas fa-expand-arrows-alt"></i>
+        <h3>Image Resizer</h3>
+    </a>
+
+    <a href="pdf-to-word.html" class="tool-box">
+        <i class="fas fa-file-pdf"></i>
+        <h3>PDF to Word</h3>
+    </a>
+
+    <a href="jpg-to-pdf.html" class="tool-box">
+        <i class="fas fa-image"></i>
+        <h3>JPG to PDF</h3>
+    </a>
+
+    <a href="password-generator.html" class="tool-box">
+        <i class="fas fa-lock"></i>
+        <h3>Password Gen</h3>
+    </a>
+
+    <a href="html-formatter.html" class="tool-box">
+        <i class="fas fa-code"></i>
+        <h3>HTML Formatter</h3>
+    </a>
+
+    <a href="qr-code-generator.html" class="tool-box">
+        <i class="fas fa-qrcode"></i>
+        <h3>QR Generator</h3>
+    </a>
+
+    <a href="lorem-ipsum.html" class="tool-box">
+        <i class="fas fa-align-left"></i>
+        <h3>Lorem Ipsum</h3>
+    </a>
+
+    <a href="binary-converter.html" class="tool-box">
+        <i class="fas fa-robot"></i>
+        <h3>Binary Conv</h3>
+    </a>
+
+    <a href="bmi-calculator.html" class="tool-box">
+        <i class="fas fa-heartbeat"></i>
+        <h3>BMI Calculator</h3>
+    </a>
+
+    <a href="bmr-calculator.html" class="tool-box">
+        <i class="fas fa-fire"></i>
+        <h3>BMR Calculator</h3>
+    </a>
+
+    <a href="love-calculator.html" class="tool-box">
+        <i class="fas fa-heart"></i>
+        <h3>Love Calculator</h3>
+    </a>
+
+    <a href="currency-converter.html" class="tool-box">
+        <i class="fas fa-coins"></i>
+        <h3>Currency Conv</h3>
+    </a>
 
 </div>
 
-
-<div class="container">
-
-<!-- COMPRESS -->
-
-<div id="compress" class="section active">
-
-<div class="grid">
-
-<a href="#" class="card">
-<h3>Compress PDF</h3>
-<p>Reduce the size of your PDF without losing quality</p>
-</a>
-
-<a href="#" class="card">
-<h3>Compress Image</h3>
-<p>Reduce image size while keeping quality</p>
-</a>
-
-<a href="#" class="card">
-<h3>Compress JPG</h3>
-<p>Optimize JPG images instantly</p>
-</a>
-
-<a href="#" class="card">
-<h3>Compress PNG</h3>
-<p>Reduce PNG file size easily</p>
-</a>
-
-</div>
-
-</div>
-
-
-<!-- CONVERT -->
-
-<div id="convert" class="section">
-
-<div class="grid">
-
-<a href="#" class="card">
-<h3>PDF to Word</h3>
-<p>Convert PDF files to editable Word</p>
-</a>
-
-<a href="#" class="card">
-<h3>Word to PDF</h3>
-<p>Convert DOC files to PDF</p>
-</a>
-
-<a href="#" class="card">
-<h3>JPG to PDF</h3>
-<p>Transform images into PDF</p>
-</a>
-
-<a href="#" class="card">
-<h3>PDF to JPG</h3>
-<p>Extract images from PDF</p>
-</a>
-
-<a href="#" class="card">
-<h3>Excel to PDF</h3>
-<p>Convert Excel sheets to PDF</p>
-</a>
-
-<a href="#" class="card">
-<h3>PDF to Excel</h3>
-<p>Convert PDF tables to Excel</p>
-</a>
-
-</div>
-
-</div>
-
-
-<!-- MERGE -->
-
-<div id="merge" class="section">
-
-<div class="grid">
-
-<a href="#" class="card">
-<h3>Merge PDF</h3>
-<p>Combine multiple PDFs into one file</p>
-</a>
-
-<a href="#" class="card">
-<h3>Split PDF</h3>
-<p>Split PDF into multiple pages</p>
-</a>
-
-<a href="#" class="card">
-<h3>Extract Pages</h3>
-<p>Extract selected pages from PDF</p>
-</a>
-
-</div>
-
-</div>
-
-
-<!-- EDIT -->
-
-<div id="edit" class="section">
-
-<div class="grid">
-
-<a href="#" class="card">
-<h3>Edit PDF</h3>
-<p>Add text and images to PDF</p>
-</a>
-
-<a href="#" class="card">
-<h3>Rotate PDF</h3>
-<p>Rotate pages inside PDF</p>
-</a>
-
-<a href="#" class="card">
-<h3>Watermark PDF</h3>
-<p>Add watermark to your document</p>
-</a>
-
-<a href="#" class="card">
-<h3>Protect PDF</h3>
-<p>Add password to secure PDF</p>
-</a>
-
-<a href="#" class="card">
-<h3>Unlock PDF</h3>
-<p>Remove password protection</p>
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-function openTab(tab){
-
-let sections=document.querySelectorAll(".section");
-let tabs=document.querySelectorAll(".tab");
-
-sections.forEach(s=>s.classList.remove("active"));
-tabs.forEach(t=>t.classList.remove("active"));
-
-document.getElementById(tab).classList.add("active");
-
-event.target.classList.add("active");
-
-}
-
-</script>
+<footer>
+    <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="privacy-policy.html">Privacy</a>
+    </div>
+    <p style="margin-top: 15px; font-size: 0.8rem; color: #999;">&copy; 2026 ToolFlyer. Digital Solutions Simplified.</p>
+</footer>
 
 </body>
-</html> 
+</html>
