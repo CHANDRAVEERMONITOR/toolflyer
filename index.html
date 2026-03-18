@@ -3,110 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolFlyer - All-in-One Online PDF & Image Tools</title>
+    <title>ToolFlyer - All-in-One Premium Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        /* Tool Card Styling inspired by the image */
-        .tool-card {
-            border: 1px solid #e5e7eb;
-            background-color: white;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            text-align: center;
-            transition: all 0.3s ease;
+        body { font-family: 'Inter', sans-serif; }
+        /* Mega Menu styling */
+        .mega-menu {
+            display: none;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: white;
+            border-bottom: 2px solid #3b82f6;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 100;
         }
-        .tool-card:hover {
-            border-color: #2563eb;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1), 0 2px 4px -1px rgba(37, 99, 235, 0.06);
+        .group:hover .mega-menu { display: block; }
+        .tool-link {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 6px;
+            transition: 0.2s;
         }
+        .tool-link:hover { background-color: #f3f4f6; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-gray-50">
 
-    <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold tracking-tighter">ToolFlyer<span class="text-blue-600">.com</span></a>
-            <div class="flex items-center space-x-3">
-                <span class="text-xs font-semibold bg-gray-100 text-gray-700 px-3 py-1 rounded-full">GLOBAL</span>
+    <nav class="bg-white border-b border-gray-200 relative">
+        <div class="container mx-auto px-6 flex items-center justify-between h-16">
+            <div class="flex items-center space-x-10">
+                <a href="/">
+                    <img src="logo.png" alt="ToolFlyer Logo" class="h-10 w-auto">
+                </a>
+                
+                <div class="group h-16 flex items-center">
+                    <button class="flex items-center space-x-1 font-semibold text-gray-700 hover:text-blue-600 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                        <span>Tools</span>
+                    </button>
+
+                    <div class="mega-menu pt-6 pb-10">
+                        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
+                            <div>
+                                <h4 class="font-bold text-gray-900 mb-4 border-b pb-2">Compress & Convert</h4>
+                                <a href="/compress-pdf" class="tool-link"><span class="mr-2">📉</span> Compress PDF</a>
+                                <a href="/pdf-to-jpg" class="tool-link"><span class="mr-2">🖼️</span> PDF to JPG</a>
+                                <a href="/image-to-pdf" class="tool-link"><span class="mr-2">📷</span> Image to PDF</a>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 mb-4 border-b pb-2">Organize</h4>
+                                <a href="/merge-pdf" class="tool-link"><span class="mr-2">➕</span> Merge PDF</a>
+                                <a href="/split-pdf" class="tool-link"><span class="mr-2">✂️</span> Split PDF</a>
+                                <a href="/rotate-pdf" class="tool-link"><span class="mr-2">🔄</span> Rotate PDF</a>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 mb-4 border-b pb-2">View & Edit</h4>
+                                <a href="/edit-pdf" class="tool-link"><span class="mr-2">✏️</span> Edit PDF</a>
+                                <a href="/watermark" class="tool-link"><span class="mr-2">🖋️</span> Watermark</a>
+                                <a href="/unlock-pdf" class="tool-link"><span class="mr-2">🔓</span> Unlock PDF</a>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 mb-4 border-b pb-2">Utilities</h4>
+                                <a href="/age-calculator" class="tool-link"><span class="mr-2">🎂</span> Age Calc</a>
+                                <a href="/qr-generator" class="tool-link"><span class="mr-2">🔳</span> QR Generator</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </nav>
-    </header>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">Pricing</a>
+                <a href="#" class="text-sm font-medium text-gray-600">Log In</a>
+                <a href="#" class="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-bold">Get Pro</a>
+            </div>
+        </div>
+    </nav>
 
     <main class="container mx-auto px-6 py-12">
-        <h1 class="text-3xl font-extrabold text-center tracking-tight text-gray-950 mb-12">All Web Tools</h1>
+        <h1 class="text-3xl font-extrabold text-center mb-10 text-gray-900">Every tool you need to work with PDFs and Images</h1>
 
-        <section class="mb-12">
-            <h2 class="text-xl font-semibold mb-6 text-gray-800">PDF Tools</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-                
-                <a href="/merge-pdf" class="tool-card">
-                    <img src="https://img.icons8.com/fluency/96/stack-of-photos.png" alt="Merge PDF Icon" class="w-12 h-12 mx-auto mb-3">
-                    <span class="font-semibold block text-sm text-gray-800">Merge PDF</span>
-                </a>
+        <div class="space-y-12">
+            
+            <section>
+                <div class="flex items-center space-x-4 mb-6">
+                    <span class="p-2 bg-blue-100 text-blue-600 rounded-lg">📂</span>
+                    <h2 class="text-xl font-bold">Organize & Edit PDF</h2>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <a href="/merge-pdf" class="bg-white border p-4 rounded-xl hover:shadow-md text-center transition">
+                        <span class="text-2xl block mb-2">➕</span>
+                        <p class="text-sm font-semibold">Merge PDF</p>
+                    </a>
+                    <a href="/split-pdf" class="bg-white border p-4 rounded-xl hover:shadow-md text-center transition">
+                        <span class="text-2xl block mb-2">✂️</span>
+                        <p class="text-sm font-semibold">Split PDF</p>
+                    </a>
+                    <a href="/rotate-pdf" class="bg-white border p-4 rounded-xl hover:shadow-md text-center transition">
+                        <span class="text-2xl block mb-2">🔄</span>
+                        <p class="text-sm font-semibold">Rotate PDF</p>
+                    </a>
+                    <a href="/unlock-pdf" class="bg-white border p-4 rounded-xl hover:shadow-md text-center transition">
+                        <span class="text-2xl block mb-2">🔓</span>
+                        <p class="text-sm font-semibold">Unlock PDF</p>
+                    </a>
+                </div>
+            </section>
 
-                <a href="/pdf-to-jpg" class="tool-card">
-                    <img src="https://img.icons8.com/fluency/96/jpg.png" alt="PDF to JPG Icon" class="w-12 h-12 mx-auto mb-3">
-                    <span class="font-semibold block text-sm text-gray-800">PDF to JPG</span>
-                </a>
+            <section>
+                <div class="flex items-center space-x-4 mb-6">
+                    <span class="p-2 bg-green-100 text-green-600 rounded-lg">🖼️</span>
+                    <h2 class="text-xl font-bold">Image Processing</h2>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <a href="/compress-image" class="bg-white border p-4 rounded-xl hover:shadow-md text-center transition">
+                        <span class="text-2xl block mb-2">📉</span>
+                        <p class="text-sm font-semibold">Compress Image</p>
+                    </a>
+                    <a href="/resize-image" class="bg-white border p-4 rounded-xl hover:shadow-md text-center transition">
+                        <span class="text-2xl block mb-2">📐</span>
+                        <p class="text-sm font-semibold">Resize Image</p>
+                    </a>
+                </div>
+            </section>
 
-                <a href="/split-pdf" class="tool-card">
-                    <img src="https://img.icons8.com/fluency/96/scissors.png" alt="Split PDF Icon" class="w-12 h-12 mx-auto mb-3">
-                    <span class="font-semibold block text-sm text-gray-800">Split PDF</span>
-                </a>
-
-                <a href="/rotate-pdf" class="tool-card">
-                    <img src="https://img.icons8.com/fluency/96/replace-page.png" alt="Rotate PDF Icon" class="w-12 h-12 mx-auto mb-3">
-                    <span class="font-semibold block text-sm text-gray-800">Rotate PDF</span>
-                </a>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <h2 class="text-xl font-semibold mb-6 text-gray-800">Image Tools</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-                
-                <a href="/compress-image" class="tool-card">
-                    <img src="https://img.icons8.com/fluency/96/compression.png" alt="Compress Image Icon" class="w-12 h-12 mx-auto mb-3">
-                    <span class="font-semibold block text-sm text-gray-800">Compress Image</span>
-                </a>
-
-                <a href="/resize-image" class="tool-card">
-                    <img src="https://img.icons8.com/fluency/96/resize.png" alt="Resize Image Icon" class="w-12 h-12 mx-auto mb-3">
-                    <span class="font-semibold block text-sm text-gray-800">Resize Image</span>
-                </a>
-            </div>
-        </section>
-
-        <section class="mb-12">
-            <h2 class="text-xl font-semibold mb-6 text-gray-800">Calculators & Generators</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-                
-                <a href="/age-calculator" class="tool-card">
-                    <img src="https://img.icons8.com/fluency/96/age.png" alt="Age Calculator Icon" class="w-12 h-12 mx-auto mb-3">
-                    <span class="font-semibold block text-sm text-gray-800">Age Calc</span>
-                </a>
-
-                <a href="/password-generator" class="tool-card">
-                    <img src="https://img.icons8.com/fluency/96/password-check.png" alt="Password Generator Icon" class="w-12 h-12 mx-auto mb-3">
-                    <span class="font-semibold block text-sm text-gray-800">Pass Gen</span>
-                </a>
-
-                <a href="/qr-generator" class="tool-card">
-                    <img src="https://img.icons8.com/fluency/96/qr-code.png" alt="QR Generator Icon" class="w-12 h-12 mx-auto mb-3">
-                    <span class="font-semibold block text-sm text-gray-800">QR Gen</span>
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-gray-900 text-gray-300 py-10 mt-16">
-        <div class="container mx-auto px-6 text-center text-sm">
-            <p>&copy; 2026 ToolFlyer.com - High Performance Tools.</p>
         </div>
-    </footer>
+    </main>
 
 </body>
 </html>
