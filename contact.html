@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - ToolFlyer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .contact-card { background: white; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; }
+        .info-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; transition: 0.3s; }
+        .info-box:hover { border-color: #2563eb; background: #f0f7ff; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+    <nav class="bg-white border-b py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold text-blue-600 flex items-center">
+                <img src="logo.png" alt="ToolFlyer" class="h-8 mr-2">
+                ToolFlyer<span class="text-gray-800">.com</span>
+            </a>
+            <a href="index.html" class="text-sm font-bold text-gray-600 hover:text-blue-600">← Back to Home</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-16 flex-grow">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-extrabold text-slate-900 mb-4">Get in Touch</h1>
+                <p class="text-lg text-slate-600">Have a question or feedback? We'd love to hear from you.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="info-box flex items-start space-x-4">
+                        <div class="bg-blue-600 text-white p-3 rounded-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900">Email Us</h3>
+                            <p class="text-blue-600 font-medium">nainasighchauhan@email.com</p>
+                            <p class="text-xs text-slate-500 mt-1">We usually respond within 24 hours.</p>
+                        </div>
+                    </div>
+
+                    <div class="info-box flex items-start space-x-4">
+                        <div class="bg-green-600 text-white p-3 rounded-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900">Support</h3>
+                            <p class="text-slate-600">Free technical support for all our web tools.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card shadow-sm text-center flex flex-col justify-center items-center">
+                    <div class="mb-6">
+                        <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto text-blue-600">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                        </div>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-4">Send us an Email</h2>
+                    <p class="text-slate-500 mb-8 px-4">Click the button below to compose a message directly to our support team.</p>
+                    <a href="mailto:nainasinhchauhan@email.com?subject=Inquiry from ToolFlyer" class="inline-block bg-blue-600 text-white font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-lg w-full">
+                        Write a Message
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t py-10">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex justify-center gap-8 text-sm font-bold text-gray-500 mb-6">
+                <a href="about.html" class="hover:text-blue-600">About</a>
+                <a href="contact.html" class="text-blue-600">Contact</a>
+                <a href="disclaimer.html" class="hover:text-blue-600">Disclaimer</a>
+                <a href="privacy-policy.html" class="hover:text-blue-600">Privacy Policy</a>
+            </div>
+            <p class="text-xs text-gray-400">© 2026 ToolFlyer.com - All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
