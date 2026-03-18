@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator - ToolFlyer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-3xl shadow-lg max-w-md w-full border border-gray-100">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Age Calculator</h2>
+        
+        <div class="space-y-4">
+            <label class="block text-sm font-medium text-gray-600">Select Date of Birth:</label>
+            <input type="date" id="dob" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+            
+            <button onclick="calculateAge()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-md">Calculate Age</button>
+        </div>
+
+        <div id="result" class="mt-8 hidden space-y-2">
+            <div class="p-4 bg-blue-50 rounded-2xl text-center">
+                <span id="ageDisplay" class="text-xl font-extrabold text-blue-700"></span>
+                <p class="text-sm text-blue-600 font-medium mt-1">Old</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateAge() {
+            const dobInput = document.getElementById('dob').value;
+            if (!dobInput) return alert("Please select a date!");
+
+            const dob = new Date(dobInput);
+            const today = new Date();
+
+            let years = today.getFullYear() - dob.getFullYear();
+            let months = today.getMonth() - dob.getMonth();
+            let days = today.getDate() - dob.getDate();
+
+            if (days < 0) {
+                months--;
+                days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            const resultDiv = document.getElementById('result');
+            const ageDisplay = document.getElementById('ageDisplay');
+            
+            resultDiv.classList.remove('hidden');
+            ageDisplay.innerText = `${years} Years, ${months} Months, ${days} Days`;
+        }
+    </script>
+</body>
+</html>
