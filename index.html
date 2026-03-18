@@ -4,134 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToolFlyer - All-in-One Online PDF & Image Tools</title>
-    <meta name="description" content="Free online tools to compress, convert, and edit PDF and images. Fast, secure, and global service by ToolFlyer.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .tool-card:hover { transform: translateY(-5px); transition: 0.3s; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        /* Tool Card Styling inspired by the image */
+        .tool-card {
+            border: 1px solid #e5e7eb;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .tool-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1), 0 2px 4px -1px rgba(37, 99, 235, 0.06);
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-blue-600">ToolFlyer<span class="text-gray-800">.com</span></h1>
-            <div class="space-x-4 hidden md:block">
-                <a href="#" class="hover:text-blue-600">All Tools</a>
-                <a href="#" class="hover:text-blue-600">Merge PDF</a>
-                <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Login</a>
+            <a href="/" class="text-2xl font-bold tracking-tighter">ToolFlyer<span class="text-blue-600">.com</span></a>
+            <div class="flex items-center space-x-3">
+                <span class="text-xs font-semibold bg-gray-100 text-gray-700 px-3 py-1 rounded-full">GLOBAL</span>
             </div>
         </nav>
     </header>
 
-    <section class="py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Every tool you need to work with PDFs and Images</h2>
-            <p class="text-lg opacity-90">Fast, Simple, and 100% Secure.</p>
-        </div>
-    </section>
-
     <main class="container mx-auto px-6 py-12">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            
-            <a href="/compress-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">📉</div>
-                <h3 class="font-bold">Compress PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Reduce file size without losing quality.</p>
-            </a>
+        <h1 class="text-3xl font-extrabold text-center tracking-tight text-gray-950 mb-12">All Web Tools</h1>
 
-            <a href="/pdf-to-word" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">📄</div>
-                <h3 class="font-bold">PDF to Word</h3>
-                <p class="text-xs text-gray-500 mt-2">Convert PDF to editable DOCX.</p>
-            </a>
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-6 text-gray-800">PDF Tools</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+                
+                <a href="/merge-pdf" class="tool-card">
+                    <img src="https://img.icons8.com/fluency/96/stack-of-photos.png" alt="Merge PDF Icon" class="w-12 h-12 mx-auto mb-3">
+                    <span class="font-semibold block text-sm text-gray-800">Merge PDF</span>
+                </a>
 
-            <a href="/merge-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">🔗</div>
-                <h3 class="font-bold">Merge PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Combine multiple PDFs into one.</p>
-            </a>
+                <a href="/pdf-to-jpg" class="tool-card">
+                    <img src="https://img.icons8.com/fluency/96/jpg.png" alt="PDF to JPG Icon" class="w-12 h-12 mx-auto mb-3">
+                    <span class="font-semibold block text-sm text-gray-800">PDF to JPG</span>
+                </a>
 
-            <a href="/split-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">✂️</div>
-                <h3 class="font-bold">Split PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Extract pages from your PDF.</p>
-            </a>
+                <a href="/split-pdf" class="tool-card">
+                    <img src="https://img.icons8.com/fluency/96/scissors.png" alt="Split PDF Icon" class="w-12 h-12 mx-auto mb-3">
+                    <span class="font-semibold block text-sm text-gray-800">Split PDF</span>
+                </a>
 
-            <a href="/pdf-to-jpg" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">🖼️</div>
-                <h3 class="font-bold">PDF to JPG</h3>
-                <p class="text-xs text-gray-500 mt-2">Extract images or save pages as JPG.</p>
-            </a>
+                <a href="/rotate-pdf" class="tool-card">
+                    <img src="https://img.icons8.com/fluency/96/replace-page.png" alt="Rotate PDF Icon" class="w-12 h-12 mx-auto mb-3">
+                    <span class="font-semibold block text-sm text-gray-800">Rotate PDF</span>
+                </a>
+            </div>
+        </section>
 
-            <a href="/word-to-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">📝</div>
-                <h3 class="font-bold">Word to PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Make DOCX files easy to read.</p>
-            </a>
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-6 text-gray-800">Image Tools</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+                
+                <a href="/compress-image" class="tool-card">
+                    <img src="https://img.icons8.com/fluency/96/compression.png" alt="Compress Image Icon" class="w-12 h-12 mx-auto mb-3">
+                    <span class="font-semibold block text-sm text-gray-800">Compress Image</span>
+                </a>
 
-            <a href="/excel-to-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">📊</div>
-                <h3 class="font-bold">Excel to PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Convert spreadsheets to PDF.</p>
-            </a>
+                <a href="/resize-image" class="tool-card">
+                    <img src="https://img.icons8.com/fluency/96/resize.png" alt="Resize Image Icon" class="w-12 h-12 mx-auto mb-3">
+                    <span class="font-semibold block text-sm text-gray-800">Resize Image</span>
+                </a>
+            </div>
+        </section>
 
-            <a href="/protect-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">🔒</div>
-                <h3 class="font-bold">Protect PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Add a password to your PDF.</p>
-            </a>
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-6 text-gray-800">Calculators & Generators</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+                
+                <a href="/age-calculator" class="tool-card">
+                    <img src="https://img.icons8.com/fluency/96/age.png" alt="Age Calculator Icon" class="w-12 h-12 mx-auto mb-3">
+                    <span class="font-semibold block text-sm text-gray-800">Age Calc</span>
+                </a>
 
-            <a href="/unlock-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">🔓</div>
-                <h3 class="font-bold">Unlock PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Remove password from PDF.</p>
-            </a>
+                <a href="/password-generator" class="tool-card">
+                    <img src="https://img.icons8.com/fluency/96/password-check.png" alt="Password Generator Icon" class="w-12 h-12 mx-auto mb-3">
+                    <span class="font-semibold block text-sm text-gray-800">Pass Gen</span>
+                </a>
 
-            <a href="/image-to-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">📸</div>
-                <h3 class="font-bold">Image to PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Convert JPG/PNG to PDF.</p>
-            </a>
-
-            <a href="/watermark" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">🖋️</div>
-                <h3 class="font-bold">Watermark</h3>
-                <p class="text-xs text-gray-500 mt-2">Stamp an image or text over PDF.</p>
-            </a>
-
-            <a href="/rotate-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">🔄</div>
-                <h3 class="font-bold">Rotate PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Rotate your PDF pages easily.</p>
-            </a>
-
-            <a href="/html-to-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">🌐</div>
-                <h3 class="font-bold">HTML to PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Convert any webpage to PDF.</p>
-            </a>
-
-            <a href="/pdf-to-ppt" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">📽️</div>
-                <h3 class="font-bold">PDF to PPT</h3>
-                <p class="text-xs text-gray-500 mt-2">Convert PDF to slides.</p>
-            </a>
-
-            <a href="/edit-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
-                <div class="text-4xl mb-3">✏️</div>
-                <h3 class="font-bold">Edit PDF</h3>
-                <p class="text-xs text-gray-500 mt-2">Add text and shapes to your PDF.</p>
-            </a>
-
-        </div>
+                <a href="/qr-generator" class="tool-card">
+                    <img src="https://img.icons8.com/fluency/96/qr-code.png" alt="QR Generator Icon" class="w-12 h-12 mx-auto mb-3">
+                    <span class="font-semibold block text-sm text-gray-800">QR Gen</span>
+                </a>
+            </div>
+        </section>
     </main>
 
-    <footer class="bg-gray-800 text-gray-300 py-10">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; 2026 ToolFlyer.com - All Rights Reserved.</p>
+    <footer class="bg-gray-900 text-gray-300 py-10 mt-16">
+        <div class="container mx-auto px-6 text-center text-sm">
+            <p>&copy; 2026 ToolFlyer.com - High Performance Tools.</p>
         </div>
     </footer>
 
