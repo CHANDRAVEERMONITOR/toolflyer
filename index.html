@@ -3,204 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolFlyer - All-in-One Digital Toolbox</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>ToolFlyer - All-in-One Online PDF & Image Tools</title>
+    <meta name="description" content="Free online tools to compress, convert, and edit PDF and images. Fast, secure, and global service by ToolFlyer.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #f4f7fa; color: #333; }
-
-        /* Header like PDF24/SmallPDF */
-        nav { 
-            background: #ffffff; 
-            padding: 15px 5%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            position: sticky; top: 0; z-index: 1000;
-        }
-        .logo { font-size: 1.5rem; font-weight: 700; color: #6c5ce7; text-decoration: none; }
-
-        /* Main Heading Area */
-        .hero { text-align: center; padding: 40px 20px; }
-        .hero h1 { font-size: 2rem; color: #2d3436; margin-bottom: 10px; }
-        .hero p { color: #636e72; font-size: 1rem; }
-
-        /* The Grid System - Inspired by SmallPDF */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
-            padding: 20px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .tool-box {
-            background: #fff;
-            border: 1px solid #e0e6ed;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .tool-box:hover {
-            border-color: #6c5ce7;
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .tool-box i {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: #6c5ce7; /* Primary Color */
-        }
-
-        .tool-box h3 {
-            font-size: 0.95rem;
-            color: #2d3436;
-            font-weight: 600;
-        }
-
-        /* Footer */
-        footer { background: #fff; padding: 30px; text-align: center; border-top: 1px solid #eee; margin-top: 50px; }
-        .footer-links a { margin: 0 10px; color: #6c5ce7; text-decoration: none; font-size: 0.9rem; }
-
-        @media (max-width: 480px) {
-            .grid-container { grid-template-columns: repeat(2, 1fr); }
-            .hero h1 { font-size: 1.5rem; }
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .tool-card:hover { transform: translateY(-5px); transition: 0.3s; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-900">
 
-<nav>
-    <a href="index.html" class="logo">TOOLFLYER</a>
-</nav>
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-600">ToolFlyer<span class="text-gray-800">.com</span></h1>
+            <div class="space-x-4 hidden md:block">
+                <a href="#" class="hover:text-blue-600">All Tools</a>
+                <a href="#" class="hover:text-blue-600">Merge PDF</a>
+                <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Login</a>
+            </div>
+        </nav>
+    </header>
 
-<div class="hero">
-    <h1>All ToolFlyer Solutions</h1>
-    <p>Every digital tool you need, in one place.</p>
-</div>
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Every tool you need to work with PDFs and Images</h2>
+            <p class="text-lg opacity-90">Fast, Simple, and 100% Secure.</p>
+        </div>
+    </section>
 
-<div class="grid-container">
-    
-    <a href="age-calculator.html" class="tool-box">
-        <i class="fas fa-birthday-cake"></i>
-        <h3>Age Calculator</h3>
-    </a>
+    <main class="container mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            
+            <a href="/compress-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">📉</div>
+                <h3 class="font-bold">Compress PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Reduce file size without losing quality.</p>
+            </a>
 
-    <a href="word-counter.html" class="tool-box">
-        <i class="fas fa-file-word"></i>
-        <h3>Word Counter</h3>
-    </a>
+            <a href="/pdf-to-word" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">📄</div>
+                <h3 class="font-bold">PDF to Word</h3>
+                <p class="text-xs text-gray-500 mt-2">Convert PDF to editable DOCX.</p>
+            </a>
 
-    <a href="sip-calculator.html" class="tool-box">
-        <i class="fas fa-chart-line"></i>
-        <h3>SIP Calculator</h3>
-    </a>
+            <a href="/merge-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">🔗</div>
+                <h3 class="font-bold">Merge PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Combine multiple PDFs into one.</p>
+            </a>
 
-    <a href="unit-converter.html" class="tool-box">
-        <i class="fas fa-ruler-combined"></i>
-        <h3>Unit Converter</h3>
-    </a>
+            <a href="/split-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">✂️</div>
+                <h3 class="font-bold">Split PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Extract pages from your PDF.</p>
+            </a>
 
-    <a href="emi-calculator.html" class="tool-box">
-        <i class="fas fa-calculator"></i>
-        <h3>EMI Calculator</h3>
-    </a>
+            <a href="/pdf-to-jpg" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">🖼️</div>
+                <h3 class="font-bold">PDF to JPG</h3>
+                <p class="text-xs text-gray-500 mt-2">Extract images or save pages as JPG.</p>
+            </a>
 
-    <a href="gst-calculator.html" class="tool-box">
-        <i class="fas fa-percent"></i>
-        <h3>GST Calculator</h3>
-    </a>
+            <a href="/word-to-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">📝</div>
+                <h3 class="font-bold">Word to PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Make DOCX files easy to read.</p>
+            </a>
 
-    <a href="discount-calculator.html" class="tool-box">
-        <i class="fas fa-tags"></i>
-        <h3>Discount Calc</h3>
-    </a>
+            <a href="/excel-to-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">📊</div>
+                <h3 class="font-bold">Excel to PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Convert spreadsheets to PDF.</p>
+            </a>
 
-    <a href="percentage-calculator.html" class="tool-box">
-        <i class="fas fa-percentage"></i>
-        <h3>Percentage Calc</h3>
-    </a>
+            <a href="/protect-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">🔒</div>
+                <h3 class="font-bold">Protect PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Add a password to your PDF.</p>
+            </a>
 
-    <a href="image-resizer.html" class="tool-box">
-        <i class="fas fa-expand-arrows-alt"></i>
-        <h3>Image Resizer</h3>
-    </a>
+            <a href="/unlock-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">🔓</div>
+                <h3 class="font-bold">Unlock PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Remove password from PDF.</p>
+            </a>
 
-    <a href="pdf-to-word.html" class="tool-box">
-        <i class="fas fa-file-pdf"></i>
-        <h3>PDF to Word</h3>
-    </a>
+            <a href="/image-to-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">📸</div>
+                <h3 class="font-bold">Image to PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Convert JPG/PNG to PDF.</p>
+            </a>
 
-    <a href="jpg-to-pdf.html" class="tool-box">
-        <i class="fas fa-image"></i>
-        <h3>JPG to PDF</h3>
-    </a>
+            <a href="/watermark" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">🖋️</div>
+                <h3 class="font-bold">Watermark</h3>
+                <p class="text-xs text-gray-500 mt-2">Stamp an image or text over PDF.</p>
+            </a>
 
-    <a href="password-generator.html" class="tool-box">
-        <i class="fas fa-lock"></i>
-        <h3>Password Gen</h3>
-    </a>
+            <a href="/rotate-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">🔄</div>
+                <h3 class="font-bold">Rotate PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Rotate your PDF pages easily.</p>
+            </a>
 
-    <a href="html-formatter.html" class="tool-box">
-        <i class="fas fa-code"></i>
-        <h3>HTML Formatter</h3>
-    </a>
+            <a href="/html-to-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">🌐</div>
+                <h3 class="font-bold">HTML to PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Convert any webpage to PDF.</p>
+            </a>
 
-    <a href="qr-code-generator.html" class="tool-box">
-        <i class="fas fa-qrcode"></i>
-        <h3>QR Generator</h3>
-    </a>
+            <a href="/pdf-to-ppt" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">📽️</div>
+                <h3 class="font-bold">PDF to PPT</h3>
+                <p class="text-xs text-gray-500 mt-2">Convert PDF to slides.</p>
+            </a>
 
-    <a href="lorem-ipsum.html" class="tool-box">
-        <i class="fas fa-align-left"></i>
-        <h3>Lorem Ipsum</h3>
-    </a>
+            <a href="/edit-pdf" class="tool-card bg-white p-6 rounded-xl shadow-md border hover:border-blue-500 text-center">
+                <div class="text-4xl mb-3">✏️</div>
+                <h3 class="font-bold">Edit PDF</h3>
+                <p class="text-xs text-gray-500 mt-2">Add text and shapes to your PDF.</p>
+            </a>
 
-    <a href="binary-converter.html" class="tool-box">
-        <i class="fas fa-robot"></i>
-        <h3>Binary Conv</h3>
-    </a>
+        </div>
+    </main>
 
-    <a href="bmi-calculator.html" class="tool-box">
-        <i class="fas fa-heartbeat"></i>
-        <h3>BMI Calculator</h3>
-    </a>
-
-    <a href="bmr-calculator.html" class="tool-box">
-        <i class="fas fa-fire"></i>
-        <h3>BMR Calculator</h3>
-    </a>
-
-    <a href="love-calculator.html" class="tool-box">
-        <i class="fas fa-heart"></i>
-        <h3>Love Calculator</h3>
-    </a>
-
-    <a href="currency-converter.html" class="tool-box">
-        <i class="fas fa-coins"></i>
-        <h3>Currency Conv</h3>
-    </a>
-
-</div>
-
-<footer>
-    <div class="footer-links">
-        <a href="about.html">About</a>
-        <a href="privacy-policy.html">Privacy</a>
-    </div>
-    <p style="margin-top: 15px; font-size: 0.8rem; color: #999;">&copy; 2026 ToolFlyer. Digital Solutions Simplified.</p>
-</footer>
+    <footer class="bg-gray-800 text-gray-300 py-10">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2026 ToolFlyer.com - All Rights Reserved.</p>
+        </div>
+    </footer>
 
 </body>
 </html>
