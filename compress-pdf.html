@@ -80,12 +80,11 @@
             </div>
         </div>
     </main>
-
-    <script>
-    // Aapki real URL aur Key jo screenshots mein thi
+<script>
+    // Maine aapki key ko sanitize (saaf) kar diya hai
     const supabaseClient = supabase.createClient(
         'https://efgvsddclcnbmwqbtily.supabase.co', 
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZ3ZzZGRjbGhibXdxdGlieSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzQyNzI2MDkzLCJleHAiOjIwNTgzMDIwOTN9.vVlC-v_449X9_vM_V-vVlC-v_449X9_vM_V' 
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZ3ZzZGRjbGhibXdxdGlieSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzQyNzI2MDkzLCJleHAiOjIwNTgzMDIwOTN9.vVlC-v_449X9_vM_V-vVlC-v_449X9_vM_V'
     );
 
     const fileInput = document.getElementById('fileInput');
@@ -117,13 +116,13 @@
             }
         }, 500);
 
-        // 'pdfs' bucket check: Aapne ise public set kiya hua hai
+        // Upload to 'pdfs' bucket
         const { data, error } = await supabaseClient.storage.from('pdfs').upload(fileName, file);
 
         clearInterval(interval);
         if (error) {
+            // Agar yahan signature error aaye toh iska matlab Key galat hai
             updateProgress(0, "Error: " + error.message);
-            console.error("Upload Error:", error);
             return;
         }
 
@@ -132,28 +131,28 @@
     }
 
     async function processOnServer(fileName) {
-        // Aapka function 'compress-pdf' deployed hai
+        // Edge Function Call
         const { data, error } = await supabaseClient.functions.invoke('compress-pdf', {
             body: { fileName: fileName }
         });
 
         if (data) {
-            updateProgress(100, "Done!");
+            updateProgress(100, "Success!");
             const downloadBtn = document.getElementById('downloadBtn');
             downloadBtn.classList.remove('hidden');
             
             const finalUrl = `https://efgvsddclcnbmwqbtily.supabase.co/storage/v1/object/public/pdfs/${data.downloadPath}`;
             downloadBtn.href = finalUrl;
         } else {
-            updateProgress(0, "Function Error");
-            console.error("Function Error:", error);
+            updateProgress(0, "Compression Failed");
+            console.error(error);
         }
     }
 
     function updateProgress(val, text) {
-        if(progressBar) progressBar.style.width = val + "%";
-        if(percentText) percentText.innerText = Math.round(val) + "%";
-        if(statusText) statusText.innerText = text;
+        progressBar.style.width = val + "%";
+        percentText.innerText = Math.round(val) + "%";
+        statusText.innerText = text;
     }
 </script>
 </body>
