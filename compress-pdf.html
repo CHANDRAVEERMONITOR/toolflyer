@@ -1,72 +1,154 @@
-<script>
-    // FIX: Variable ka naam badal diya taaki error na aaye
-    const supabaseClient = supabase.createClient('https://efgvsddclcnbmwqbtily.supabase.co', 'YAHAN_APNI_ANON_KEY_DAALEIN');
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>Compress PDF - ToolFlyer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen font-sans">
 
-    const fileInput = document.getElementById('fileInput');
-    const progressBar = document.getElementById('progressBar');
-    const statusText = document.getElementById('statusLabel');
-    const percentText = document.getElementById('percentText');
+    <nav class="p-4 border-b bg-white shadow-sm flex justify-between items-center px-8">
+        <div class="flex items-center">
+            <a href="index.html" class="text-2xl font-black text-blue-600 tracking-tighter">TOOLFLYER</a>
+            <div class="ml-6 hidden md:flex space-x-4 text-sm font-medium text-gray-600">
+                <a href="index.html" class="hover:text-blue-600">All Tools</a>
+                <a href="compress-pdf.html" class="text-blue-600 border-b-2 border-blue-600">Compress PDF</a>
+                <a href="qr-generator.html" class="hover:text-blue-600">QR Generator</a>
+            </div>
+        </div>
+        <button class="bg-gray-100 px-4 py-2 rounded-lg text-sm font-bold">Login</button>
+    </nav>
 
-    fileInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    <main class="flex-grow flex flex-col items-center py-12 px-6">
+        <div class="max-w-2xl w-full bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 text-center">
+            <h1 class="text-3xl font-extrabold mb-2 text-gray-800">Compress PDF</h1>
+            <p class="text-gray-500 mb-8 text-lg">Quality barkarar rakhte hue file size kam karein.</p>
+            
+            <div id="drop-zone" onclick="document.getElementById('fileInput').click()" 
+                 class="border-4 border-dashed border-blue-100 p-16 rounded-2xl bg-blue-50/50 cursor-pointer hover:bg-blue-100/50 hover:border-blue-300 transition-all duration-300 group">
+                <input type="file" id="fileInput" class="hidden" accept=".pdf">
+                <div class="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-blue-500"></i>
+                </div>
+                <p class="font-bold text-xl mt-6 text-gray-700">Choose PDF File</p>
+                <p class="text-sm text-gray-400 mt-2">ya yahan drag karke chhodein</p>
+            </div>
 
-        document.getElementById('drop-zone').classList.add('hidden');
-        document.getElementById('previewArea').classList.remove('hidden');
-        document.getElementById('previewName').innerText = file.name;
-        document.getElementById('previewSize').innerText = (file.size / (1024*1024)).toFixed(2) + " MB";
+            <div id="previewArea" class="mt-6 hidden p-4 bg-gray-50 rounded-xl border flex items-center justify-between">
+                <div class="flex items-center text-left">
+                    <i class="fas fa-file-pdf text-red-500 text-3xl mr-3"></i>
+                    <div>
+                        <p id="previewName" class="font-bold text-gray-700 truncate w-40 md:w-64"></p>
+                        <p id="previewSize" class="text-xs text-gray-500"></p>
+                    </div>
+                </div>
+                <button onclick="location.reload()" class="text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+            </div>
 
-        await handleUpload(file);
-    });
+            <div id="status" class="mt-8 hidden">
+                <div class="flex justify-between mb-2">
+                    <span id="statusLabel" class="text-sm font-bold text-blue-600 italic">Uploading...</span>
+                    <span id="percentText" class="text-sm font-bold text-blue-600">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                    <div id="progressBar" class="bg-gradient-to-r from-blue-400 to-blue-700 h-full transition-all duration-300 shadow-inner" style="width: 0%"></div>
+                </div>
+            </div>
 
-    async function handleUpload(file) {
-        document.getElementById('status').classList.remove('hidden');
-        const fileName = `${Date.now()}_${file.name}`;
-        
-        let progress = 0;
-        const interval = setInterval(() => {
-            if(progress < 90) {
-                progress += Math.random() * 10;
-                updateProgress(Math.min(progress, 90), "Uploading to Server...");
-            }
-        }, 500);
+            <a id="downloadBtn" class="mt-8 hidden bg-green-600 text-white px-10 py-4 rounded-xl font-black text-lg hover:bg-green-700 transform hover:-translate-y-1 transition shadow-xl inline-flex items-center">
+                <i class="fas fa-download mr-3"></i> Download (toolflyer.pdf)
+            </a>
+        </div>
 
-        // FIX: 'pdfs' bucket name sahi hai aur supabaseClient use kiya
-        const { data, error } = await supabaseClient.storage.from('pdfs').upload(fileName, file);
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 max-w-5xl">
+            <div class="text-center p-4">
+                <div class="text-blue-600 font-black text-4xl mb-2">01</div>
+                <h3 class="font-bold text-gray-700">File Upload karein</h3>
+                <p class="text-sm text-gray-500">Apne computer ya phone se PDF select karein.</p>
+            </div>
+            <div class="text-center p-4">
+                <div class="text-blue-600 font-black text-4xl mb-2">02</div>
+                <h3 class="font-bold text-gray-700">Auto Compression</h3>
+                <p class="text-sm text-gray-500">Hamara AI bina quality kharab kiye size kam karega.</p>
+            </div>
+            <div class="text-center p-4">
+                <div class="text-blue-600 font-black text-4xl mb-2">03</div>
+                <h3 class="font-bold text-gray-700">Download & Save</h3>
+                <p class="text-sm text-gray-500">Ek click mein apni compressed file download karein.</p>
+            </div>
+        </div>
+    </main>
 
-        clearInterval(interval);
-        if (error) {
-            updateProgress(0, "Error: " + error.message);
-            console.error(error);
-            return;
-        }
+    <script>
+        // Use your real keys from Supabase Dashboard
+        const supabase = supabase.createClient('https://efgvsddclcnbmwqbtily.supabase.co', 'YOUR_ANON_KEY');
 
-        updateProgress(95, "Compressing (AI)...");
-        processOnServer(fileName);
-    }
+        const fileInput = document.getElementById('fileInput');
+        const progressBar = document.getElementById('progressBar');
+        const statusText = document.getElementById('statusLabel');
+        const percentText = document.getElementById('percentText');
 
-    async function processOnServer(fileName) {
-        // FIX: Yahan bhi supabaseClient use karein
-        const { data, error } = await supabaseClient.functions.invoke('compress-pdf', {
-            body: { fileName: fileName }
+        // Trigger when file is chosen
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Show Preview
+            document.getElementById('drop-zone').classList.add('hidden');
+            document.getElementById('previewArea').classList.remove('hidden');
+            document.getElementById('previewName').innerText = file.name;
+            document.getElementById('previewSize').innerText = (file.size / (1024*1024)).toFixed(2) + " MB";
+
+            await handleUpload(file);
         });
 
-        if (data) {
-            updateProgress(100, "Ready for Download!");
-            const downloadBtn = document.getElementById('downloadBtn');
-            downloadBtn.classList.remove('hidden');
+        async function handleUpload(file) {
+            document.getElementById('status').classList.remove('hidden');
+            const fileName = `${Date.now()}_${file.name}`;
             
-            const finalUrl = `https://efgvsddclcnbmwqbtily.supabase.co/storage/v1/object/public/pdfs/${data.downloadPath}`;
-            downloadBtn.href = finalUrl;
-        } else if (error) {
-            updateProgress(0, "Compression Error");
-            console.error(error);
-        }
-    }
+            // Simulating Progress Bar for better UI
+            let progress = 0;
+            const interval = setInterval(() => {
+                if(progress < 90) {
+                    progress += Math.random() * 10;
+                    updateProgress(Math.min(progress, 90), "Uploading to Server...");
+                }
+            }, 500);
 
-    function updateProgress(val, text) {
-        progressBar.style.width = val + "%";
-        percentText.innerText = Math.round(val) + "%";
-        statusText.innerText = text;
-    }
-</script>
+            const { data, error } = await supabase.storage.from('PDFS').upload(fileName, file);
+
+            clearInterval(interval);
+            if (error) {
+                updateProgress(0, "Error: " + error.message);
+                return;
+            }
+
+            updateProgress(95, "Compressing (AI)...");
+            processOnServer(fileName);
+        }
+
+        async function processOnServer(fileName) {
+            const { data, error } = await supabase.functions.invoke('compress-pdf', {
+                body: { fileName: fileName }
+            });
+
+            if (data) {
+                updateProgress(100, "Ready for Download!");
+                const downloadBtn = document.getElementById('downloadBtn');
+                downloadBtn.classList.remove('hidden');
+                
+                const finalUrl = `https://efgvsddclcnbmwqbtily.supabase.co/storage/v1/object/public/pdfs/${data.downloadPath}`;
+                downloadBtn.href = finalUrl;
+            }
+        }
+
+        function updateProgress(val, text) {
+            progressBar.style.width = val + "%";
+            percentText.innerText = Math.round(val) + "%";
+            statusText.innerText = text;
+        }
+    </script>
+</body>
+</html>
