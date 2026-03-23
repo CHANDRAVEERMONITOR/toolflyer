@@ -3,156 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolFlyer - Premium All-in-One PDF & Image Tools</title>
+    <title>ToolFlyer - All Tools PDF & Image</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .mega-menu { display: none; }
-        .mega-menu.active { display: block; }
-        .tab-btn.active { border-bottom: 3px solid #3b82f6; color: #3b82f6; }
-        .tool-card:hover { border-color: #3b82f6; box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1); }
-        .dark-mode { background-color: #1a202c; color: #f7fafc; }
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        body { font-family: 'Roboto', sans-serif; transition: 0.3s; }
+        
+        /* PDF24 Style Card */
+        .tool-card {
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease-in-out;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            position: relative;
+        }
+        .tool-card:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-color: #3b82f6;
+            transform: translateY(-3px);
+        }
+        .tool-card img { width: 45px; height: 45px; margin-bottom: 10px; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1)); }
+        .tool-card span { font-size: 0.85rem; font-weight: 500; color: #374151; }
+        
+        /* Dark Mode Colors */
+        .dark { background-color: #111827; color: #f9fafb; }
+        .dark .tool-card { background-color: #1f2937; border-color: #374151; }
+        .dark .tool-card span { color: #e5e7eb; }
+        .dark nav, .dark footer { background-color: #1f2937; border-color: #374151; }
+
+        /* Star Icon for Favorites */
+        .fav-star { position: absolute; top: 8px; right: 8px; color: #d1d5db; font-size: 12px; }
+        
+        .section-title { font-size: 1.5rem; font-weight: 700; margin: 40px 0 20px; text-align: center; color: #1f2937; }
+        .dark .section-title { color: #f3f4f6; }
     </style>
 </head>
-<body class="bg-[#f8f9fa] transition-colors duration-300">
+<body class="bg-gray-50">
 
-    <nav class="bg-white border-b sticky top-0 z-50 px-4 py-3">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-6">
-                <div class="text-2xl font-bold flex items-center text-blue-600">
-                    <i class="fas fa-bolt mr-2"></i>ToolFlyer
-                </div>
-                
-                <button onclick="toggleMegaMenu()" class="hidden md:flex items-center text-gray-700 hover:text-blue-600 font-semibold">
-                    <i class="fas fa-th-large mr-2"></i> All Tools
-                </button>
-            </div>
-
-            <div class="flex items-center space-x-4">
-                <button onclick="toggleDarkMode()" class="p-2 text-gray-500"><i class="fas fa-moon"></i></button>
-                <a href="/login" class="text-gray-700 font-medium">Login</a>
-                <button class="bg-blue-600 text-white px-5 py-2 rounded-lg font-bold hover:bg-blue-700">Sign Up Free</button>
-            </div>
+    <nav class="bg-white border-b px-6 py-3 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-2">
+            <img src="logo.png" alt="ToolFlyer Logo" class="h-10">
+            <span class="text-xl font-bold text-blue-600 hidden md:block">ToolFlyer</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500">
+                <i class="fas fa-moon text-lg" id="modeIcon"></i>
+            </button>
+            <i class="fas fa-user-circle text-2xl text-gray-400 cursor-pointer"></i>
+            <i class="fas fa-globe text-xl text-gray-400 cursor-pointer"></i>
         </div>
     </nav>
 
-    <div id="megaMenu" class="mega-menu absolute w-full bg-white border-b shadow-2xl z-40 animate-fade-in-down">
-        <div class="max-w-7xl mx-auto p-8 grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div>
-                <h4 class="font-bold text-red-500 mb-4 uppercase text-xs tracking-widest">PDF Tools</h4>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="#" class="hover:text-blue-600">Edit PDF Text</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Compress PDF</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Merge PDF</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-green-500 mb-4 uppercase text-xs tracking-widest">Image Tools</h4>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="#" class="hover:text-blue-600">Remove BG</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Image to WebP</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-purple-500 mb-4 uppercase text-xs tracking-widest">Converters</h4>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="#" class="hover:text-blue-600">Video to GIF</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Unit Converter</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-orange-500 mb-4 uppercase text-xs tracking-widest">Others</h4>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="#" class="hover:text-blue-600">QR Generator</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Age Calculator</a></li>
-                </ul>
-            </div>
+    <div class="text-center py-10 px-4">
+        <h1 class="text-4xl font-bold mb-2">All Tools</h1>
+        <p class="text-gray-500 mb-6">ToolFlyer provides numerous tools which are listed on this page.</p>
+        <div class="max-w-xl mx-auto relative">
+            <input type="text" placeholder="Search..." class="w-full border rounded-md py-2 px-4 focus:outline-blue-500 shadow-sm">
         </div>
     </div>
 
-    <div class="bg-white border-b overflow-x-auto whitespace-nowrap scrollbar-hide">
-        <div class="max-w-7xl mx-auto flex space-x-10 px-6">
-            <button class="tab-btn active py-4 font-semibold" onclick="filterTools('all')">ALL</button>
-            <button class="tab-btn py-4 font-semibold text-gray-500" onclick="filterTools('pdf')">PDF TOOLS</button>
-            <button class="tab-btn py-4 font-semibold text-gray-500" onclick="filterTools('image')">IMAGE TOOLS</button>
-            <button class="tab-btn py-4 font-semibold text-gray-500" onclick="filterTools('converter')">CONVERTERS</button>
-            <button class="tab-btn py-4 font-semibold text-gray-500" onclick="filterTools('calculator')">CALCULATORS</button>
+    <div class="flex flex-wrap justify-center gap-2 px-4 mb-10">
+        <button class="px-4 py-1 border rounded-full text-sm bg-white hover:bg-gray-100">Frequently used</button>
+        <button class="px-4 py-1 border rounded-full text-sm bg-white hover:bg-gray-100">More</button>
+        <button class="px-4 py-1 border rounded-full text-sm bg-white hover:bg-gray-100">Convert to PDF</button>
+        <button class="px-4 py-1 border rounded-full text-sm bg-white hover:bg-gray-100">Convert from PDF</button>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4">
+        
+        <h2 class="section-title">Frequently used</h2>
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/2991/2991112.png" alt="Merge"><span>Merge PDF</span></div>
+            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/179/179483.png" alt="Compress"><span>Compress PDF</span></div>
+            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/2991/2991108.png" alt="Edit"><span>Edit PDF</span></div>
+            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="Convert"><span>Convert PDF</span></div>
+            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/8242/8242984.png" alt="Unlock"><span>Unlock PDF</span></div>
+            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/2991/2991107.png" alt="Protect"><span>Protect PDF</span></div>
         </div>
+
+        <h2 class="section-title">Convert to PDF</h2>
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Word"><span>Word to PDF</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/732/732228.png" alt="Excel"><span>Excel to PDF</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/732/732224.png" alt="PPT"><span>PPT to PDF</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/337/337948.png" alt="JPG"><span>JPG to PDF</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991107.png" alt="HTML"><span>HTML to PDF</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/337/337956.png" alt="PNG"><span>PNG to PDF</span></div>
+        </div>
+
+        <h2 class="section-title">Image Tools</h2>
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/1088/1088537.png" alt="Resize"><span>Image Resizer</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/1829/1829589.png" alt="WebP"><span>Convert to WebP</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/4359/4359914.png" alt="BG"><span>Remove BG</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/2618/2618245.png" alt="QR"><span>QR Generator</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/2633/2633935.png" alt="Age"><span>Age Calculator</span></div>
+            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/1055/1055644.png" alt="Code"><span>Code Tools</span></div>
+        </div>
+
     </div>
 
-    <div class="text-center py-12 px-4 bg-white">
-        <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">Every tool you need to work with PDFs and Images</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">ToolFlyer brings you professional-grade tools in one place. Fast, 100% secure, and free.</p>
-    </div>
-
-    <main class="max-w-7xl mx-auto px-6 py-10">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <footer class="bg-white border-t mt-20 py-10">
+        <div class="max-w-6xl mx-auto px-4 text-center">
             
-            <div class="tool-card bg-white border rounded-2xl p-6 transition-all cursor-pointer group" onclick="location.href='/pdf-editor'">
-                <div class="text-red-500 text-3xl mb-4 group-hover:scale-110 transition-transform"><i class="fas fa-file-signature"></i></div>
-                <h3 class="font-bold text-lg mb-1">PDF Text Editor</h3>
-                <p class="text-gray-500 text-xs">Directly edit text in your PDF. Heavy lifting on Supabase.</p>
+            <div class="mb-8 flex flex-wrap justify-center gap-4 text-sm text-blue-600">
+                <a href="#" class="hover:underline">English</a>
+                <a href="#" class="hover:underline">हिन्दी (Hindi)</a>
+                <a href="#" class="hover:underline">বাংলা (Bengali)</a>
+                <a href="#" class="hover:underline">తెలుగు (Telugu)</a>
+                <a href="#" class="hover:underline">मराठी (Marathi)</a>
+                <a href="#" class="hover:underline">தமிழ் (Tamil)</a>
+                <a href="#" class="hover:underline">Deutsch</a>
+                <a href="#" class="hover:underline">Español</a>
             </div>
 
-            <div class="tool-card bg-white border rounded-2xl p-6 transition-all cursor-pointer" onclick="location.href='/compress'">
-                <div class="text-blue-500 text-3xl mb-4"><i class="fas fa-compress-alt"></i></div>
-                <h3 class="font-bold text-lg mb-1">PDF Compressor</h3>
-                <p class="text-gray-500 text-xs">Reduce size without losing quality. PHP Optimized.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 text-xs text-gray-500 uppercase tracking-widest">
+                <a href="#" class="hover:text-blue-600">About us</a>
+                <a href="#" class="hover:text-blue-600">FAQ</a>
+                <a href="#" class="hover:text-blue-600">Help</a>
+                <a href="#" class="hover:text-blue-600">Contact</a>
             </div>
 
-            <div class="tool-card bg-white border rounded-2xl p-6 transition-all cursor-pointer">
-                <div class="text-green-500 text-3xl mb-4"><i class="fas fa-user-slash"></i></div>
-                <h3 class="font-bold text-lg mb-1">Remove Background</h3>
-                <p class="text-gray-500 text-xs">AI-powered background removal in seconds.</p>
+            <div class="flex justify-center space-x-6 mb-6 text-gray-400">
+                <i class="fab fa-facebook-f hover:text-blue-600 cursor-pointer"></i>
+                <i class="fab fa-twitter hover:text-blue-400 cursor-pointer"></i>
+                <i class="fab fa-instagram hover:text-pink-500 cursor-pointer"></i>
             </div>
 
-            <div class="tool-card bg-white border rounded-2xl p-6 transition-all cursor-pointer">
-                <div class="text-orange-500 text-3xl mb-4"><i class="fas fa-qrcode"></i></div>
-                <h3 class="font-bold text-lg mb-1">QR Code Generator</h3>
-                <p class="text-gray-500 text-xs">Create custom QR codes with your logo.</p>
-            </div>
-
-        </div>
-    </main>
-
-    <footer class="bg-gray-900 text-white py-10 px-6 mt-20">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="col-span-1 md:col-span-2">
-                <div class="text-2xl font-bold mb-4">ToolFlyer</div>
-                <p class="text-gray-400 text-sm max-w-sm">Duniya ke sabse tez tools, aapke browser mein. Powered by GitHub Pages, InfinityFree, and Supabase.</p>
-            </div>
-            <div>
-                <h5 class="font-bold mb-4">Legal</h5>
-                <ul class="text-gray-400 text-xs space-y-2">
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="font-bold mb-4">Contact</h5>
-                <p class="text-gray-400 text-xs">support@toolflyer.com</p>
+            <p class="text-gray-400 text-xs mt-4 italic">© 2026 ToolFlyer - Developed by Chandraveer Yadav ❤️ Made in India</p>
+            
+            <div class="mt-6">
+                <select class="border rounded px-4 py-1 text-xs text-gray-600 outline-none">
+                    <option>🌐 English</option>
+                    <option>🌐 Hindi</option>
+                    <option>🌐 Bengali</option>
+                </select>
             </div>
         </div>
     </footer>
 
     <script>
-        function toggleMegaMenu() {
-            document.getElementById('megaMenu').classList.toggle('active');
-        }
-
         function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
-
-        function filterTools(category) {
-            // Add filtering logic here
-            const btns = document.querySelectorAll('.tab-btn');
-            btns.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            document.body.classList.toggle('dark');
+            const icon = document.getElementById('modeIcon');
+            if (document.body.classList.contains('dark')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
         }
     </script>
-
 </body>
 </html>
