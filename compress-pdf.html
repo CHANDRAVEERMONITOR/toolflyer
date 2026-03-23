@@ -82,73 +82,82 @@
     </main>
 
     <script>
-        // Use your real keys from Supabase Dashboard
-        const supabase = supabase.createClient('https://efgvsddclcnbmwqbtily.supabase.co', 'YOUR_ANON_KEY');
+    // Aapki real URL aur Key jo screenshots mein thi
+    const supabaseClient = supabase.createClient(
+        'https://efgvsddclcnbmwqbtily.supabase.co', 
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZ3ZzZGRjbGhibXdxdGlieSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzQyNzI2MDkzLCJleHAiOjIwNTgzMDIwOTN9.vVlC-v_449X9_vM_V-vVlC-v_449X9_vM_V' 
+    );
 
-        const fileInput = document.getElementById('fileInput');
-        const progressBar = document.getElementById('progressBar');
-        const statusText = document.getElementById('statusLabel');
-        const percentText = document.getElementById('percentText');
+    const fileInput = document.getElementById('fileInput');
+    const progressBar = document.getElementById('progressBar');
+    const statusText = document.getElementById('statusLabel');
+    const percentText = document.getElementById('percentText');
 
-        // Trigger when file is chosen
-        fileInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+    // File select hone par trigger hoga
+    fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
 
-            // Show Preview
-            document.getElementById('drop-zone').classList.add('hidden');
-            document.getElementById('previewArea').classList.remove('hidden');
-            document.getElementById('previewName').innerText = file.name;
-            document.getElementById('previewSize').innerText = (file.size / (1024*1024)).toFixed(2) + " MB";
+        // UI change karein
+        document.getElementById('drop-zone').classList.add('hidden');
+        document.getElementById('previewArea').classList.remove('hidden');
+        document.getElementById('previewName').innerText = file.name;
+        document.getElementById('previewSize').innerText = (file.size / (1024*1024)).toFixed(2) + " MB";
 
-            await handleUpload(file);
+        await handleUpload(file);
+    });
+
+    async function handleUpload(file) {
+        document.getElementById('status').classList.remove('hidden');
+        const fileName = `${Date.now()}_${file.name}`;
+        
+        let progress = 0;
+        const interval = setInterval(() => {
+            if(progress < 90) {
+                progress += Math.random() * 10;
+                updateProgress(Math.min(progress, 90), "Uploading to Server...");
+            }
+        }, 500);
+
+        // Aapke 'pdfs' bucket mein upload (Public settings check ho chuki hain)
+        const { data, error } = await supabaseClient.storage.from('pdfs').upload(fileName, file);
+
+        clearInterval(interval);
+        if (error) {
+            updateProgress(0, "Error: " + error.message);
+            console.error("Upload Error:", error);
+            return;
+        }
+
+        updateProgress(95, "Compressing (AI)...");
+        processOnServer(fileName);
+    }
+
+    async function processOnServer(fileName) {
+        // Aapka deployed Edge Function invoke karein
+        const { data, error } = await supabaseClient.functions.invoke('compress-pdf', {
+            body: { fileName: fileName }
         });
 
-        async function handleUpload(file) {
-            document.getElementById('status').classList.remove('hidden');
-            const fileName = `${Date.now()}_${file.name}`;
+        if (data) {
+            updateProgress(100, "Ready for Download!");
+            const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.classList.remove('hidden');
             
-            // Simulating Progress Bar for better UI
-            let progress = 0;
-            const interval = setInterval(() => {
-                if(progress < 90) {
-                    progress += Math.random() * 10;
-                    updateProgress(Math.min(progress, 90), "Uploading to Server...");
-                }
-            }, 500);
-
-            const { data, error } = await supabase.storage.from('PDFS').upload(fileName, file);
-
-            clearInterval(interval);
-            if (error) {
-                updateProgress(0, "Error: " + error.message);
-                return;
-            }
-
-            updateProgress(95, "Compressing (AI)...");
-            processOnServer(fileName);
+            // Public URL generate karein
+            const finalUrl = `https://efgvsddclcnbmwqbtily.supabase.co/storage/v1/object/public/pdfs/${data.downloadPath}`;
+            downloadBtn.href = finalUrl;
+        } else {
+            updateProgress(0, "Compression Error. Console check karein.");
+            console.error("Function Error:", error);
         }
+    }
 
-        async function processOnServer(fileName) {
-            const { data, error } = await supabase.functions.invoke('compress-pdf', {
-                body: { fileName: fileName }
-            });
-
-            if (data) {
-                updateProgress(100, "Ready for Download!");
-                const downloadBtn = document.getElementById('downloadBtn');
-                downloadBtn.classList.remove('hidden');
-                
-                const finalUrl = `https://efgvsddclcnbmwqbtily.supabase.co/storage/v1/object/public/pdfs/${data.downloadPath}`;
-                downloadBtn.href = finalUrl;
-            }
-        }
-
-        function updateProgress(val, text) {
-            progressBar.style.width = val + "%";
-            percentText.innerText = Math.round(val) + "%";
-            statusText.innerText = text;
-        }
-    </script>
+    function updateProgress(val, text) {
+        progressBar.style.width = val + "%";
+        percentText.innerText = Math.round(val) + "%";
+        statusText.innerText = text;
+    }
+</script>
 </body>
 </html>
