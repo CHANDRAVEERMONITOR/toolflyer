@@ -117,7 +117,7 @@
                 }
             }, 500);
 
-            const { data, error } = await supabase.storage.from('pdfs').upload(fileName, file);
+            const { data, error } = await supabase.storage.from('PDFS').upload(fileName, file);
 
             clearInterval(interval);
             if (error) {
