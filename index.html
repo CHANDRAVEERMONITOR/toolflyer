@@ -3,165 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolFlyer - All Tools PDF & Image</title>
+    <title>ToolFlyer - Global All-in-One Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-        body { font-family: 'Roboto', sans-serif; transition: 0.3s; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; transition: 0.3s; }
         
-        /* PDF24 Style Card */
+        /* Grid Card Styling */
         .tool-card {
-            border: 1px solid #e5e7eb;
-            transition: all 0.2s ease-in-out;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 15px;
-            background: #fff;
-            border-radius: 8px;
-            position: relative;
+            border: 1px solid #e5e7eb; transition: 0.2s; aspect-ratio: 1/1;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 12px; background: #fff; border-radius: 12px;
         }
-        .tool-card:hover {
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            border-color: #3b82f6;
-            transform: translateY(-3px);
+        .tool-card:hover { 
+            box-shadow: 0 10px 15px rgba(0,0,0,0.05); 
+            border-color: #2563eb; transform: translateY(-3px); cursor: pointer; 
         }
-        .tool-card img { width: 45px; height: 45px; margin-bottom: 10px; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1)); }
-        .tool-card span { font-size: 0.85rem; font-weight: 500; color: #374151; }
-        
-        /* Dark Mode Colors */
-        .dark { background-color: #111827; color: #f9fafb; }
-        .dark .tool-card { background-color: #1f2937; border-color: #374151; }
-        .dark .tool-card span { color: #e5e7eb; }
-        .dark nav, .dark footer { background-color: #1f2937; border-color: #374151; }
+        .tool-card img { width: 40px; height: 40px; margin-bottom: 8px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        .tool-card span { font-size: 0.72rem; font-weight: 600; color: #374151; line-height: 1.1; display: block; height: 2.2em; overflow: hidden; }
 
-        /* Star Icon for Favorites */
-        .fav-star { position: absolute; top: 8px; right: 8px; color: #d1d5db; font-size: 12px; }
-        
-        .section-title { font-size: 1.5rem; font-weight: 700; margin: 40px 0 20px; text-align: center; color: #1f2937; }
-        .dark .section-title { color: #f3f4f6; }
+        /* Section Headings */
+        .section-box { margin-bottom: 50px; }
+        .section-header { 
+            font-size: 1.25rem; font-weight: 800; color: #111827; 
+            margin-bottom: 20px; padding-left: 10px; border-left: 4px solid #2563eb; 
+        }
+
+        /* Dark Mode */
+        .dark { background-color: #0f172a; color: #f8fafc; }
+        .dark .tool-card { background: #1e293b; border-color: #334155; }
+        .dark .tool-card span { color: #cbd5e1; }
+        .dark .section-header { color: #60a5fa; border-color: #60a5fa; }
+        .dark nav, .dark footer { background: #1e293b; border-color: #334155; }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="antialiased">
 
-    <nav class="bg-white border-b px-6 py-3 flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center space-x-2">
-            <img src="logo.png" alt="ToolFlyer Logo" class="h-10">
-            <span class="text-xl font-bold text-blue-600 hidden md:block">ToolFlyer</span>
+    <nav class="bg-white border-b px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-sm">
+        <div class="flex items-center space-x-3">
+            <img src="logo.png" alt="ToolFlyer" class="h-8">
+            <span class="text-xl font-bold text-gray-900 tracking-tight">ToolFlyer<span class="text-blue-600">.com</span></span>
         </div>
         <div class="flex items-center space-x-4">
-            <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500">
-                <i class="fas fa-moon text-lg" id="modeIcon"></i>
+            <button onclick="document.body.classList.toggle('dark')" class="p-2 text-gray-500 hover:bg-gray-100 rounded-full">
+                <i class="fas fa-circle-half-stroke text-xl"></i>
             </button>
-            <i class="fas fa-user-circle text-2xl text-gray-400 cursor-pointer"></i>
-            <i class="fas fa-globe text-xl text-gray-400 cursor-pointer"></i>
+            <div class="bg-blue-600 text-white px-4 py-1.5 rounded-lg text-sm font-bold shadow-md hover:bg-blue-700 cursor-pointer">Start Free</div>
         </div>
     </nav>
 
-    <div class="text-center py-10 px-4">
-        <h1 class="text-4xl font-bold mb-2">All Tools</h1>
-        <p class="text-gray-500 mb-6">ToolFlyer provides numerous tools which are listed on this page.</p>
-        <div class="max-w-xl mx-auto relative">
-            <input type="text" placeholder="Search..." class="w-full border rounded-md py-2 px-4 focus:outline-blue-500 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-10 text-center">
+        <h1 class="text-3xl font-extrabold mb-4">World's Most Complete Online Toolset</h1>
+        <div class="max-w-2xl mx-auto relative mb-8">
+            <input type="text" placeholder="What tool do you need today?" class="w-full border-2 border-gray-200 rounded-xl py-3 px-12 focus:border-blue-500 outline-none text-lg shadow-sm">
+            <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+        </div>
+        <div class="flex flex-wrap justify-center gap-2 overflow-x-auto pb-2">
+            <button class="px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase">All</button>
+            <button class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-bold uppercase">PDF</button>
+            <button class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-bold uppercase">Image</button>
+            <button class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-bold uppercase">Official Resize</button>
         </div>
     </div>
 
-    <div class="flex flex-wrap justify-center gap-2 px-4 mb-10">
-        <button class="px-4 py-1 border rounded-full text-sm bg-white hover:bg-gray-100">Frequently used</button>
-        <button class="px-4 py-1 border rounded-full text-sm bg-white hover:bg-gray-100">More</button>
-        <button class="px-4 py-1 border rounded-full text-sm bg-white hover:bg-gray-100">Convert to PDF</button>
-        <button class="px-4 py-1 border rounded-full text-sm bg-white hover:bg-gray-100">Convert from PDF</button>
-    </div>
+    <main class="max-w-7xl mx-auto px-4 pb-24">
 
-    <div class="max-w-6xl mx-auto px-4">
-        
-        <h2 class="section-title">Frequently used</h2>
-        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/2991/2991112.png" alt="Merge"><span>Merge PDF</span></div>
-            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/179/179483.png" alt="Compress"><span>Compress PDF</span></div>
-            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/2991/2991108.png" alt="Edit"><span>Edit PDF</span></div>
-            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="Convert"><span>Convert PDF</span></div>
-            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/8242/8242984.png" alt="Unlock"><span>Unlock PDF</span></div>
-            <div class="tool-card"><i class="fav-star far fa-star"></i><img src="https://cdn-icons-png.flaticon.com/512/2991/2991107.png" alt="Protect"><span>Protect PDF</span></div>
-        </div>
-
-        <h2 class="section-title">Convert to PDF</h2>
-        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Word"><span>Word to PDF</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/732/732228.png" alt="Excel"><span>Excel to PDF</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/732/732224.png" alt="PPT"><span>PPT to PDF</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/337/337948.png" alt="JPG"><span>JPG to PDF</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991107.png" alt="HTML"><span>HTML to PDF</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/337/337956.png" alt="PNG"><span>PNG to PDF</span></div>
-        </div>
-
-        <h2 class="section-title">Image Tools</h2>
-        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/1088/1088537.png" alt="Resize"><span>Image Resizer</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/1829/1829589.png" alt="WebP"><span>Convert to WebP</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/4359/4359914.png" alt="BG"><span>Remove BG</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/2618/2618245.png" alt="QR"><span>QR Generator</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/2633/2633935.png" alt="Age"><span>Age Calculator</span></div>
-            <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/512/1055/1055644.png" alt="Code"><span>Code Tools</span></div>
-        </div>
-
-    </div>
-
-    <footer class="bg-white border-t mt-20 py-10">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            
-            <div class="mb-8 flex flex-wrap justify-center gap-4 text-sm text-blue-600">
-                <a href="#" class="hover:underline">English</a>
-                <a href="#" class="hover:underline">हिन्दी (Hindi)</a>
-                <a href="#" class="hover:underline">বাংলা (Bengali)</a>
-                <a href="#" class="hover:underline">తెలుగు (Telugu)</a>
-                <a href="#" class="hover:underline">मराठी (Marathi)</a>
-                <a href="#" class="hover:underline">தமிழ் (Tamil)</a>
-                <a href="#" class="hover:underline">Deutsch</a>
-                <a href="#" class="hover:underline">Español</a>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 text-xs text-gray-500 uppercase tracking-widest">
-                <a href="#" class="hover:text-blue-600">About us</a>
-                <a href="#" class="hover:text-blue-600">FAQ</a>
-                <a href="#" class="hover:text-blue-600">Help</a>
-                <a href="#" class="hover:text-blue-600">Contact</a>
-            </div>
-
-            <div class="flex justify-center space-x-6 mb-6 text-gray-400">
-                <i class="fab fa-facebook-f hover:text-blue-600 cursor-pointer"></i>
-                <i class="fab fa-twitter hover:text-blue-400 cursor-pointer"></i>
-                <i class="fab fa-instagram hover:text-pink-500 cursor-pointer"></i>
-            </div>
-
-            <p class="text-gray-400 text-xs mt-4 italic">© 2026 ToolFlyer - Developed by Chandraveer Yadav ❤️ Made in India</p>
-            
-            <div class="mt-6">
-                <select class="border rounded px-4 py-1 text-xs text-gray-600 outline-none">
-                    <option>🌐 English</option>
-                    <option>🌐 Hindi</option>
-                    <option>🌐 Bengali</option>
-                </select>
+        <div class="section-box">
+            <h2 class="section-header">Image Editing & Enhancement</h2>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-3">
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/3342/3342137.png"><span>Passport Photo</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/2912/2912778.png"><span>Gen Signature</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/1043/1043431.png"><span>AI Enhancer</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/2335/2335265.png"><span>Blur BG</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/4359/4359914.png"><span>Remove BG</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/3616/3616521.png"><span>Add Name/DOB</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/1829/1829391.png"><span>Reduce Size KB</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/5312/5312781.png"><span>Increase Size KB</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/2504/2504822.png"><span>Photo Collage</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/2659/2659360.png"><span>Merge Photo/Sign</span></div>
             </div>
         </div>
-    </footer>
 
-    <script>
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark');
-            const icon = document.getElementById('modeIcon');
-            if (document.body.classList.contains('dark')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            }
-        }
-    </script>
-</body>
-</html>
+        <div class="section-box">
+            <h2 class="section-header">Heavy PDF Solutions</h2>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-3">
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/2991/2991108.png"><span>PDF Editor</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/179/179483.png"><span>Compress PDF</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/2991/2991112.png"><span>Merge PDF</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/3143/3143577.png"><span>Split PDF</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/732/732220.png"><span>Word to PDF</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/337/337936.png"><span>PDF to Word</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/2991/2991107.png"><span>Protect PDF</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/8242/8242984.png"><span>Unlock PDF</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/2906/2906231.png"><span>PDF to HTML</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/1043/1043514.png"><span>Watermark</span></div>
+            </div>
+        </div>
+
+        <div class="section-box">
+            <h2 class="section-header">Official Exam & DPI Tools</h2>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-3">
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/3342/3342137.png"><span>SSC Resize</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/3011/3011732.png"><span>PAN Card Size</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/2660/2660503.png"><span>UPSC Size</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/1043/1043431.png"><span>Convert DPI</span></div>
+                <div class="tool-card"><img src="https://cdn-icons-png.flaticon.com/128/1205/1205526.png"><span>300 DPI Gen</span></div>
+                <div class="tool-card"><img src="https://cdn-icons
