@@ -1,189 +1,133 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolFlyer - Global All-in-One Online Tools</title>
+    <title>Advanced Age Calculator - ToolFlyer</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; scroll-behavior: smooth; }
-        
-        /* Tool Card Design */
-        .tool-link {
-            border: 1px solid #e2e8f0; transition: 0.3s; aspect-ratio: 1/1;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 12px; background: #ffffff; border-radius: 12px;
-            text-decoration: none; color: inherit;
-        }
-        .tool-link:hover { 
-            box-shadow: 0 12px 24px rgba(0,0,0,0.08); 
-            border-color: #2563eb; transform: translateY(-5px);
-        }
-        .tool-link img { width: 45px; height: 45px; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
-        .tool-link span { font-size: 0.75rem; font-weight: 700; color: #334155; line-height: 1.2; }
-
-        /* Category Headers */
-        .category-title { 
-            font-size: 1.5rem; font-weight: 800; color: #1e293b; 
-            margin: 60px 0 25px; display: flex; align-items: center;
-        }
-        .category-title i { margin-right: 12px; color: #2563eb; }
-
-        /* Dark Mode */
-        .dark { background-color: #0f172a; color: #f1f5f9; }
-        .dark .tool-link { background: #1e293b; border-color: #334155; }
-        .dark .tool-link span { color: #cbd5e1; }
-        .dark nav, .dark footer { background: #1e293b; border-color: #334155; }
+        body { font-family: 'Inter', sans-serif; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; text-align: center; }
+        .stat-value { display: block; font-size: 1.25rem; font-weight: 700; color: #1e40af; }
+        .stat-label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 600; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 flex flex-col min-h-screen">
 
-    <nav class="bg-white border-b px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
-        <div class="flex items-center space-x-2">
-            <div class="bg-blue-600 text-white p-2 rounded-lg"><i class="fas fa-tools"></i></div>
-            <span class="text-2xl font-black text-gray-900">ToolFlyer<span class="text-blue-600">.com</span></span>
+    <nav class="bg-white border-b py-4">
+        <div class="container mx-auto px-6">
+            <a href="index.html" class="text-xl font-bold text-blue-600">ToolFlyer<span class="text-gray-800">.com</span></a>
         </div>
-        <div class="hidden lg:flex space-x-8 font-bold text-gray-600 text-xs uppercase">
-            <a href="#pdf" class="hover:text-blue-600">PDF Tools</a>
-            <a href="#image" class="hover:text-blue-600">Image Expert</a>
-            <a href="#official" class="hover:text-blue-600">Govt Sizes</a>
-            <a href="#utility" class="hover:text-blue-600">Utility</a>
-        </div>
-        <button onclick="document.body.classList.toggle('dark')" class="p-2 bg-gray-100 rounded-full dark:bg-gray-800">
-            <i class="fas fa-moon dark:text-yellow-400"></i>
-        </button>
     </nav>
 
-    <header class="bg-white py-20 text-center border-b px-4">
-        <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6">Free PDF & Image Tools</h1>
-        <p class="text-slate-500 max-w-2xl mx-auto mb-10 text-lg">Every tool you need to use for PDF, Image, and Official Resizing in one place.</p>
-        <div class="max-w-3xl mx-auto relative">
-            <input type="text" placeholder="Search for tools (e.g. SSC Photo, Compress PDF...)" class="w-full border-2 border-slate-200 rounded-full py-4 px-14 focus:border-blue-600 outline-none text-lg shadow-xl">
-            <i class="fas fa-search absolute left-6 top-5 text-slate-400 text-xl"></i>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-6 pb-24">
-
-        <h2 id="pdf" class="category-title"><i class="fas fa-file-pdf text-red-500"></i> Premium PDF Tools</h2>
-        <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-10 gap-4">
-            <a href="/pdf/merge" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2991/2991112.png"><span>Merge PDF</span></a>
-            <a href="/pdf/compress" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/179/179483.png"><span>Compress PDF</span></a>
-            <a href="/pdf/editor" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2991/2991108.png"><span>Edit PDF</span></a>
-            <a href="/pdf/word-to-pdf" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/732/732220.png"><span>Word to PDF</span></a>
-            <a href="/pdf/pdf-to-word" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/337/337936.png"><span>PDF to Word</span></a>
-            <a href="/pdf/unlock" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/8242/8242984.png"><span>Unlock PDF</span></a>
-            <a href="/pdf/protect" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2991/2991107.png"><span>Protect PDF</span></a>
-            <a href="/pdf/split" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/3143/3143577.png"><span>Split PDF</span></a>
-            <a href="/pdf/sign" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2912/2912778.png"><span>Sign PDF</span></a>
-            <a href="/pdf/watermark" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1043/1043514.png"><span>Watermark</span></a>
-        </div>
-
-        <h2 id="image" class="category-title"><i class="fas fa-image text-green-500"></i> Photo & Image Expert</h2>
-        <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-10 gap-4">
-            <a href="/image/bg-remover" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/4359/4359914.png"><span>Remove BG</span></a>
-            <a href="/image/passport-maker" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/3342/3342137.png"><span>Passport Maker</span></a>
-            <a href="/image/reduce-kb" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1829/1829391.png"><span>Reduce KB</span></a>
-            <a href="/image/ai-enhance" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1043/1043431.png"><span>AI Enhance</span></a>
-            <a href="/image/resize-pixel" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1088/1088537.png"><span>Resize Pixel</span></a>
-            <a href="/image/add-name-dob" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/3616/3616521.png"><span>Add Name/DOB</span></a>
-            <a href="/image/blur-bg" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2335/2335265.png"><span>Blur BG</span></a>
-            <a href="/image/png-to-jpg" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/337/337948.png"><span>PNG to JPG</span></a>
-            <a href="/image/to-webp" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1829/1829589.png"><span>To WebP</span></a>
-            <a href="/image/collage" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2504/2504822.png"><span>Collage Maker</span></a>
-        </div>
-
-        <h2 id="official" class="category-title"><i class="fas fa-id-card text-orange-500"></i> Indian Govt Official Sizes</h2>
-        <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-10 gap-4">
-            <a href="/official/ssc" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2660/2660503.png"><span>SSC Resize</span></a>
-            <a href="/official/pan" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/3011/3011732.png"><span>PAN Card</span></a>
-            <a href="/official/upsc" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/3342/3342137.png"><span>UPSC Size</span></a>
-            <a href="/official/dpi-300" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1043/1043431.png"><span>300 DPI Gen</span></a>
-            <a href="/official/signature-resize" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2912/2912778.png"><span>Resize Sign</span></a>
-            <a href="/official/passport-cm" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/337/337948.png"><span>3.5x4.5 CM</span></a>
-            <a href="/official/a4-convert" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2912/2912761.png"><span>A4 Size Fix</span></a>
-            <a href="/official/upscale" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/4436/4436481.png"><span>Upscale AI</span></a>
-            <a href="/official/metadata-remove" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/3143/3143460.png"><span>Remove Meta</span></a>
-            <a href="/official/bulk-resize" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1088/1088537.png"><span>Bulk Resize</span></a>
-        </div>
-
-        <h2 id="utility" class="category-title"><i class="fas fa-file-invoice-dollar text-blue-500"></i> Billing & Daily Utility</h2>
-        <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-10 gap-4">
-            <a href="/billing/gst-invoice" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1055/1055644.png"><span>GST Invoice</span></a>
-            <a href="/billing/receipt" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1160/1160515.png"><span>Receipt Maker</span></a>
-            <a href="/utility/qr-gen" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2618/2618245.png"><span>QR Generator</span></a>
-            <a href="/utility/age-calc" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2633/2633935.png"><span>Age Calc</span></a>
-            <a href="/utility/password-gen" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/4151/4151125.png"><span>Password Gen</span></a>
-            <a href="/utility/unit-conv" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1829/1829589.png"><span>Unit Convert</span></a>
-            <a href="/utility/json-edit" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/919/919830.png"><span>JSON Editor</span></a>
-            <a href="/utility/barcode" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/3143/3143460.png"><span>Barcode Gen</span></a>
-            <a href="/utility/gst-calc" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/1055/1055644.png"><span>GST Calc</span></a>
-            <a href="/utility/lorem" class="tool-link"><img src="https://cdn-icons-png.flaticon.com/128/2912/2912778.png"><span>Lorem Gen</span></a>
-        </div>
-
-    </main>
-
-    <footer class="bg-slate-900 text-slate-300 pt-20 pb-10 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-12 border-b border-slate-800 pb-16">
+    <main class="flex-grow flex items-center justify-center py-12 px-4">
+        <div class="bg-white p-8 rounded-3xl shadow-xl max-w-2xl w-full border border-gray-100">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-2 text-center">Age Calculator</h2>
+            <p class="text-gray-500 text-center mb-8">Calculate age between two dates precisely</p>
             
-            <div class="col-span-2 md:col-span-1">
-                <div class="text-2xl font-bold text-white mb-6">ToolFlyer</div>
-                <p class="text-sm leading-relaxed mb-6 text-slate-400">#1 Trusted platform for PDF and Image tools. High-speed processing powered by Supabase & GitHub.</p>
-                <div class="flex space-x-4 text-xl">
-                    <a href="#" class="hover:text-blue-500"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="hover:text-blue-400"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="hover:text-pink-500"><i class="fab fa-instagram"></i></a>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Date of Birth (From):</label>
+                    <input type="date" id="dob" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none border-gray-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Age at Date (To):</label>
+                    <input type="date" id="targetDate" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none border-gray-300">
                 </div>
             </div>
+            
+            <button onclick="calculateAge()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition shadow-lg text-lg mb-10">Calculate Results</button>
 
-            <div>
-                <h4 class="font-bold text-white mb-6">PDF Categories</h4>
-                <ul class="text-sm space-y-4">
-                    <li><a href="/pdf/merge" class="hover:text-white">Merge PDF</a></li>
-                    <li><a href="/pdf/compress" class="hover:text-white">Compress PDF</a></li>
-                    <li><a href="/pdf/editor" class="hover:text-white">Edit PDF Text</a></li>
-                    <li><a href="/pdf/pdf-to-word" class="hover:text-white">Convert to Word</a></li>
-                </ul>
+            <div id="resultBox" class="hidden">
+                <div class="bg-blue-600 text-white p-6 rounded-2xl text-center mb-6">
+                    <h3 id="mainAge" class="text-2xl font-bold"></h3>
+                    <p class="opacity-80 text-sm mt-1 uppercase tracking-wider">Your Exact Age</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="stat-card">
+                        <span id="totalMonths" class="stat-value">0</span>
+                        <span class="stat-label">Total Months</span>
+                    </div>
+                    <div class="stat-card">
+                        <span id="totalWeeks" class="stat-value">0</span>
+                        <span class="stat-label">Total Weeks</span>
+                    </div>
+                    <div class="stat-card">
+                        <span id="totalDays" class="stat-value">0</span>
+                        <span class="stat-label">Total Days</span>
+                    </div>
+                    <div class="stat-card">
+                        <span id="totalHours" class="stat-value">0</span>
+                        <span class="stat-label">Total Hours</span>
+                    </div>
+                </div>
             </div>
-
-            <div>
-                <h4 class="font-bold text-white mb-6">Image Categories</h4>
-                <ul class="text-sm space-y-4">
-                    <li><a href="/image/bg-remover" class="hover:text-white">Remove Background</a></li>
-                    <li><a href="/image/passport-maker" class="hover:text-white">Passport Photo</a></li>
-                    <li><a href="/image/reduce-kb" class="hover:text-white">Resize KB Size</a></li>
-                    <li><a href="/image/to-webp" class="hover:text-white">Convert to WebP</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-white mb-6">Official Links</h4>
-                <ul class="text-sm space-y-4">
-                    <li><a href="/about" class="hover:text-white">About Us</a></li>
-                    <li><a href="/privacy" class="hover:text-white">Privacy Policy</a></li>
-                    <li><a href="/terms" class="hover:text-white">Terms of Service</a></li>
-                    <li><a href="/contact" class="hover:text-white">Contact Us</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-white mb-6">Global Languages</h4>
-                <select class="bg-slate-800 border-none text-white rounded p-3 w-full text-sm outline-none">
-                    <option>🌐 English (Global)</option>
-                    <option>🌐 हिन्दी (Hindi)</option>
-                    <option>🌐 বাংলা (Bengali)</option>
-                    <option>🌐 తెలుగు (Telugu)</option>
-                    <option>🌐 मराठी (Marathi)</option>
-                </select>
-            </div>
-
         </div>
-        <div class="text-center mt-12 text-slate-500 text-[11px] font-bold tracking-widest uppercase">
-            © 2026 TOOLFLYER.COM | POWERED BY CHANDRAVEER YADAV ❤️
+    </main>
+
+    <footer class="bg-white border-t py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-wrap justify-center gap-6 text-sm font-semibold text-gray-500 mb-4">
+                <a href="about.html" class="hover:text-blue-600">About Us</a>
+                <a href="contact.html" class="hover:text-blue-600">Contact Us</a>
+                <a href="disclaimer.html" class="hover:text-blue-600">Disclaimer</a>
+                <a href="privacy-policy.html" class="hover:text-blue-600">Privacy Policy</a>
+            </div>
+            <p class="text-center text-xs text-gray-400">© 2026 ToolFlyer.com - All Rights Reserved.</p>
         </div>
     </footer>
 
+    <script>
+        // Default target date to Today
+        document.getElementById('targetDate').valueAsDate = new Date();
+
+        function calculateAge() {
+            const dobVal = document.getElementById('dob').value;
+            const targetVal = document.getElementById('targetDate').value;
+
+            if (!dobVal || !targetVal) {
+                alert("Please select both dates!");
+                return;
+            }
+
+            const birthDate = new Date(dobVal);
+            const endDate = new Date(targetVal);
+
+            if (endDate < birthDate) {
+                alert("Target date cannot be earlier than Date of Birth!");
+                return;
+            }
+
+            let years = endDate.getFullYear() - birthDate.getFullYear();
+            let months = endDate.getMonth() - birthDate.getMonth();
+            let days = endDate.getDate() - birthDate.getDate();
+
+            if (days < 0) {
+                months--;
+                days += new Date(endDate.getFullYear(), endDate.getMonth(), 0).getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Calculations for Statistics
+            const diffInMs = endDate - birthDate;
+            const totDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+            const totWeeks = Math.floor(totDays / 7);
+            const totMonths = (years * 12) + months;
+            const totHours = totDays * 24;
+
+            // Display Results
+            document.getElementById('resultBox').classList.remove('hidden');
+            document.getElementById('mainAge').innerText = `${years} Years, ${months} Months, ${days} Days`;
+            document.getElementById('totalMonths').innerText = totMonths.toLocaleString();
+            document.getElementById('totalWeeks').innerText = totWeeks.toLocaleString();
+            document.getElementById('totalDays').innerText = totDays.toLocaleString();
+            document.getElementById('totalHours').innerText = totHours.toLocaleString();
+        }
+    </script>
 </body>
 </html>
