@@ -93,12 +93,10 @@
     const statusText = document.getElementById('statusLabel');
     const percentText = document.getElementById('percentText');
 
-    // File select hone par trigger hoga
     fileInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
-        // UI change karein
         document.getElementById('drop-zone').classList.add('hidden');
         document.getElementById('previewArea').classList.remove('hidden');
         document.getElementById('previewName').innerText = file.name;
@@ -115,11 +113,11 @@
         const interval = setInterval(() => {
             if(progress < 90) {
                 progress += Math.random() * 10;
-                updateProgress(Math.min(progress, 90), "Uploading to Server...");
+                updateProgress(Math.min(progress, 90), "Uploading...");
             }
         }, 500);
 
-        // Aapke 'pdfs' bucket mein upload (Public settings check ho chuki hain)
+        // 'pdfs' bucket check: Aapne ise public set kiya hua hai
         const { data, error } = await supabaseClient.storage.from('pdfs').upload(fileName, file);
 
         clearInterval(interval);
@@ -129,34 +127,33 @@
             return;
         }
 
-        updateProgress(95, "Compressing (AI)...");
+        updateProgress(95, "Processing...");
         processOnServer(fileName);
     }
 
     async function processOnServer(fileName) {
-        // Aapka deployed Edge Function invoke karein
+        // Aapka function 'compress-pdf' deployed hai
         const { data, error } = await supabaseClient.functions.invoke('compress-pdf', {
             body: { fileName: fileName }
         });
 
         if (data) {
-            updateProgress(100, "Ready for Download!");
+            updateProgress(100, "Done!");
             const downloadBtn = document.getElementById('downloadBtn');
             downloadBtn.classList.remove('hidden');
             
-            // Public URL generate karein
             const finalUrl = `https://efgvsddclcnbmwqbtily.supabase.co/storage/v1/object/public/pdfs/${data.downloadPath}`;
             downloadBtn.href = finalUrl;
         } else {
-            updateProgress(0, "Compression Error. Console check karein.");
+            updateProgress(0, "Function Error");
             console.error("Function Error:", error);
         }
     }
 
     function updateProgress(val, text) {
-        progressBar.style.width = val + "%";
-        percentText.innerText = Math.round(val) + "%";
-        statusText.innerText = text;
+        if(progressBar) progressBar.style.width = val + "%";
+        if(percentText) percentText.innerText = Math.round(val) + "%";
+        if(statusText) statusText.innerText = text;
     }
 </script>
 </body>
