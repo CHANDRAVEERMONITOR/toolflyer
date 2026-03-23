@@ -1,124 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolFlyer - All-in-One Global Utility Tools</title>
+    <title>ToolFlyer - Premium All-in-One PDF & Image Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .tool-card:hover { transform: translateY(-5px); transition: 0.3s; }
-        .tab-active { border-bottom: 3px solid #3b82f6; color: #3b82f6; font-weight: bold; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .mega-menu { display: none; }
+        .mega-menu.active { display: block; }
+        .tab-btn.active { border-bottom: 3px solid #3b82f6; color: #3b82f6; }
+        .tool-card:hover { border-color: #3b82f6; box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1); }
+        .dark-mode { background-color: #1a202c; color: #f7fafc; }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-[#f8f9fa] transition-colors duration-300">
 
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="bg-blue-600 text-white p-2 rounded-lg"><i class="fas fa-plane-departure"></i></div>
-                <span class="text-2xl font-bold text-gray-800">ToolFlyer<span class="text-blue-600">.com</span></span>
+    <nav class="bg-white border-b sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-6">
+                <div class="text-2xl font-bold flex items-center text-blue-600">
+                    <i class="fas fa-bolt mr-2"></i>ToolFlyer
+                </div>
+                
+                <button onclick="toggleMegaMenu()" class="hidden md:flex items-center text-gray-700 hover:text-blue-600 font-semibold">
+                    <i class="fas fa-th-large mr-2"></i> All Tools
+                </button>
             </div>
-            <div class="hidden md:flex space-x-6 text-gray-600 font-medium">
-                <a href="#" class="hover:text-blue-600">Home</a>
-                <a href="#pdf" class="hover:text-blue-600">PDF Tools</a>
-                <a href="#image" class="hover:text-blue-600">Images</a>
-                <a href="#about" class="hover:text-blue-600">About</a>
+
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDarkMode()" class="p-2 text-gray-500"><i class="fas fa-moon"></i></button>
+                <a href="/login" class="text-gray-700 font-medium">Login</a>
+                <button class="bg-blue-600 text-white px-5 py-2 rounded-lg font-bold hover:bg-blue-700">Sign Up Free</button>
             </div>
-            <button class="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition">Contact</button>
         </div>
     </nav>
 
-    <header class="bg-blue-600 py-16 text-center text-white px-4">
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Free Online Tools for Everyone</h1>
-        <p class="text-blue-100 text-lg mb-8">Fast, Secure, and Heavy Duty Tools - Powered by Supabase & GitHub</p>
-        <div class="max-w-2xl mx-auto relative">
-            <input type="text" placeholder="Search for tools (e.g. PDF Compressor, Age Calculator...)" class="w-full py-4 px-6 rounded-full text-gray-800 focus:outline-none shadow-lg text-lg">
-            <button class="absolute right-4 top-3 text-blue-600 text-2xl"><i class="fas fa-search"></i></button>
-        </div>
-    </header>
-
-    <div class="bg-white border-b sticky top-[64px] z-40 overflow-x-auto">
-        <div class="max-w-7xl mx-auto flex space-x-8 px-4 py-4 whitespace-nowrap">
-            <button class="tab-active pb-1">All Tools</button>
-            <button class="text-gray-500 hover:text-blue-600 pb-1">PDF Tools</button>
-            <button class="text-gray-500 hover:text-blue-600 pb-1">Image Tools</button>
-            <button class="text-gray-500 hover:text-blue-600 pb-1">Calculators</button>
-            <button class="text-gray-500 hover:text-blue-600 pb-1">Converters</button>
-        </div>
-    </div>
-
-    <main class="max-w-7xl mx-auto px-4 py-12">
-        
-        <h2 id="pdf" class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-            <i class="fas fa-file-pdf text-red-500 mr-2"></i> Heavy Duty PDF Tools
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <a href="/tools/pdf-editor" class="tool-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 block">
-                <div class="text-red-500 text-3xl mb-4"><i class="fas fa-edit"></i></div>
-                <h3 class="text-xl font-bold mb-2">PDF Text Editor</h3>
-                <p class="text-gray-500 text-sm">Edit original text directly inside your PDF files online.</p>
-                <span class="mt-4 inline-block text-blue-600 font-semibold text-sm">Server-Side Logic &rarr;</span>
-            </a>
-
-            <a href="/tools/pdf-compress" class="tool-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 block">
-                <div class="text-blue-500 text-3xl mb-4"><i class="fas fa-compress-arrows-alt"></i></div>
-                <h3 class="text-xl font-bold mb-2">Compress PDF</h3>
-                <p class="text-gray-500 text-sm">Reduce file size up to 90% without losing quality.</p>
-                <span class="mt-4 inline-block text-blue-600 font-semibold text-sm">Supabase Storage &rarr;</span>
-            </a>
-            </div>
-
-        <hr class="my-12 border-gray-200">
-
-        <h2 id="image" class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-            <i class="fas fa-image text-green-500 mr-2"></i> Smart Image Tools
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <a href="/tools/image-to-webp" class="tool-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 block text-center">
-                <div class="text-green-500 text-4xl mb-4"><i class="fas fa-sync"></i></div>
-                <h3 class="text-xl font-bold">Image to WebP</h3>
-                <p class="text-gray-500 text-xs mt-2">Convert JPG/PNG to WebP for faster websites.</p>
-            </a>
-
-            <a href="/tools/age-calculator" class="tool-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 block text-center">
-                <div class="text-purple-500 text-4xl mb-4"><i class="fas fa-calculator"></i></div>
-                <h3 class="text-xl font-bold">Age Calculator</h3>
-                <p class="text-gray-500 text-xs mt-2">Find your exact age in years, months, and days.</p>
-            </a>
-        </div>
-
-    </main>
-
-    <footer class="bg-gray-800 text-white pt-12 pb-6 mt-20">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
+    <div id="megaMenu" class="mega-menu absolute w-full bg-white border-b shadow-2xl z-40 animate-fade-in-down">
+        <div class="max-w-7xl mx-auto p-8 grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
-                <h4 class="text-xl font-bold mb-4">ToolFlyer.com</h4>
-                <p class="text-gray-400 text-sm">Providing high-quality digital utility tools globally. Fast, secure, and always free for everyone.</p>
-            </div>
-            <div>
-                <h4 class="text-xl font-bold mb-4">Important Links</h4>
-                <ul class="text-gray-400 space-y-2 text-sm">
-                    <li><a href="/privacy-policy" class="hover:text-white">Privacy Policy</a></li>
-                    <li><a href="/terms-of-service" class="hover:text-white">Terms of Service</a></li>
-                    <li><a href="/disclaimer" class="hover:text-white">Disclaimer</a></li>
-                    <li><a href="/contact" class="hover:text-white">Contact Us</a></li>
+                <h4 class="font-bold text-red-500 mb-4 uppercase text-xs tracking-widest">PDF Tools</h4>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#" class="hover:text-blue-600">Edit PDF Text</a></li>
+                    <li><a href="#" class="hover:text-blue-600">Compress PDF</a></li>
+                    <li><a href="#" class="hover:text-blue-600">Merge PDF</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-xl font-bold mb-4">Support</h4>
-                <p class="text-gray-400 text-sm">Having trouble? Send us a message through our contact page.</p>
-                <div class="flex space-x-4 mt-4 text-2xl">
-                    <i class="fab fa-facebook hover:text-blue-500 cursor-pointer"></i>
-                    <i class="fab fa-twitter hover:text-blue-400 cursor-pointer"></i>
-                    <i class="fab fa-linkedin hover:text-blue-600 cursor-pointer"></i>
-                </div>
+                <h4 class="font-bold text-green-500 mb-4 uppercase text-xs tracking-widest">Image Tools</h4>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#" class="hover:text-blue-600">Remove BG</a></li>
+                    <li><a href="#" class="hover:text-blue-600">Image to WebP</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-purple-500 mb-4 uppercase text-xs tracking-widest">Converters</h4>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#" class="hover:text-blue-600">Video to GIF</a></li>
+                    <li><a href="#" class="hover:text-blue-600">Unit Converter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-orange-500 mb-4 uppercase text-xs tracking-widest">Others</h4>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#" class="hover:text-blue-600">QR Generator</a></li>
+                    <li><a href="#" class="hover:text-blue-600">Age Calculator</a></li>
+                </ul>
             </div>
         </div>
-        <div class="text-center mt-12 pt-6 border-t border-gray-700 text-gray-500 text-xs">
-            &copy; 2026 ToolFlyer. Developed by Chandraveer Yadav. All rights reserved.
+    </div>
+
+    <div class="bg-white border-b overflow-x-auto whitespace-nowrap scrollbar-hide">
+        <div class="max-w-7xl mx-auto flex space-x-10 px-6">
+            <button class="tab-btn active py-4 font-semibold" onclick="filterTools('all')">ALL</button>
+            <button class="tab-btn py-4 font-semibold text-gray-500" onclick="filterTools('pdf')">PDF TOOLS</button>
+            <button class="tab-btn py-4 font-semibold text-gray-500" onclick="filterTools('image')">IMAGE TOOLS</button>
+            <button class="tab-btn py-4 font-semibold text-gray-500" onclick="filterTools('converter')">CONVERTERS</button>
+            <button class="tab-btn py-4 font-semibold text-gray-500" onclick="filterTools('calculator')">CALCULATORS</button>
+        </div>
+    </div>
+
+    <div class="text-center py-12 px-4 bg-white">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">Every tool you need to work with PDFs and Images</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">ToolFlyer brings you professional-grade tools in one place. Fast, 100% secure, and free.</p>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            
+            <div class="tool-card bg-white border rounded-2xl p-6 transition-all cursor-pointer group" onclick="location.href='/pdf-editor'">
+                <div class="text-red-500 text-3xl mb-4 group-hover:scale-110 transition-transform"><i class="fas fa-file-signature"></i></div>
+                <h3 class="font-bold text-lg mb-1">PDF Text Editor</h3>
+                <p class="text-gray-500 text-xs">Directly edit text in your PDF. Heavy lifting on Supabase.</p>
+            </div>
+
+            <div class="tool-card bg-white border rounded-2xl p-6 transition-all cursor-pointer" onclick="location.href='/compress'">
+                <div class="text-blue-500 text-3xl mb-4"><i class="fas fa-compress-alt"></i></div>
+                <h3 class="font-bold text-lg mb-1">PDF Compressor</h3>
+                <p class="text-gray-500 text-xs">Reduce size without losing quality. PHP Optimized.</p>
+            </div>
+
+            <div class="tool-card bg-white border rounded-2xl p-6 transition-all cursor-pointer">
+                <div class="text-green-500 text-3xl mb-4"><i class="fas fa-user-slash"></i></div>
+                <h3 class="font-bold text-lg mb-1">Remove Background</h3>
+                <p class="text-gray-500 text-xs">AI-powered background removal in seconds.</p>
+            </div>
+
+            <div class="tool-card bg-white border rounded-2xl p-6 transition-all cursor-pointer">
+                <div class="text-orange-500 text-3xl mb-4"><i class="fas fa-qrcode"></i></div>
+                <h3 class="font-bold text-lg mb-1">QR Code Generator</h3>
+                <p class="text-gray-500 text-xs">Create custom QR codes with your logo.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-10 px-6 mt-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-2">
+                <div class="text-2xl font-bold mb-4">ToolFlyer</div>
+                <p class="text-gray-400 text-sm max-w-sm">Duniya ke sabse tez tools, aapke browser mein. Powered by GitHub Pages, InfinityFree, and Supabase.</p>
+            </div>
+            <div>
+                <h5 class="font-bold mb-4">Legal</h5>
+                <ul class="text-gray-400 text-xs space-y-2">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-bold mb-4">Contact</h5>
+                <p class="text-gray-400 text-xs">support@toolflyer.com</p>
+            </div>
         </div>
     </footer>
+
+    <script>
+        function toggleMegaMenu() {
+            document.getElementById('megaMenu').classList.toggle('active');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function filterTools(category) {
+            // Add filtering logic here
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
 
 </body>
 </html>
