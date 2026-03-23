@@ -81,11 +81,11 @@
         </div>
     </main>
 <script>
-    // Maine aapki key ko sanitize (saaf) kar diya hai
-    const supabaseClient = supabase.createClient(
-        'https://efgvsddclcnbmwqbtily.supabase.co', 
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZ3ZzZGRjbGhibXdxdGlieSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzQyNzI2MDkzLCJleHAiOjIwNTgzMDIwOTN9.vVlC-v_449X9_vM_V-vVlC-v_449X9_vM_V'
-    );
+    // Aapki verified details
+    const supabaseUrl = 'https://efgvsddclcnbmwqbtily.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZ3ZzZGRjbGNuYm13cWJ0aWx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNjM4MTIsImV4cCI6MjA4OTgzOTgxMn0.0Ctpos-lGsmIrNpajjtFZu8Cf5-ailFNvTjs2ItduxI'; 
+
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
     const fileInput = document.getElementById('fileInput');
     const progressBar = document.getElementById('progressBar');
@@ -96,6 +96,7 @@
         const file = e.target.files[0];
         if (!file) return;
 
+        // UI Update: Preview dikhayein
         document.getElementById('drop-zone').classList.add('hidden');
         document.getElementById('previewArea').classList.remove('hidden');
         document.getElementById('previewName').innerText = file.name;
@@ -112,47 +113,48 @@
         const interval = setInterval(() => {
             if(progress < 90) {
                 progress += Math.random() * 10;
-                updateProgress(Math.min(progress, 90), "Uploading...");
+                updateProgress(Math.min(progress, 90), "Uploading file...");
             }
         }, 500);
 
-        // Upload to 'pdfs' bucket
+        // 'pdfs' bucket mein upload karein
         const { data, error } = await supabaseClient.storage.from('pdfs').upload(fileName, file);
 
         clearInterval(interval);
         if (error) {
-            // Agar yahan signature error aaye toh iska matlab Key galat hai
-            updateProgress(0, "Error: " + error.message);
+            updateProgress(0, "Upload Error: " + error.message);
+            console.error(error);
             return;
         }
 
-        updateProgress(95, "Processing...");
+        updateProgress(95, "Compressing (AI)...");
         processOnServer(fileName);
     }
 
     async function processOnServer(fileName) {
-        // Edge Function Call
+        // Aapka deployed Edge Function invoke karein
         const { data, error } = await supabaseClient.functions.invoke('compress-pdf', {
             body: { fileName: fileName }
         });
 
         if (data) {
-            updateProgress(100, "Success!");
+            updateProgress(100, "Compression Complete!");
             const downloadBtn = document.getElementById('downloadBtn');
             downloadBtn.classList.remove('hidden');
             
-            const finalUrl = `https://efgvsddclcnbmwqbtily.supabase.co/storage/v1/object/public/pdfs/${data.downloadPath}`;
+            // Public URL for download
+            const finalUrl = `${supabaseUrl}/storage/v1/object/public/pdfs/${data.downloadPath}`;
             downloadBtn.href = finalUrl;
         } else {
-            updateProgress(0, "Compression Failed");
+            updateProgress(0, "AI Processing Failed");
             console.error(error);
         }
     }
 
     function updateProgress(val, text) {
-        progressBar.style.width = val + "%";
-        percentText.innerText = Math.round(val) + "%";
-        statusText.innerText = text;
+        if(progressBar) progressBar.style.width = val + "%";
+        if(percentText) percentText.innerText = Math.round(val) + "%";
+        if(statusText) statusText.innerText = text;
     }
 </script>
 </body>
