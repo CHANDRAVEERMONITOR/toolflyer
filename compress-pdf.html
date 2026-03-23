@@ -64,11 +64,23 @@
             processCompression(fileName);
         }
 
-        async function processCompression(fileName) {
-            statusText.innerText = "Compressing... Please wait.";
-            // Yahan hum Supabase Edge Function ko call karenge jo data clean karega
-            // Server-side processing code niche hai
-        }
+      // Function jo button click par upload ke baad chalega
+async function processOnServer(fileName) {
+    const { data, error } = await supabase.functions.invoke('compress-pdf', {
+        body: { fileName: fileName }
+    });
+
+    if (data) {
+        // Download button show karein
+        const downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.classList.remove('hidden');
+        
+        // Supabase storage ka public link
+        const finalUrl = `https://efgvsddclcnbmwqbtily.supabase.co/storage/v1/object/public/pdfs/${data.downloadPath}`;
+        downloadBtn.href = finalUrl;
+        downloadBtn.setAttribute('download', 'toolflyer.pdf');
+    }
+}
     </script>
 </body>
 </html>
