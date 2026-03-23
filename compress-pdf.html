@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3881463813155829" crossorigin="anonymous"></script>
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compress PDF - ToolFlyer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -83,8 +80,8 @@
             </div>
         </div>
     </main>
-
 <script>
+    // Aapki verified details
     const supabaseUrl = 'https://efgvsddclcnbmwqbtily.supabase.co';
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZ3ZzZGRjbGNuYm13cWJ0aWx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNjM4MTIsImV4cCI6MjA4OTgzOTgxMn0.0Ctpos-lGsmIrNpajjtFZu8Cf5-ailFNvTjs2ItduxI'; 
 
@@ -99,6 +96,7 @@
         const file = e.target.files[0];
         if (!file) return;
 
+        // UI Update: Preview dikhayein
         document.getElementById('drop-zone').classList.add('hidden');
         document.getElementById('previewArea').classList.remove('hidden');
         document.getElementById('previewName').innerText = file.name;
@@ -119,6 +117,7 @@
             }
         }, 500);
 
+        // 'pdfs' bucket mein upload karein
         const { data, error } = await supabaseClient.storage.from('pdfs').upload(fileName, file);
 
         clearInterval(interval);
@@ -133,6 +132,7 @@
     }
 
     async function processOnServer(fileName) {
+        // Aapka deployed Edge Function invoke karein
         const { data, error } = await supabaseClient.functions.invoke('compress-pdf', {
             body: { fileName: fileName }
         });
@@ -141,6 +141,8 @@
             updateProgress(100, "Compression Complete!");
             const downloadBtn = document.getElementById('downloadBtn');
             downloadBtn.classList.remove('hidden');
+            
+            // Public URL for download
             const finalUrl = `${supabaseUrl}/storage/v1/object/public/pdfs/${data.downloadPath}`;
             downloadBtn.href = finalUrl;
         } else {
