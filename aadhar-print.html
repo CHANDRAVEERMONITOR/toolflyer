@@ -1,97 +1,163 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aadhaar Smart Print Tool</title><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><style>
-body {font-family:Arial; text-align:center; background:#f4f4f4;}
-.box {background:#fff; padding:20px; margin:20px auto; max-width:600px; border-radius:10px;}
-button {padding:12px 25px; background:#2ecc71; color:#fff; border:none; border-radius:5px;}
-</style></head><body><div class="box">
-<h2>Aadhaar PDF → Smart Print</h2>
-<p>Auto detect bottom 28% → Front + Back → A4 Print</p><input type="file" id="pdfInput" accept="application/pdf"><br><br>
-<button onclick="processPDF()">Generate A4</button>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolFlyer - Aadhaar Smart Print</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .premium-bg { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .btn-glow:hover { box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen font-sans">
 
-</div><canvas id="canvas" style="display:none;"></canvas>
+    <div class="max-w-3xl mx-auto py-10 px-4">
+        <div class="glass rounded-[2rem] shadow-2xl overflow-hidden border border-white">
+            <div class="premium-bg p-10 text-center text-white">
+                <h1 class="text-4xl font-black tracking-tighter mb-2">SMART AADHAAR CUTTER</h1>
+                <p class="text-blue-200 font-medium tracking-wide italic">Auto-Detect | Auto-Crop | High Quality Print</p>
+            </div>
 
-<script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+            <div class="p-8">
+                <div class="flex justify-between mb-10 px-4">
+                    <div class="text-center"><div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center mx-auto mb-2 font-bold shadow-lg">1</div><span class="text-[10px] font-black text-gray-500 uppercase">Upload</span></div>
+                    <div class="flex-1 h-[2px] bg-gray-200 mt-5 mx-2"></div>
+                    <div class="text-center"><div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-2 font-bold">2</div><span class="text-[10px] font-black text-gray-500 uppercase">Unlock</span></div>
+                    <div class="flex-1 h-[2px] bg-gray-200 mt-5 mx-2"></div>
+                    <div class="text-center"><div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-2 font-bold">3</div><span class="text-[10px] font-black text-gray-500 uppercase">Print</span></div>
+                </div>
 
-async function processPDF() {
+                <div id="dropZone" class="border-4 border-dashed border-slate-200 rounded-3xl p-12 text-center hover:border-blue-500 hover:bg-blue-50 transition-all cursor-pointer group" onclick="document.getElementById('pdfInput').click()">
+                    <input type="file" id="pdfInput" accept="application/pdf" class="hidden">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-700">Select Aadhaar PDF</h3>
+                    <p class="text-slate-400 mt-2 font-medium">Password protected files are fully supported</p>
+                </div>
 
-const file = document.getElementById('pdfInput').files[0];
-if(!file){ alert("Upload PDF"); return; }
+                <div id="passPanel" class="hidden mt-8 p-6 bg-amber-50 rounded-2xl border-2 border-amber-200 animate-bounce-short">
+                    <label class="block text-amber-800 font-black mb-3 text-sm uppercase">🔒 Enter PDF Password (e.g. RAMA1998)</label>
+                    <div class="flex gap-3">
+                        <input type="password" id="pdfPass" class="flex-grow p-4 rounded-xl border-2 border-amber-300 focus:outline-none focus:ring-4 focus:ring-amber-200 transition-all font-bold tracking-widest text-lg">
+                        <button onclick="startProcessing()" class="bg-amber-600 text-white px-8 rounded-xl font-black hover:bg-amber-700 transition-all shadow-lg">UNLOCK</button>
+                    </div>
+                </div>
 
-const reader = new FileReader();
+                <div id="loader" class="hidden mt-8 text-center py-6">
+                    <div class="inline-block animate-spin w-10 h-10 border-[6px] border-blue-600 border-t-transparent rounded-full mb-4"></div>
+                    <p class="text-blue-700 font-black italic tracking-widest uppercase">Smart Cropping in Progress...</p>
+                </div>
 
-reader.onload = async function() {
+                <button id="finalActionBtn" onclick="startProcessing()" class="hidden mt-8 w-full bg-green-500 text-white py-6 rounded-2xl font-black text-2xl tracking-tighter shadow-xl hover:bg-green-600 active:scale-95 transition-all btn-glow uppercase">
+                    Download A4 Print Ready PDF
+                </button>
+            </div>
+        </div>
+        
+        <p class="text-center mt-8 text-slate-400 font-bold text-sm tracking-widest uppercase opacity-50">India's Leading Tool for Cyber Cafes & CSC</p>
+    </div>
 
-const pdf = await pdfjsLib.getDocument(new Uint8Array(this.result)).promise;
-const page = await pdf.getPage(1);
+    <canvas id="canvas" style="display:none;"></canvas>
 
-const viewport = page.getViewport({ scale: 2 });
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+        let currentFileArrayBuffer = null;
 
-canvas.width = viewport.width;
-canvas.height = viewport.height;
+        document.getElementById('pdfInput').onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function() {
+                currentFileArrayBuffer = new Uint8Array(this.result);
+                document.getElementById('finalActionBtn').classList.remove('hidden');
+                document.getElementById('dropZone').classList.add('opacity-50');
+            };
+            reader.readAsArrayBuffer(file);
+        };
 
-await page.render({ canvasContext: ctx, viewport }).promise;
+        async function startProcessing() {
+            const pass = document.getElementById('pdfPass').value;
+            const loader = document.getElementById('loader');
+            const passPanel = document.getElementById('passPanel');
+            const finalBtn = document.getElementById('finalActionBtn');
 
-// 🔥 STEP 1: Bottom 28% crop
-const cropHeight = canvas.height * 0.28;
-const cropY = canvas.height - cropHeight;
+            loader.classList.remove('hidden');
+            passPanel.classList.add('hidden');
+            finalBtn.classList.add('hidden');
 
-const cropData = ctx.getImageData(0, cropY, canvas.width, cropHeight);
+            try {
+                const loadingTask = pdfjsLib.getDocument({
+                    data: currentFileArrayBuffer,
+                    password: pass
+                });
 
-// temp canvas
-const temp = document.createElement('canvas');
-const tctx = temp.getContext('2d');
+                const pdf = await loadingTask.promise;
+                const page = await pdf.getPage(1);
 
-temp.width = canvas.width;
-temp.height = cropHeight;
+                // High DPI Scale (3.5 for super crisp text)
+                const viewport = page.getViewport({ scale: 3.5 });
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
 
-tctx.putImageData(cropData, 0, 0);
+                await page.render({ canvasContext: ctx, viewport }).promise;
 
-// 🔥 STEP 2: Split Left/Right (Front/Back)
-const halfW = temp.width / 2;
+                // Precision Bottom 33% Logic (Standard India EAadhar)
+                const cropH = canvas.height * 0.315; 
+                const cropY = canvas.height - cropH - (canvas.height * 0.015);
 
-const frontData = tctx.getImageData(0, 0, halfW, cropHeight);
-const backData = tctx.getImageData(halfW, 0, halfW, cropHeight);
+                const getPart = (startX, width) => {
+                    const c = document.createElement('canvas');
+                    c.width = width; c.height = cropH;
+                    const tctx = c.getContext('2d');
+                    tctx.drawImage(canvas, startX, cropY, width, cropH, 0, 0, width, cropH);
+                    return c.toDataURL("image/jpeg", 1.0);
+                };
 
-// create front image
-const c1 = document.createElement('canvas');
-c1.width = halfW; c1.height = cropHeight;
-c1.getContext('2d').putImageData(frontData, 0, 0);
-const frontImg = c1.toDataURL("image/jpeg");
+                const halfW = canvas.width / 2;
+                // Margin adjust to avoid extra text
+                const frontImg = getPart(25, halfW - 45); 
+                const backImg = getPart(halfW + 20, halfW - 45);
 
-// create back image
-const c2 = document.createElement('canvas');
-c2.width = halfW; c2.height = cropHeight;
-c2.getContext('2d').putImageData(backData, 0, 0);
-const backImg = c2.toDataURL("image/jpeg");
+                const { jsPDF } = window.jspdf;
+                const pdfOut = new jsPDF('p','mm','a4');
 
-// 🔥 STEP 3: Create A4 PDF (2 GRID ONLY)
-const { jsPDF } = window.jspdf;
-const pdfOut = new jsPDF('p','mm','a4');
+                const w = 86; // Standard Aadhar Width in mm
+                const h = 54; // Standard Height
+                const startX = (210 - (w*2 + 8)) / 2;
 
-// Aadhaar size
-const w = 85;
-const h = 50;
+                // Add Card Images to A4
+                pdfOut.addImage(frontImg, 'JPEG', startX, 20, w, h);
+                pdfOut.addImage(backImg, 'JPEG', startX + w + 8, 20, w, h);
 
-// center alignment
-const pageW = 210;
-const startX = (pageW - (w*2 + 10)) / 2;
+                // Light Cutting Guides
+                pdfOut.setDrawColor(220);
+                pdfOut.rect(startX - 0.2, 19.8, w + 0.4, h + 0.4);
+                pdfOut.rect(startX + w + 8 - 0.2, 19.8, w + 0.4, h + 0.4);
 
-pdfOut.addImage(frontImg, 'JPEG', startX, 20, w, h);
-pdfOut.addImage(backImg, 'JPEG', startX + w + 10, 20, w, h);
+                pdfOut.save("Aadhar_Smart_Print_ToolFlyer.pdf");
+                
+                loader.classList.add('hidden');
+                finalBtn.classList.remove('hidden');
 
-pdfOut.save("aadhaar-final-print.pdf");
-
-};
-
-reader.readAsArrayBuffer(file);
-}
-</script></body>
+            } catch (err) {
+                loader.classList.add('hidden');
+                if (err.name === "PasswordException" || err.message.includes("password")) {
+                    passPanel.classList.remove('hidden');
+                } else {
+                    alert("Galti: " + err.message);
+                    finalBtn.classList.remove('hidden');
+                }
+            }
+        }
+    </script>
+</body>
 </html>
