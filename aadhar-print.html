@@ -8,7 +8,7 @@ body {font-family:Arial; text-align:center; background:#f4f4f4;}
 button {padding:12px 25px; background:#2ecc71; color:#fff; border:none; border-radius:5px;}
 </style></head><body><div class="box">
 <h2>Aadhaar PDF → Smart Print</h2>
-<p>Auto detect bottom 33% → Front + Back → A4 Print</p><input type="file" id="pdfInput" accept="application/pdf"><br><br>
+<p>Auto detect bottom 28% → Front + Back → A4 Print</p><input type="file" id="pdfInput" accept="application/pdf"><br><br>
 <button onclick="processPDF()">Generate A4</button>
 
 </div><canvas id="canvas" style="display:none;"></canvas>
@@ -39,8 +39,8 @@ canvas.height = viewport.height;
 
 await page.render({ canvasContext: ctx, viewport }).promise;
 
-// 🔥 STEP 1: Bottom 30% crop
-const cropHeight = canvas.height * 0.33;
+// 🔥 STEP 1: Bottom 28% crop
+const cropHeight = canvas.height * 0.28;
 const cropY = canvas.height - cropHeight;
 
 const cropData = ctx.getImageData(0, cropY, canvas.width, cropHeight);
