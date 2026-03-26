@@ -2,128 +2,189 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Aadhaar Smart Print - ToolFlyer Fix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhaar Master Print - ToolFlyer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f0f2f5; }
+        .main-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%); }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .step-badge {
+            width: 35px; height: 35px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; font-weight: 900;
+        }
+        .btn-shine {
+            position: relative; overflow: hidden;
+            transition: all 0.3s;
+        }
+        .btn-shine::after {
+            content: ""; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: rgba(255,255,255,0.2);
+            transform: rotate(45deg); transition: 0.5s;
+        }
+        .btn-shine:hover::after { left: 120%; }
+        .upload-dashed { border: 3px dashed #cbd5e1; transition: 0.3s; }
+        .upload-dashed:hover { border-color: #3b82f6; background: #eff6ff; }
+    </style>
 </head>
-<body class="bg-slate-100 p-5">
+<body class="antialiased">
 
-    <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl p-8 border">
-        <h1 class="text-3xl font-black text-center text-blue-700 mb-6 uppercase">Aadhaar Master Cutter</h1>
-
-        <div id="uploadBox" class="border-4 border-dashed border-gray-200 p-10 text-center rounded-2xl cursor-pointer hover:bg-blue-50" onclick="document.getElementById('pdfInput').click()">
-            <input type="file" id="pdfInput" accept="application/pdf" class="hidden">
-            <p id="fileName" class="text-gray-500 font-bold">Select Aadhaar PDF (Password Protected)</p>
+<div class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-2xl glass-card rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden">
+        
+        <div class="main-gradient p-10 text-center text-white relative">
+            <div class="absolute top-4 right-6 opacity-20 text-5xl font-black">INDIA</div>
+            <h1 class="text-4xl font-black tracking-tight mb-2 uppercase">Aadhaar Smart Print</h1>
+            <p class="text-blue-100 font-medium opacity-80 tracking-widest text-xs uppercase">Premium Auto-Crop & Grid System</p>
         </div>
 
-        <div id="passArea" class="hidden mt-6 p-6 bg-blue-50 rounded-2xl border-2 border-blue-200">
-            <label class="block text-blue-800 font-bold mb-2 uppercase text-xs tracking-widest">Apna Aadhaar Password Dalein:</label>
-            <div class="flex gap-2">
-                <input type="text" id="pdfPass" placeholder="e.g. RAMA1998" class="flex-grow p-4 rounded-xl border-2 border-blue-300 outline-none font-bold uppercase tracking-widest">
-                <button onclick="startProcessing()" class="bg-blue-600 text-white px-8 rounded-xl font-black hover:bg-blue-700 shadow-lg">PROCESS</button>
+        <div class="p-8">
+            <div class="flex items-center justify-between mb-10 max-w-md mx-auto">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="step-badge bg-blue-600 text-white shadow-lg">1</div>
+                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Select</span>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 mx-2 rounded-full"></div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="step-badge bg-gray-100 text-gray-400">2</div>
+                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Unlock</span>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 mx-2 rounded-full"></div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="step-badge bg-gray-100 text-gray-400">3</div>
+                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Print</span>
+                </div>
             </div>
-            <p class="text-[10px] text-blue-400 mt-2 italic">*Aapke Naam ke 4 Akshar + Janm ka Saal (e.g., AMIT1990)</p>
-        </div>
 
-        <div id="loader" class="hidden mt-8 text-center text-blue-600 font-black animate-pulse uppercase">
-            🚀 High Quality Cutting in Progress...
+            <div id="uploadBox" class="upload-dashed rounded-3xl p-12 text-center group cursor-pointer" onclick="document.getElementById('pdfInput').click()">
+                <input type="file" id="pdfInput" accept="application/pdf" class="hidden">
+                <div class="mb-5 text-blue-500 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-file-pdf text-6xl"></i>
+                </div>
+                <h3 class="text-xl font-black text-slate-700 uppercase tracking-tight">PDF Yahan Chunein</h3>
+                <p id="fileName" class="text-slate-400 mt-2 font-medium text-sm italic">Password protected files supported</p>
+            </div>
+
+            <div id="passArea" class="hidden mt-8 animate-fade-in">
+                <div class="bg-amber-50 border-2 border-amber-200 rounded-3xl p-6 shadow-inner">
+                    <label class="block text-amber-800 font-black mb-3 text-xs uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-lock"></i> PDF Password Dalein
+                    </label>
+                    <div class="flex gap-3">
+                        <input type="text" id="pdfPass" class="flex-grow p-4 rounded-2xl border-2 border-amber-300 focus:outline-none focus:ring-4 focus:ring-amber-200 transition-all font-bold tracking-widest text-lg uppercase" placeholder="e.g. RAMA1998">
+                        <button onclick="startProcessing()" class="bg-amber-600 text-white px-8 rounded-2xl font-black hover:bg-amber-700 transition-all shadow-lg active:scale-95 btn-shine uppercase">
+                            Unlock
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="loader" class="hidden mt-10 text-center py-6">
+                <div class="inline-block animate-spin w-12 h-12 border-[6px] border-blue-600 border-t-transparent rounded-full mb-4"></div>
+                <p class="text-blue-700 font-black italic tracking-[0.2em] uppercase text-xs">Processing Card Layout...</p>
+            </div>
+
+            <button id="finalBtn" onclick="startProcessing()" class="hidden mt-10 w-full bg-green-500 text-white py-6 rounded-3xl font-black text-2xl tracking-tighter shadow-[0_15px_30px_rgba(34,197,94,0.3)] hover:bg-green-600 active:scale-95 transition-all btn-shine uppercase">
+                <i class="fa-solid fa-download mr-3"></i> Download A4 Print
+            </button>
         </div>
     </div>
+    
+    <div class="mt-8 text-slate-400 font-black text-[10px] tracking-[0.3em] uppercase opacity-50 flex items-center gap-4">
+        <span>ToolFlyer Original</span>
+        <div class="w-1 h-1 bg-slate-400 rounded-full"></div>
+        <span>High Precision</span>
+    </div>
+</div>
 
-    <canvas id="canvas" style="display:none;"></canvas>
+<canvas id="canvas" style="display:none;"></canvas>
 
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+<script>
+    // [LOGIC WAHI HAI JO HUMNE FIX KIYA THA - NO DETACH ERROR]
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    let fileArrayBuffer = null;
 
-        let fileArrayBuffer = null;
-
-        document.getElementById('pdfInput').onchange = async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function() {
-                fileArrayBuffer = new Uint8Array(this.result);
-                document.getElementById('fileName').innerText = "Selected: " + file.name;
-                document.getElementById('passArea').classList.remove('hidden');
-                document.getElementById('uploadBox').classList.add('opacity-50');
-            };
-            reader.readAsArrayBuffer(file);
+    document.getElementById('pdfInput').onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function() {
+            fileArrayBuffer = new Uint8Array(this.result);
+            document.getElementById('fileName').innerText = "SELECTED: " + file.name.toUpperCase();
+            document.getElementById('passArea').classList.remove('hidden');
+            document.getElementById('uploadBox').classList.add('opacity-40');
         };
+        reader.readAsArrayBuffer(file);
+    };
 
-        async function startProcessing() {
-            const pass = document.getElementById('pdfPass').value.trim();
-            const loader = document.getElementById('loader');
+    async function startProcessing() {
+        const pass = document.getElementById('pdfPass').value.trim();
+        const loader = document.getElementById('loader');
+        const passArea = document.getElementById('passArea');
+        const finalBtn = document.getElementById('finalBtn');
 
-            if(!pass) { alert("Bhai, pehle password toh dalo!"); return; }
-            if(!fileArrayBuffer) { alert("File nahi mili!"); return; }
+        if(!pass) { alert("Bhai, pehle password toh dalo!"); return; }
+        loader.classList.remove('hidden');
+        passArea.classList.add('hidden');
+        finalBtn.classList.add('hidden');
 
-            loader.classList.remove('hidden');
+        try {
+            const currentBuffer = new Uint8Array(fileArrayBuffer);
+            const loadingTask = pdfjsLib.getDocument({ data: currentBuffer, password: pass });
+            const pdf = await loadingTask.promise;
+            const page = await pdf.getPage(1);
 
-            try {
-                // IMPORTANT: Har baar naya buffer bhej rahe hain taaki memory error na aaye
-                const currentBuffer = new Uint8Array(fileArrayBuffer);
+            const viewport = page.getViewport({ scale: 4.0 });
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = viewport.width; canvas.height = viewport.height;
 
-                const loadingTask = pdfjsLib.getDocument({
-                    data: currentBuffer,
-                    password: pass,
-                    stopAtErrors: false // Isse processing nahi rukegi
-                });
+            await page.render({ canvasContext: ctx, viewport }).promise;
 
-                const pdf = await loadingTask.promise;
-                const page = await pdf.getPage(1);
+            const cropH = canvas.height * 0.31;
+            const cropY = canvas.height - cropH - (canvas.height * 0.02);
+            const getPart = (startX, width) => {
+                const c = document.createElement('canvas');
+                c.width = width; c.height = cropH;
+                c.getContext('2d').drawImage(canvas, startX, cropY, width, cropH, 0, 0, width, cropH);
+                return c.toDataURL("image/jpeg", 1.0);
+            };
 
-                const viewport = page.getViewport({ scale: 4.0 }); // Full HD Quality
-                const canvas = document.getElementById('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = viewport.width;
-                canvas.height = viewport.height;
+            const halfW = canvas.width / 2;
+            const frontImg = getPart(40, halfW - 60); 
+            const backImg = getPart(halfW + 20, halfW - 60);
 
-                await page.render({ canvasContext: ctx, viewport }).promise;
+            const { jsPDF } = window.jspdf;
+            const pdfOut = new jsPDF('p','mm','a4');
+            const w = 86; const h = 54;
+            const startX = (210 - (w*2 + 8)) / 2;
 
-                // India Aadhar Bottom-33% Exact Crop
-                const cropH = canvas.height * 0.31;
-                const cropY = canvas.height - cropH - (canvas.height * 0.02);
+            pdfOut.setDrawColor(200);
+            pdfOut.rect(startX-0.1, 19.9, w+0.2, h+0.2);
+            pdfOut.rect(startX+w+8-0.1, 19.9, w+0.2, h+0.2);
 
-                const getPart = (startX, width) => {
-                    const c = document.createElement('canvas');
-                    c.width = width; c.height = cropH;
-                    c.getContext('2d').drawImage(canvas, startX, cropY, width, cropH, 0, 0, width, cropH);
-                    return c.toDataURL("image/jpeg", 1.0);
-                };
+            pdfOut.addImage(frontImg, 'JPEG', startX, 20, w, h);
+            pdfOut.addImage(backImg, 'JPEG', startX + w + 8, 20, w, h);
 
-                const halfW = canvas.width / 2;
-                const frontImg = getPart(40, halfW - 60); 
-                const backImg = getPart(halfW + 20, halfW - 60);
-
-                const { jsPDF } = window.jspdf;
-                const pdfOut = new jsPDF('p','mm','a4');
-
-                const w = 86; const h = 54;
-                const startX = (210 - (w*2 + 8)) / 2;
-
-                pdfOut.addImage(frontImg, 'JPEG', startX, 20, w, h);
-                pdfOut.addImage(backImg, 'JPEG', startX + w + 8, 20, w, h);
-
-                // Cut-marks Border
-                pdfOut.setDrawColor(220);
-                pdfOut.rect(startX-0.1, 19.9, w+0.2, h+0.2);
-                pdfOut.rect(startX+w+8-0.1, 19.9, w+0.2, h+0.2);
-
-                pdfOut.save("Aadhar_Final_Print_ToolFlyer.pdf");
-                loader.classList.add('hidden');
-
-            } catch (err) {
-                loader.classList.add('hidden');
-                console.error(err);
-                if (err.name === "PasswordException") {
-                    alert("❌ Password Galat Hai! Dubara sahi password dalein.");
-                } else {
-                    alert("Galti: " + err.message);
-                }
-            }
+            pdfOut.save("Aadhar_Smart_Print_ToolFlyer.pdf");
+            loader.classList.add('hidden');
+            finalBtn.classList.remove('hidden');
+        } catch (err) {
+            loader.classList.add('hidden');
+            passArea.classList.remove('hidden');
+            if (err.name === "PasswordException") alert("❌ Galat Password!");
+            else alert("Error: " + err.message);
         }
-    </script>
+    }
+</script>
 </body>
 </html>
