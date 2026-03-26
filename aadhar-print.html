@@ -1,97 +1,144 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aadhaar Smart Print Tool</title><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><style>
-body {font-family:Arial; text-align:center; background:#f4f4f4;}
-.box {background:#fff; padding:20px; margin:20px auto; max-width:600px; border-radius:10px;}
-button {padding:12px 25px; background:#2ecc71; color:#fff; border:none; border-radius:5px;}
-</style></head><body><div class="box">
-<h2>Aadhaar PDF → Smart Print</h2>
-<p>Auto detect bottom 33% → Front + Back → A4 Print</p><input type="file" id="pdfInput" accept="application/pdf"><br><br>
-<button onclick="processPDF()">Generate A4</button>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhaar Smart Print - ToolFlyer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen">
 
-</div><canvas id="canvas" style="display:none;"></canvas>
+    <div class="max-w-4xl mx-auto py-12 px-4">
+        <div class="bg-white rounded-3xl overflow-hidden card-shadow">
+            <div class="gradient-bg p-8 text-white text-center">
+                <h1 class="text-4xl font-black mb-2 tracking-tight">AADHAAR SMART PRINT</h1>
+                <p class="text-indigo-100 opacity-90 italic">India's Fastest Auto-Crop & Grid Tool</p>
+            </div>
 
-<script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-center">
+                    <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
+                        <span class="text-2xl font-bold text-blue-600">1</span>
+                        <p class="text-sm font-semibold text-gray-600 mt-2">PDF Select Karein</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-purple-50 border border-purple-100">
+                        <span class="text-2xl font-bold text-purple-600">2</span>
+                        <p class="text-sm font-semibold text-gray-600 mt-2">Auto 33% Crop</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-green-50 border border-green-100">
+                        <span class="text-2xl font-bold text-green-600">3</span>
+                        <p class="text-sm font-semibold text-gray-600 mt-2">A4 Print Ready</p>
+                    </div>
+                </div>
 
-async function processPDF() {
+                <div id="uploadBox" class="border-4 border-dashed border-gray-200 rounded-3xl p-12 text-center hover:border-indigo-400 hover:bg-indigo-50 transition-all cursor-pointer group" onclick="document.getElementById('pdfInput').click()">
+                    <input type="file" id="pdfInput" accept="application/pdf" class="hidden">
+                    <div class="mb-4 inline-block p-4 bg-indigo-100 rounded-full group-hover:scale-110 transition-transform">
+                        <svg class="w-10 h-10 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-700">Choose Aadhaar PDF</h3>
+                    <p class="text-gray-400 mt-1">Password protected files are supported</p>
+                </div>
 
-const file = document.getElementById('pdfInput').files[0];
-if(!file){ alert("Upload PDF"); return; }
+                <div id="status" class="hidden mt-6 text-center animate-pulse text-indigo-600 font-bold">Processing High-Quality Layout...</div>
 
-const reader = new FileReader();
+                <button onclick="processPDF()" id="mainBtn" class="mt-8 w-full gradient-bg text-white py-5 rounded-2xl font-black text-xl tracking-wider hover:opacity-90 transform active:scale-95 transition-all shadow-lg">
+                    GENERATE SMART A4 PRINT
+                </button>
+            </div>
+        </div>
+        <p class="text-center mt-6 text-gray-400 text-sm">Made for Indian CSC & Cyber Cafe Operators</p>
+    </div>
 
-reader.onload = async function() {
+    <canvas id="canvas" style="display:none;"></canvas>
 
-const pdf = await pdfjsLib.getDocument(new Uint8Array(this.result)).promise;
-const page = await pdf.getPage(1);
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-const viewport = page.getViewport({ scale: 2 });
+        async function processPDF() {
+            const file = document.getElementById('pdfInput').files[0];
+            if(!file){ alert("Pehle Aadhaar PDF select karein!"); return; }
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+            const status = document.getElementById('status');
+            status.classList.remove('hidden');
 
-canvas.width = viewport.width;
-canvas.height = viewport.height;
+            const reader = new FileReader();
+            reader.onload = async function() {
+                try {
+                    const pdf = await pdfjsLib.getDocument(new Uint8Array(this.result)).promise;
+                    const page = await pdf.getPage(1);
+                    
+                    // High Scale (3.0) for crystal clear print quality
+                    const viewport = page.getViewport({ scale: 3.5 });
+                    const canvas = document.getElementById('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
 
-await page.render({ canvasContext: ctx, viewport }).promise;
+                    await page.render({ canvasContext: ctx, viewport }).promise;
 
-// 🔥 STEP 1: Bottom 33% crop
-const cropHeight = canvas.height * 0.33;
-const cropY = canvas.height - cropHeight;
+                    // 🔥 India Logic: Exactly Bottom 33% target
+                    const cropHeight = canvas.height * 0.31; 
+                    const cropY = canvas.height - cropHeight - (canvas.height * 0.02); // Small offset for margin
 
-const cropData = ctx.getImageData(0, cropY, canvas.width, cropHeight);
+                    const temp = document.createElement('canvas');
+                    const tctx = temp.getContext('2d');
+                    temp.width = canvas.width;
+                    temp.height = cropHeight;
+                    tctx.drawImage(canvas, 0, cropY, canvas.width, cropHeight, 0, 0, canvas.width, cropHeight);
 
-// temp canvas
-const temp = document.createElement('canvas');
-const tctx = temp.getContext('2d');
+                    // Split Front & Back
+                    const halfW = temp.width / 2;
+                    
+                    const createImg = (x, w, h) => {
+                        const c = document.createElement('canvas');
+                        c.width = w; c.height = h;
+                        c.getContext('2d').drawImage(temp, x, 0, w, h, 0, 0, w, h);
+                        return c.toDataURL("image/jpeg", 1.0);
+                    };
 
-temp.width = canvas.width;
-temp.height = cropHeight;
+                    const frontImg = createImg(20, halfW - 40, cropHeight); // Crop margins
+                    const backImg = createImg(halfW + 20, halfW - 40, cropHeight);
 
-tctx.putImageData(cropData, 0, 0);
+                    const { jsPDF } = window.jspdf;
+                    const pdfOut = new jsPDF('p','mm','a4');
 
-// 🔥 STEP 2: Split Left/Right (Front/Back)
-const halfW = temp.width / 2;
+                    // Standard ID Card Size in India
+                    const w = 86; 
+                    const h = 55;
+                    const pageW = 210;
+                    const gap = 5;
+                    const startX = (pageW - (w*2 + gap)) / 2;
 
-const frontData = tctx.getImageData(0, 0, halfW, cropHeight);
-const backData = tctx.getImageData(halfW, 0, halfW, cropHeight);
+                    // Draw Light Borders (Cutting Guide)
+                    pdfOut.setDrawColor(200, 200, 200);
+                    pdfOut.rect(startX - 0.5, 19.5, w + 1, h + 1);
+                    pdfOut.rect(startX + w + gap - 0.5, 19.5, w + 1, h + 1);
 
-// create front image
-const c1 = document.createElement('canvas');
-c1.width = halfW; c1.height = cropHeight;
-c1.getContext('2d').putImageData(frontData, 0, 0);
-const frontImg = c1.toDataURL("image/jpeg");
+                    // Add Images
+                    pdfOut.addImage(frontImg, 'JPEG', startX, 20, w, h);
+                    pdfOut.addImage(backImg, 'JPEG', startX + w + gap, 20, w, h);
 
-// create back image
-const c2 = document.createElement('canvas');
-c2.width = halfW; c2.height = cropHeight;
-c2.getContext('2d').putImageData(backData, 0, 0);
-const backImg = c2.toDataURL("image/jpeg");
+                    // Branding
+                    pdfOut.setFontSize(8);
+                    pdfOut.setTextColor(150);
+                    pdfOut.text("Generated by ToolFlyer Smart Print", pageW/2, 85, {align: 'center'});
 
-// 🔥 STEP 3: Create A4 PDF (2 GRID ONLY)
-const { jsPDF } = window.jspdf;
-const pdfOut = new jsPDF('p','mm','a4');
-
-// Aadhaar size
-const w = 85;
-const h = 54;
-
-// center alignment
-const pageW = 210;
-const startX = (pageW - (w*2 + 10)) / 2;
-
-pdfOut.addImage(frontImg, 'JPEG', startX, 20, w, h);
-pdfOut.addImage(backImg, 'JPEG', startX + w + 10, 20, w, h);
-
-pdfOut.save("aadhaar-final-print.pdf");
-
-};
-
-reader.readAsArrayBuffer(file);
-}
-</script></body>
+                    pdfOut.save("Aadhaar_Ready_To_Print.pdf");
+                    status.classList.add('hidden');
+                } catch (e) {
+                    alert("Error: Shayad PDF Password-protected hai. Password hatakar try karein.");
+                    status.classList.add('hidden');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+    </script>
+</body>
 </html>
