@@ -2,93 +2,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aadhaar PDF Print Tool - ToolFlyer</title><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><style>
-body {font-family: Arial; text-align:center; background:#f4f4f4;}
-.container {background:#fff; padding:20px; margin:20px auto; max-width:800px; border-radius:10px;}
-input {margin:10px; padding:10px;}
-button {padding:12px 25px; background:#2ecc71; color:#fff; border:none; border-radius:5px; cursor:pointer;}
-canvas {display:none;}
-</style></head><body><div class="container">
-<h2>Aadhaar PDF to A4 Print (Auto Grid)</h2>
-<p>Upload Aadhaar PDF → Auto Split → Download A4 Print</p><input type="file" id="pdfInput" accept="application/pdf"><br>
-<button onclick="processPDF()">Generate Print PDF</button>
+<title>Aadhaar Smart Print Tool</title><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><style>
+body {font-family:Arial; text-align:center; background:#f4f4f4;}
+.box {background:#fff; padding:20px; margin:20px auto; max-width:600px; border-radius:10px;}
+button {padding:12px 25px; background:#2ecc71; color:#fff; border:none; border-radius:5px;}
+</style></head><body><div class="box">
+<h2>Aadhaar PDF → Smart Print</h2>
+<p>Auto detect bottom 33% → Front + Back → A4 Print</p><input type="file" id="pdfInput" accept="application/pdf"><br><br>
+<button onclick="processPDF()">Generate A4</button>
 
-</div><canvas id="pdfCanvas"></canvas>
+</div><canvas id="canvas" style="display:none;"></canvas>
 
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 async function processPDF() {
-    const file = document.getElementById('pdfInput').files[0];
-    if (!file) {
-        alert("Please upload Aadhaar PDF");
-        return;
-    }
 
-    const fileReader = new FileReader();
-    fileReader.onload = async function() {
-        const typedarray = new Uint8Array(this.result);
+const file = document.getElementById('pdfInput').files[0];
+if(!file){ alert("Upload PDF"); return; }
 
-        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-        const page = await pdf.getPage(1);
+const reader = new FileReader();
 
-        const viewport = page.getViewport({ scale: 2 });
-        const canvas = document.getElementById('pdfCanvas');
-        const context = canvas.getContext('2d');
+reader.onload = async function() {
 
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+const pdf = await pdfjsLib.getDocument(new Uint8Array(this.result)).promise;
+const page = await pdf.getPage(1);
 
-        await page.render({ canvasContext: context, viewport: viewport }).promise;
+const viewport = page.getViewport({ scale: 2 });
 
-        // Split front & back (top/bottom)
-        const halfHeight = canvas.height / 2;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
-        const front = context.getImageData(0, 0, canvas.width, halfHeight);
-        const back = context.getImageData(0, halfHeight, canvas.width, halfHeight);
+canvas.width = viewport.width;
+canvas.height = viewport.height;
 
-        // Create temp canvas
-        const tempCanvas = document.createElement('canvas');
-        const tempCtx = tempCanvas.getContext('2d');
+await page.render({ canvasContext: ctx, viewport }).promise;
 
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = halfHeight;
+// 🔥 STEP 1: Bottom 33% crop
+const cropHeight = canvas.height * 0.33;
+const cropY = canvas.height - cropHeight;
 
-        tempCtx.putImageData(front, 0, 0);
-        const frontImg = tempCanvas.toDataURL("image/jpeg");
+const cropData = ctx.getImageData(0, cropY, canvas.width, cropHeight);
 
-        tempCtx.clearRect(0,0,tempCanvas.width,tempCanvas.height);
-        tempCtx.putImageData(back, 0, 0);
-        const backImg = tempCanvas.toDataURL("image/jpeg");
+// temp canvas
+const temp = document.createElement('canvas');
+const tctx = temp.getContext('2d');
 
-        generateA4(frontImg, backImg);
-    };
+temp.width = canvas.width;
+temp.height = cropHeight;
 
-    fileReader.readAsArrayBuffer(file);
-}
+tctx.putImageData(cropData, 0, 0);
 
-async function generateA4(frontImg, backImg) {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('p','mm','a4');
+// 🔥 STEP 2: Split Left/Right (Front/Back)
+const halfW = temp.width / 2;
 
-    const cardW = 85.6;
-    const cardH = 54;
+const frontData = tctx.getImageData(0, 0, halfW, cropHeight);
+const backData = tctx.getImageData(halfW, 0, halfW, cropHeight);
 
-    let x = 10, y = 10;
+// create front image
+const c1 = document.createElement('canvas');
+c1.width = halfW; c1.height = cropHeight;
+c1.getContext('2d').putImageData(frontData, 0, 0);
+const frontImg = c1.toDataURL("image/jpeg");
 
-    for(let i=0;i<4;i++){
-        pdf.addImage(frontImg, 'JPEG', x, y, cardW, cardH);
-        pdf.addImage(backImg, 'JPEG', x, y + cardH + 5, cardW, cardH);
+// create back image
+const c2 = document.createElement('canvas');
+c2.width = halfW; c2.height = cropHeight;
+c2.getContext('2d').putImageData(backData, 0, 0);
+const backImg = c2.toDataURL("image/jpeg");
 
-        x += cardW + 10;
+// 🔥 STEP 3: Create A4 PDF (2 GRID ONLY)
+const { jsPDF } = window.jspdf;
+const pdfOut = new jsPDF('p','mm','a4');
 
-        if(x > 150){
-            x = 10;
-            y += (cardH*2) + 20;
-        }
-    }
+// Aadhaar size
+const w = 85;
+const h = 54;
 
-    pdf.save("aadhaar-print.pdf");
+// center alignment
+const pageW = 210;
+const startX = (pageW - (w*2 + 10)) / 2;
+
+pdfOut.addImage(frontImg, 'JPEG', startX, 20, w, h);
+pdfOut.addImage(backImg, 'JPEG', startX + w + 10, 20, w, h);
+
+pdfOut.save("aadhaar-final-print.pdf");
+
+};
+
+reader.readAsArrayBuffer(file);
 }
 </script></body>
 </html>
