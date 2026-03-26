@@ -3,125 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aadhar Card A4 Print Tool - ToolFlyer</title>
+    <title>Aadhar Cutter - ToolFlyer</title>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 min-h-screen p-5">
+<body class="bg-gray-100 min-h-screen">
+    <div class="max-w-3xl mx-auto py-10 px-4">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 border border-gray-200">
+            <h1 class="text-3xl font-extrabold text-center text-blue-700 mb-2">Aadhar Crop & Print</h1>
+            <p class="text-center text-gray-500 mb-8 font-medium italic">Printsahyogi style automatic layout generator.</p>
 
-    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
-        <h2 class="text-3xl font-bold text-center mb-6">Aadhar A4 Print Tool</h2>
-        <p class="text-center text-gray-500 mb-8 text-sm">Niche ke do cards ko crop karke A4 top par set karein.</p>
-        
-        <div class="border-2 border-dashed border-blue-400 p-10 text-center rounded-lg mb-4 cursor-pointer" id="drop-zone" onclick="document.getElementById('pdfInput').click()">
-            <input type="file" id="pdfInput" accept=".pdf" class="hidden">
-            <p class="text-blue-600 font-semibold">Aadhar PDF Select Karein</p>
+            <div id="dropZone" class="border-4 border-dashed border-blue-100 bg-blue-50 rounded-2xl p-12 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-100 transition-all group">
+                <input type="file" id="pdfInput" accept=".pdf" class="hidden">
+                <div class="space-y-4">
+                    <div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                        <svg class="text-white w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="3" stroke-linecap="round"></path></svg>
+                    </div>
+                    <p class="text-xl font-bold text-blue-800">Select Aadhar PDF</p>
+                    <p class="text-sm text-blue-500">Auto-crop logic enabled</p>
+                </div>
+            </div>
+
+            <div id="passwordSection" class="hidden mt-6 p-6 bg-yellow-50 rounded-xl border border-yellow-200">
+                <label class="block text-yellow-800 font-bold mb-2">🔒 File Password Protected Hai</label>
+                <div class="flex gap-2">
+                    <input type="password" id="pdfPass" placeholder="e.g., RAMA1990" class="flex-grow p-3 rounded-lg border focus:ring-2 focus:ring-yellow-400 outline-none">
+                    <button onclick="processPDF()" class="bg-yellow-600 text-white px-6 rounded-lg font-bold hover:bg-yellow-700 transition">Unlock</button>
+                </div>
+            </div>
+
+            <div id="loading" class="hidden mt-8 text-center space-y-4">
+                <div class="inline-block animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+                <p class="text-blue-700 font-bold">Cutting & Rearranging...</p>
+            </div>
+
+            <button id="downloadBtn" class="hidden mt-8 w-full bg-green-600 text-white py-4 rounded-2xl font-black text-xl shadow-xl hover:bg-green-700 hover:-translate-y-1 transition-all">
+                DOWNLOAD PRINT READY PDF
+            </button>
         </div>
-
-        <div id="passwordArea" class="hidden mb-6 p-4 bg-orange-50 rounded-lg border">
-            <p class="text-orange-700 text-sm font-bold mb-2">Password Protected PDF</p>
-            <input type="password" id="pdfPassword" placeholder="e.g. ABHIS1995" class="w-full p-3 border rounded-md">
-            <button onclick="processAadhar()" class="mt-3 w-full bg-orange-500 text-white py-2 rounded-md font-bold">Process</button>
-        </div>
-
-        <div id="status" class="hidden text-center p-4">
-            <p id="statusText" class="text-blue-500 font-medium italic">Processing...</p>
-        </div>
-
-        <button id="downloadBtn" class="hidden w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">
-            Print Ready PDF Download Karein
-        </button>
     </div>
 
     <script>
-        let currentFileBytes = null;
-        const pdfInput = document.getElementById('pdfInput');
-        const passwordArea = document.getElementById('passwordArea');
-        const pdfPassword = document.getElementById('pdfPassword');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const status = document.getElementById('status');
-        const statusText = document.getElementById('statusText');
+        const { PDFDocument, PageSizes } = PDFLib;
+        let fileData = null;
 
-        pdfInput.addEventListener('change', async (e) => {
+        document.getElementById('dropZone').onclick = () => document.getElementById('pdfInput').click();
+
+        document.getElementById('pdfInput').onchange = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            currentFileBytes = await file.arrayBuffer();
-            try {
-                await PDFLib.PDFDocument.load(currentFileBytes);
-                processAadhar(); 
-            } catch (err) {
-                if (err.message.includes('encrypted')) {
-                    passwordArea.classList.remove('hidden');
-                } else { alert("File sahi nahi hai."); }
-            }
-        });
+            fileData = await file.arrayBuffer();
+            processPDF();
+        };
 
-        async function processAadhar() {
-            passwordArea.classList.add('hidden');
-            status.classList.remove('hidden');
-            statusText.innerText = "Layout Banaya Ja Raha Hai...";
+        async function processPDF() {
+            const pass = document.getElementById('pdfPass').value;
+            const loading = document.getElementById('loading');
+            const passSection = document.getElementById('passwordSection');
+            
+            loading.classList.remove('hidden');
+            passSection.classList.add('hidden');
 
             try {
-                const password = pdfPassword.value;
-                const pdfDoc = await PDFLib.PDFDocument.load(currentFileBytes, { password });
-                
-                const outDoc = await PDFLib.PDFDocument.create();
-                const page = outDoc.addPage(PDFLib.PageSizes.A4);
+                const srcDoc = await PDFDocument.load(fileData, { password: pass });
+                const outDoc = await PDFDocument.create();
+                const page = outDoc.addPage(PageSizes.A4);
                 const { width, height } = page.getSize();
 
-                const embeddedPage = await outDoc.embedPage(pdfDoc.getPages()[0]);
+                const [embeddedPage] = await outDoc.embedPages(srcDoc.getPages());
+                
+                // Standard Aadhar Size (Approx 85mm x 55mm in points)
+                const cardW = 241; 
+                const cardH = 156;
 
-                // Aadhar Size (Approx 8.6cm x 5.4cm) - points mein
-                const cW = 243; 
-                const cH = 153;
-
-                // --- ASLI CROP LOGIC YAHAN HAI ---
-
-                // 1. FRONT SIDE (Target: Bottom Left)
-                // x=30 (x-coordinate where crop starts), y=30 (y-coordinate)
+                // --- DYNAMIC CROP LOGIC ---
+                // Front Side (Bottom Left Corner of Aadhar PDF)
                 page.drawPage(embeddedPage, {
-                    x: 40, 
-                    y: height - 180, 
-                    width: cW, 
-                    height: cH,
-                    // CROP SETTINGS: Points mein batana hai kahan se cut karein
-                    clipX: 30, // Left edge se kitna andar
-                    clipY: 30, // Bottom edge se kitna upar
-                    clipWidth: cW, // Card ki width kitni crop karein
-                    clipHeight: cH, // Card ki height kitni crop karein
+                    x: 50, y: height - 180, width: cardW, height: cardH,
+                    clipX: 30, clipY: 30, clipWidth: cardW, clipHeight: cardH
                 });
 
-                // 2. BACK SIDE (Target: Bottom Right)
-                // y ko target karne ke liye clipX ko badhana padega
+                // Back Side (Bottom Right Corner of Aadhar PDF)
                 page.drawPage(embeddedPage, {
-                    x: 40 + cW + 15, // Front ke theek bagal mein
-                    y: height - 180, 
-                    width: cW, 
-                    height: cH,
-                    // CROP SETTINGS for BACK SIDE
-                    clipX: 305, // Isse hum right wale card par pahunchenge
-                    clipY: 30, 
-                    clipWidth: cW, 
-                    clipHeight: cH,
+                    x: 50 + cardW + 10, y: height - 180, width: cardW, height: cardH,
+                    clipX: 303, clipY: 30, clipWidth: cardW, clipHeight: cardH
                 });
 
                 const pdfBytes = await outDoc.save();
                 const blob = new Blob([pdfBytes], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
 
-                downloadBtn.classList.remove('hidden');
-                status.classList.add('hidden');
-                
-                downloadBtn.onclick = () => {
+                loading.classList.add('hidden');
+                const btn = document.getElementById('downloadBtn');
+                btn.classList.remove('hidden');
+                btn.onclick = () => {
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = "Aadhar_Print_Crop_ToolFlyer.pdf";
+                    a.download = "ToolFlyer_Aadhar_Print.pdf";
                     a.click();
                 };
+
             } catch (err) {
-                alert("Galat Password!");
-                status.classList.add('hidden');
-                passwordArea.classList.remove('hidden');
+                loading.classList.add('hidden');
+                if (err.message.includes('encrypted')) {
+                    passSection.classList.remove('hidden');
+                } else {
+                    alert("Error: " + err.message);
+                }
             }
         }
     </script>
