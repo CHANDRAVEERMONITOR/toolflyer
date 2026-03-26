@@ -150,7 +150,7 @@
 
             await page.render({ canvasContext: ctx, viewport }).promise;
 
-            const cropH = canvas.height * 0.31;
+            const cropH = canvas.height * 0.28;
             const cropY = canvas.height - cropH - (canvas.height * 0.02);
             const getPart = (startX, width) => {
                 const c = document.createElement('canvas');
@@ -165,7 +165,7 @@
 
             const { jsPDF } = window.jspdf;
             const pdfOut = new jsPDF('p','mm','a4');
-            const w = 86; const h = 54;
+            const w = 86; const h = 48;
             const startX = (210 - (w*2 + 8)) / 2;
 
             pdfOut.setDrawColor(200);
