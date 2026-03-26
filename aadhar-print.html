@@ -1,217 +1,145 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ToolFlyer Aadhaar Print PRO</title><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
-body{
-background:linear-gradient(135deg,#6c5ce7,#00cec9);
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-color:#fff;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhaar Smart Print - ToolFlyer</title>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
 
-/* CARD */
-.container{
-background:rgba(255,255,255,0.15);
-backdrop-filter:blur(15px);
-padding:25px;
-border-radius:20px;
-width:90%;
-max-width:500px;
-text-align:center;
-box-shadow:0 20px 40px rgba(0,0,0,0.2);
-}
+    <div class="max-w-3xl mx-auto py-12 px-4">
+        <div class="bg-white rounded-3xl overflow-hidden card-shadow border border-gray-100">
+            <div class="gradient-bg p-8 text-white text-center">
+                <h1 class="text-3xl font-black mb-1">AADHAAR SMART PRINT</h1>
+                <p class="text-blue-100 opacity-90 text-sm">Auto-Crop Bottom 33% | No Extra Margins</p>
+            </div>
 
-h1{font-size:1.5rem;margin-bottom:10px;}
+            <div class="p-8">
+                <div class="flex justify-between mb-10 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                    <div class="flex flex-col items-center gap-2 text-blue-600">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">1</div>
+                        <span>Upload</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">2</div>
+                        <span>Smart Crop</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">3</div>
+                        <span>Print A4</span>
+                    </div>
+                </div>
 
-/* UPLOAD */
-.upload{
-border:2px dashed rgba(255,255,255,0.6);
-padding:25px;
-border-radius:12px;
-cursor:pointer;
-transition:0.3s;
-margin-top:15px;
-}
-.upload:hover{background:rgba(255,255,255,0.1);}
+                <div id="dropZone" class="border-2 border-dashed border-blue-200 bg-blue-50 rounded-2xl p-10 text-center cursor-pointer hover:border-blue-400 transition-all" onclick="document.getElementById('pdfInput').click()">
+                    <input type="file" id="pdfInput" accept="application/pdf" class="hidden">
+                    <svg class="w-12 h-12 text-blue-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round"></path></svg>
+                    <p class="text-lg font-bold text-blue-800">Aadhaar PDF Select Karein</p>
+                </div>
 
-/* BUTTON */
-button{
-margin-top:15px;
-padding:14px;
-width:100%;
-border:none;
-border-radius:10px;
-background:#00b894;
-color:#fff;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
-button:hover{background:#00cec9;}
+                <div id="passArea" class="hidden mt-6 p-4 bg-orange-50 border border-orange-200 rounded-xl">
+                    <p class="text-orange-700 font-bold text-sm mb-2 italic">⚠️ PDF Password Protected Hai</p>
+                    <div class="flex gap-2">
+                        <input type="password" id="pdfPass" placeholder="e.g. ABHI1995" class="flex-grow p-3 rounded-lg border-2 border-orange-200 focus:outline-none focus:border-orange-400">
+                        <button onclick="processAadhar()" class="bg-orange-500 text-white px-6 rounded-lg font-bold">Unlock</button>
+                    </div>
+                </div>
 
-/* DOWNLOAD BTN */
-.download{
-display:none;
-background:#fdcb6e;
-color:#000;
-animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-0%{transform:scale(1);}
-50%{transform:scale(1.05);}
-100%{transform:scale(1);}
-}
+                <div id="loader" class="hidden mt-6 text-center text-blue-600 font-bold animate-pulse">Cutting Cards... Please Wait</div>
 
-/* LOADER */
-.loader{
-display:none;
-margin-top:15px;
-border:4px solid rgba(255,255,255,0.3);
-border-top:4px solid #fff;
-border-radius:50%;
-width:40px;
-height:40px;
-animation:spin 1s linear infinite;
-margin-left:auto;
-margin-right:auto;
-}
-@keyframes spin{100%{transform:rotate(360deg);}}
+                <button id="dlBtn" class="hidden mt-8 w-full bg-green-600 text-white py-4 rounded-xl font-black text-xl shadow-lg hover:bg-green-700 transform active:scale-95 transition-all">
+                    DOWNLOAD A4 PRINT PDF
+                </button>
+            </div>
+        </div>
+    </div>
 
-/* PREVIEW */
-.preview{
-display:none;
-margin-top:15px;
-}
-.preview img{
-width:100%;
-border-radius:10px;
-}
+    <script>
+        let fileBytes = null;
+        const { PDFDocument, PageSizes, rgb } = PDFLib;
 
-/* SUCCESS */
-.success{
-display:none;
-margin-top:10px;
-color:#ffeaa7;
-font-weight:bold;
-animation:fade 1s ease;
-}
-@keyframes fade{
-from{opacity:0;}
-to{opacity:1;}
-}
-</style></head><body><div class="container">
-<h1>✨ Aadhaar Print PRO</h1>
-<p>Upload → Preview → Auto Crop → Download A4</p><div class="upload" onclick="document.getElementById('pdfInput').click()">
-📄 Upload Aadhaar PDF
-</div><input type="file" id="pdfInput" hidden accept="application/pdf"><div class="preview" id="previewBox">
-<img id="previewImg">
-</div><button onclick="processPDF()">🚀 Generate PDF</button>
+        document.getElementById('pdfInput').onchange = async (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            fileBytes = await file.arrayBuffer();
+            processAadhar();
+        };
 
-<div class="loader" id="loader"></div>
-<div class="success" id="successMsg">✅ PDF Ready! Click Download</div><button class="download" id="downloadBtn">⬇ Download PDF</button>
+        async function processAadhar() {
+            const pass = document.getElementById('pdfPass').value;
+            const loader = document.getElementById('loader');
+            const passArea = document.getElementById('passArea');
+            const dlBtn = document.getElementById('dlBtn');
 
-</div><canvas id="canvas" style="display:none;"></canvas>
+            loader.classList.remove('hidden');
+            passArea.classList.add('hidden');
 
-<script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+            try {
+                const srcDoc = await PDFDocument.load(fileBytes, { password: pass });
+                const outDoc = await PDFDocument.create();
+                const page = outDoc.addPage(PageSizes.A4);
+                const { width, height } = page.getSize();
 
-let finalPDFBlob = null;
+                const [embeddedPage] = await outDoc.embedPages(srcDoc.getPages());
+                
+                // Standard Card Size (Points: 86mm x 54mm approx)
+                const cardW = 242; 
+                const cardH = 155;
 
-document.getElementById('pdfInput').addEventListener('change', function(e){
-const file = e.target.files[0];
-if(file){
-const url = URL.createObjectURL(file);
-document.getElementById('previewImg').src = url;
-document.getElementById('previewBox').style.display = 'block';
-}
-});
+                // CENTER POSITION CALCULATION
+                const gap = 15;
+                const totalWidth = (cardW * 2) + gap;
+                const startX = (width - totalWidth) / 2;
+                const startY = height - 200;
 
-async function processPDF(){
+                // --- PRECISION CROP LOGIC (Sudhara Hua) ---
+                
+                // 1. FRONT SIDE (Bottom Left)
+                page.drawPage(embeddedPage, {
+                    x: startX, y: startY, width: cardW, height: cardH,
+                    clipX: 32, clipY: 35, clipWidth: cardW, clipHeight: cardH
+                });
 
-const file=document.getElementById('pdfInput').files[0];
-if(!file){alert("Upload PDF");return;}
+                // 2. BACK SIDE (Bottom Right)
+                page.drawPage(embeddedPage, {
+                    x: startX + cardW + gap, y: startY, width: cardW, height: cardH,
+                    clipX: 304, clipY: 35, clipWidth: cardW, clipHeight: cardH
+                });
 
-document.getElementById('loader').style.display='block';
-document.getElementById('successMsg').style.display='none';
+                // Cutting Guides (Light Grey Borders)
+                const drawBorder = (x) => {
+                    page.drawRectangle({
+                        x: x - 1, y: startY - 1, width: cardW + 2, height: cardH + 2,
+                        borderColor: rgb(0.85, 0.85, 0.85), borderWidth: 0.5
+                    });
+                };
+                drawBorder(startX);
+                drawBorder(startX + cardW + gap);
 
-const reader=new FileReader();
+                const pdfBytes = await outDoc.save();
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                
+                loader.classList.add('hidden');
+                dlBtn.classList.remove('hidden');
+                dlBtn.onclick = () => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = "Aadhar_Smart_Print_ToolFlyer.pdf";
+                    a.click();
+                };
 
-reader.onload=async function(){
-
-const pdf=await pdfjsLib.getDocument(new Uint8Array(this.result)).promise;
-const page=await pdf.getPage(1);
-
-const viewport=page.getViewport({scale:2});
-const canvas=document.getElementById('canvas');
-const ctx=canvas.getContext('2d');
-
-canvas.width=viewport.width;
-canvas.height=viewport.height;
-
-await page.render({canvasContext:ctx,viewport}).promise;
-
-// crop 33%
-const cropH=canvas.height*0.33;
-const cropY=canvas.height-cropH;
-
-const data=ctx.getImageData(0,cropY,canvas.width,cropH);
-
-// temp
-const temp=document.createElement('canvas');
-const tctx=temp.getContext('2d');
-temp.width=canvas.width;
-temp.height=cropH;
-tctx.putImageData(data,0,0);
-
-// split
-const half=temp.width/2;
-
-function makeImg(x){
-const c=document.createElement('canvas');
-c.width=half; c.height=cropH;
-c.getContext('2d').putImageData(
-tctx.getImageData(x,0,half,cropH),0,0);
-return c.toDataURL("image/jpeg");
-}
-
-const frontImg=makeImg(0);
-const backImg=makeImg(half);
-
-// PDF
-const {jsPDF}=window.jspdf;
-const pdfOut=new jsPDF('p','mm','a4');
-
-const w=85,h=54;
-const startX=(210-(w*2+10))/2;
-
-pdfOut.addImage(frontImg,'JPEG',startX,20,w,h);
-pdfOut.addImage(backImg,'JPEG',startX+w+10,20,w,h);
-
-// convert to blob
-finalPDFBlob = pdfOut.output('blob');
-
-document.getElementById('loader').style.display='none';
-document.getElementById('successMsg').style.display='block';
-document.getElementById('downloadBtn').style.display='block';
-
-};
-
-reader.readAsArrayBuffer(file);
-}
-
-// download
-document.getElementById('downloadBtn').onclick=function(){
-if(finalPDFBlob){
-const link=document.createElement('a');
-link.href=URL.createObjectURL(finalPDFBlob);
-link.download="aadhaar-print.pdf";
-link.click();
-}
-};
-</script></body>
+            } catch (err) {
+                loader.classList.add('hidden');
+                if (err.message.includes('encrypted')) {
+                    passArea.classList.remove('hidden');
+                } else { alert("Galti: " + err.message); }
+            }
+        }
+    </script>
+</body>
 </html>
