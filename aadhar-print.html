@@ -1,99 +1,94 @@
-<!DOCTYPE html>
-<html lang="hi">
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Aadhar Perfect Cutter - ToolFlyer</title>
-    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 p-5">
-    <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg border">
-        <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Aadhar Bottom-33% Cutter</h2>
-        
-        <div class="border-4 border-dashed border-blue-200 p-10 text-center rounded-xl mb-6 cursor-pointer hover:bg-blue-50" onclick="document.getElementById('pdfInput').click()">
-            <input type="file" id="pdfInput" accept=".pdf" class="hidden">
-            <p class="text-blue-600 font-bold">Aadhar PDF Yahan Drop Karein</p>
-        </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aadhaar PDF Print Tool - ToolFlyer</title><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><style>
+body {font-family: Arial; text-align:center; background:#f4f4f4;}
+.container {background:#fff; padding:20px; margin:20px auto; max-width:800px; border-radius:10px;}
+input {margin:10px; padding:10px;}
+button {padding:12px 25px; background:#2ecc71; color:#fff; border:none; border-radius:5px; cursor:pointer;}
+canvas {display:none;}
+</style></head><body><div class="container">
+<h2>Aadhaar PDF to A4 Print (Auto Grid)</h2>
+<p>Upload Aadhaar PDF → Auto Split → Download A4 Print</p><input type="file" id="pdfInput" accept="application/pdf"><br>
+<button onclick="processPDF()">Generate Print PDF</button>
 
-        <div id="passwordSection" class="hidden mb-4 p-4 bg-red-50 rounded-lg">
-            <input type="password" id="pdfPass" placeholder="PDF Password" class="w-full p-2 border rounded mb-2">
-            <button onclick="processAadhar()" class="w-full bg-red-600 text-white py-2 rounded">Unlock & Crop</button>
-        </div>
+</div><canvas id="pdfCanvas"></canvas>
 
-        <button id="downloadBtn" class="hidden w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-md">
-            DOWNLOAD A4 GRID PDF
-        </button>
-    </div>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-    <script>
-        let fileBytes = null;
-        const { PDFDocument, PageSizes } = PDFLib;
+async function processPDF() {
+    const file = document.getElementById('pdfInput').files[0];
+    if (!file) {
+        alert("Please upload Aadhaar PDF");
+        return;
+    }
 
-        document.getElementById('pdfInput').onchange = async (e) => {
-            const file = e.target.files[0];
-            fileBytes = await file.arrayBuffer();
-            processAadhar();
-        };
+    const fileReader = new FileReader();
+    fileReader.onload = async function() {
+        const typedarray = new Uint8Array(this.result);
 
-        async function processAadhar() {
-            const pass = document.getElementById('pdfPass').value;
-            try {
-                const srcDoc = await PDFDocument.load(fileBytes, { password: pass });
-                const outDoc = await PDFDocument.create();
-                const page = outDoc.addPage(PageSizes.A4);
-                const { width, height } = page.getSize();
+        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+        const page = await pdf.getPage(1);
 
-                const [embeddedPage] = await outDoc.embedPages(srcDoc.getPages());
-                
-                // Standard Card Size (Approx 85mm x 55mm)
-                const cardW = 242; 
-                const cardH = 155;
+        const viewport = page.getViewport({ scale: 2 });
+        const canvas = document.getElementById('pdfCanvas');
+        const context = canvas.getContext('2d');
 
-                // --- 33% BOTTOM CROP LOGIC ---
-                // Neeche ke 33% hisse ko target karne ke liye clipY hamesha kam rahega (around 30-50 points)
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
 
-                // 1. LEFT CARD (Front) - Bottom Left se crop
-                page.drawPage(embeddedPage, {
-                    x: 40, 
-                    y: height - 180, // A4 ke top mein set karne ke liye
-                    width: cardW, 
-                    height: cardH,
-                    clipX: 30,      // Left margin se cut
-                    clipY: 30,      // Sabse neeche se cut (33% area)
-                    clipWidth: cardW,
-                    clipHeight: cardH
-                });
+        await page.render({ canvasContext: context, viewport: viewport }).promise;
 
-                // 2. RIGHT CARD (Back) - Bottom Right se crop
-                page.drawPage(embeddedPage, {
-                    x: 40 + cardW + 15, // Front ke bagal mein doosra grid box
-                    y: height - 180, 
-                    width: cardW, 
-                    height: cardH,
-                    clipX: 303,     // Right margin se cut
-                    clipY: 30,      // Sabse neeche se cut (33% area)
-                    clipWidth: cardW,
-                    clipHeight: cardH
-                });
+        // Split front & back (top/bottom)
+        const halfHeight = canvas.height / 2;
 
-                const pdfBytes = await outDoc.save();
-                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-                const btn = document.getElementById('downloadBtn');
-                btn.classList.remove('hidden');
-                document.getElementById('passwordSection').classList.add('hidden');
-                
-                btn.onclick = () => {
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(blob);
-                    a.download = "Aadhar_A4_Top_Grid.pdf";
-                    a.click();
-                };
-            } catch (err) {
-                if (err.message.includes('encrypted')) {
-                    document.getElementById('passwordSection').classList.remove('hidden');
-                } else { alert("Galti: " + err.message); }
-            }
+        const front = context.getImageData(0, 0, canvas.width, halfHeight);
+        const back = context.getImageData(0, halfHeight, canvas.width, halfHeight);
+
+        // Create temp canvas
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = halfHeight;
+
+        tempCtx.putImageData(front, 0, 0);
+        const frontImg = tempCanvas.toDataURL("image/jpeg");
+
+        tempCtx.clearRect(0,0,tempCanvas.width,tempCanvas.height);
+        tempCtx.putImageData(back, 0, 0);
+        const backImg = tempCanvas.toDataURL("image/jpeg");
+
+        generateA4(frontImg, backImg);
+    };
+
+    fileReader.readAsArrayBuffer(file);
+}
+
+async function generateA4(frontImg, backImg) {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p','mm','a4');
+
+    const cardW = 85.6;
+    const cardH = 54;
+
+    let x = 10, y = 10;
+
+    for(let i=0;i<4;i++){
+        pdf.addImage(frontImg, 'JPEG', x, y, cardW, cardH);
+        pdf.addImage(backImg, 'JPEG', x, y + cardH + 5, cardW, cardH);
+
+        x += cardW + 10;
+
+        if(x > 150){
+            x = 10;
+            y += (cardH*2) + 20;
         }
-    </script>
-</body>
+    }
+
+    pdf.save("aadhaar-print.pdf");
+}
+</script></body>
 </html>
