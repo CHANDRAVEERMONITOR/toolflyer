@@ -1,145 +1,184 @@
-<!DOCTYPE html>
-<html lang="hi">
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aadhaar Smart Print - ToolFlyer</title>
-    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
-        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
-    </style>
-</head>
-<body class="bg-gray-50 min-h-screen font-sans">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aadhaar Manual Crop PRO</title><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><style>
+body{
+font-family:Arial;
+background:linear-gradient(135deg,#6c5ce7,#00cec9);
+color:#fff;
+text-align:center;
+}
 
-    <div class="max-w-3xl mx-auto py-12 px-4">
-        <div class="bg-white rounded-3xl overflow-hidden card-shadow border border-gray-100">
-            <div class="gradient-bg p-8 text-white text-center">
-                <h1 class="text-3xl font-black mb-1">AADHAAR SMART PRINT</h1>
-                <p class="text-blue-100 opacity-90 text-sm">Auto-Crop Bottom 33% | No Extra Margins</p>
-            </div>
+/* container */
+.box{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(10px);
+margin:20px auto;
+padding:20px;
+border-radius:15px;
+max-width:600px;
+}
 
-            <div class="p-8">
-                <div class="flex justify-between mb-10 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    <div class="flex flex-col items-center gap-2 text-blue-600">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">1</div>
-                        <span>Upload</span>
-                    </div>
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">2</div>
-                        <span>Smart Crop</span>
-                    </div>
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">3</div>
-                        <span>Print A4</span>
-                    </div>
-                </div>
+/* canvas wrapper */
+.canvasWrap{
+position:relative;
+margin-top:15px;
+}
 
-                <div id="dropZone" class="border-2 border-dashed border-blue-200 bg-blue-50 rounded-2xl p-10 text-center cursor-pointer hover:border-blue-400 transition-all" onclick="document.getElementById('pdfInput').click()">
-                    <input type="file" id="pdfInput" accept="application/pdf" class="hidden">
-                    <svg class="w-12 h-12 text-blue-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round"></path></svg>
-                    <p class="text-lg font-bold text-blue-800">Aadhaar PDF Select Karein</p>
-                </div>
+/* crop box */
+.cropBox{
+position:absolute;
+border:2px dashed #fff;
+cursor:move;
+}
 
-                <div id="passArea" class="hidden mt-6 p-4 bg-orange-50 border border-orange-200 rounded-xl">
-                    <p class="text-orange-700 font-bold text-sm mb-2 italic">⚠️ PDF Password Protected Hai</p>
-                    <div class="flex gap-2">
-                        <input type="password" id="pdfPass" placeholder="e.g. ABHI1995" class="flex-grow p-3 rounded-lg border-2 border-orange-200 focus:outline-none focus:border-orange-400">
-                        <button onclick="processAadhar()" class="bg-orange-500 text-white px-6 rounded-lg font-bold">Unlock</button>
-                    </div>
-                </div>
+/* resize handle */
+.resize{
+width:12px;
+height:12px;
+background:#fff;
+position:absolute;
+right:-6px;
+bottom:-6px;
+cursor:nwse-resize;
+}
 
-                <div id="loader" class="hidden mt-6 text-center text-blue-600 font-bold animate-pulse">Cutting Cards... Please Wait</div>
+button{
+margin-top:15px;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#00b894;
+color:#fff;
+cursor:pointer;
+}
+</style></head><body><div class="box">
+<h2>🧠 Aadhaar Manual Crop Tool</h2><input type="file" id="pdfInput" accept="application/pdf"><br>
+<button onclick="loadPDF()">Load PDF</button>
 
-                <button id="dlBtn" class="hidden mt-8 w-full bg-green-600 text-white py-4 rounded-xl font-black text-xl shadow-lg hover:bg-green-700 transform active:scale-95 transition-all">
-                    DOWNLOAD A4 PRINT PDF
-                </button>
-            </div>
-        </div>
-    </div>
+<div class="canvasWrap">
+<canvas id="canvas"></canvas>
+<div id="cropBox" class="cropBox">
+<div class="resize"></div>
+</div>
+</div><button onclick="generatePDF()">Generate A4 PDF</button>
 
-    <script>
-        let fileBytes = null;
-        const { PDFDocument, PageSizes, rgb } = PDFLib;
+</div><script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-        document.getElementById('pdfInput').onchange = async (e) => {
-            const file = e.target.files[0];
-            if(!file) return;
-            fileBytes = await file.arrayBuffer();
-            processAadhar();
-        };
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+let cropBox = document.getElementById('cropBox');
 
-        async function processAadhar() {
-            const pass = document.getElementById('pdfPass').value;
-            const loader = document.getElementById('loader');
-            const passArea = document.getElementById('passArea');
-            const dlBtn = document.getElementById('dlBtn');
+let dragging=false, resizing=false;
+let offsetX, offsetY;
 
-            loader.classList.remove('hidden');
-            passArea.classList.add('hidden');
+async function loadPDF(){
+const file=document.getElementById('pdfInput').files[0];
+if(!file) return alert("Upload PDF");
 
-            try {
-                const srcDoc = await PDFDocument.load(fileBytes, { password: pass });
-                const outDoc = await PDFDocument.create();
-                const page = outDoc.addPage(PageSizes.A4);
-                const { width, height } = page.getSize();
+const reader=new FileReader();
 
-                const [embeddedPage] = await outDoc.embedPages(srcDoc.getPages());
-                
-                // Standard Card Size (Points: 86mm x 54mm approx)
-                const cardW = 242; 
-                const cardH = 155;
+reader.onload=async function(){
+const pdf=await pdfjsLib.getDocument(new Uint8Array(this.result)).promise;
+const page=await pdf.getPage(1);
 
-                // CENTER POSITION CALCULATION
-                const gap = 15;
-                const totalWidth = (cardW * 2) + gap;
-                const startX = (width - totalWidth) / 2;
-                const startY = height - 200;
+const viewport=page.getViewport({scale:2});
 
-                // --- PRECISION CROP LOGIC (Sudhara Hua) ---
-                
-                // 1. FRONT SIDE (Bottom Left)
-                page.drawPage(embeddedPage, {
-                    x: startX, y: startY, width: cardW, height: cardH,
-                    clipX: 32, clipY: 35, clipWidth: cardW, clipHeight: cardH
-                });
+canvas.width=viewport.width;
+canvas.height=viewport.height;
 
-                // 2. BACK SIDE (Bottom Right)
-                page.drawPage(embeddedPage, {
-                    x: startX + cardW + gap, y: startY, width: cardW, height: cardH,
-                    clipX: 304, clipY: 35, clipWidth: cardW, clipHeight: cardH
-                });
+await page.render({canvasContext:ctx,viewport}).promise;
 
-                // Cutting Guides (Light Grey Borders)
-                const drawBorder = (x) => {
-                    page.drawRectangle({
-                        x: x - 1, y: startY - 1, width: cardW + 2, height: cardH + 2,
-                        borderColor: rgb(0.85, 0.85, 0.85), borderWidth: 0.5
-                    });
-                };
-                drawBorder(startX);
-                drawBorder(startX + cardW + gap);
+// default crop position
+cropBox.style.width = canvas.width*0.8+"px";
+cropBox.style.height = canvas.height*0.3+"px";
+cropBox.style.left = canvas.width*0.1+"px";
+cropBox.style.top = canvas.height*0.65+"px";
+};
 
-                const pdfBytes = await outDoc.save();
-                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-                
-                loader.classList.add('hidden');
-                dlBtn.classList.remove('hidden');
-                dlBtn.onclick = () => {
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(blob);
-                    a.download = "Aadhar_Smart_Print_ToolFlyer.pdf";
-                    a.click();
-                };
+reader.readAsArrayBuffer(file);
+}
 
-            } catch (err) {
-                loader.classList.add('hidden');
-                if (err.message.includes('encrypted')) {
-                    passArea.classList.remove('hidden');
-                } else { alert("Galti: " + err.message); }
-            }
-        }
-    </script>
-</body>
+// drag logic
+cropBox.onmousedown = function(e){
+if(e.target.classList.contains('resize')){
+resizing=true;
+}else{
+dragging=true;
+offsetX=e.offsetX;
+offsetY=e.offsetY;
+}
+};
+
+document.onmousemove = function(e){
+if(dragging){
+cropBox.style.left = (e.pageX - canvas.offsetLeft - offsetX)+"px";
+cropBox.style.top = (e.pageY - canvas.offsetTop - offsetY)+"px";
+}
+if(resizing){
+cropBox.style.width = (e.pageX - canvas.offsetLeft - cropBox.offsetLeft)+"px";
+cropBox.style.height = (e.pageY - canvas.offsetTop - cropBox.offsetTop)+"px";
+}
+};
+
+document.onmouseup = function(){
+dragging=false;
+resizing=false;
+};
+
+// generate PDF
+function generatePDF(){
+
+const rect = cropBox.getBoundingClientRect();
+const canvasRect = canvas.getBoundingClientRect();
+
+const scaleX = canvas.width / canvasRect.width;
+const scaleY = canvas.height / canvasRect.height;
+
+const x = (rect.left - canvasRect.left) * scaleX;
+const y = (rect.top - canvasRect.top) * scaleY;
+const w = rect.width * scaleX;
+const h = rect.height * scaleY;
+
+// crop data
+const imgData = ctx.getImageData(x,y,w,h);
+
+// temp canvas
+const temp = document.createElement('canvas');
+const tctx = temp.getContext('2d');
+
+temp.width = w;
+temp.height = h;
+tctx.putImageData(imgData,0,0);
+
+// split front/back
+const half = w/2;
+
+function makeImg(startX){
+const c=document.createElement('canvas');
+c.width=half; c.height=h;
+c.getContext('2d').putImageData(
+tctx.getImageData(startX,0,half,h),0,0);
+return c.toDataURL("image/jpeg");
+}
+
+const front = makeImg(0);
+const back = makeImg(half);
+
+// PDF
+const {jsPDF}=window.jspdf;
+const pdf=new jsPDF('p','mm','a4');
+
+const cardW=85, cardH=54;
+const startXpdf=(210-(cardW*2+10))/2;
+
+pdf.addImage(front,'JPEG',startXpdf,20,cardW,cardH);
+pdf.addImage(back,'JPEG',startXpdf+cardW+10,20,cardW,cardH);
+
+pdf.save("aadhaar-manual.pdf");
+}
+</script></body>
 </html>
