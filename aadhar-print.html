@@ -2,114 +2,96 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aadhar Cutter - ToolFlyer</title>
+    <title>Aadhar Perfect Cutter - ToolFlyer</title>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <div class="max-w-3xl mx-auto py-10 px-4">
-        <div class="bg-white rounded-3xl shadow-2xl p-8 border border-gray-200">
-            <h1 class="text-3xl font-extrabold text-center text-blue-700 mb-2">Aadhar Crop & Print</h1>
-            <p class="text-center text-gray-500 mb-8 font-medium italic">Printsahyogi style automatic layout generator.</p>
-
-            <div id="dropZone" class="border-4 border-dashed border-blue-100 bg-blue-50 rounded-2xl p-12 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-100 transition-all group">
-                <input type="file" id="pdfInput" accept=".pdf" class="hidden">
-                <div class="space-y-4">
-                    <div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
-                        <svg class="text-white w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="3" stroke-linecap="round"></path></svg>
-                    </div>
-                    <p class="text-xl font-bold text-blue-800">Select Aadhar PDF</p>
-                    <p class="text-sm text-blue-500">Auto-crop logic enabled</p>
-                </div>
-            </div>
-
-            <div id="passwordSection" class="hidden mt-6 p-6 bg-yellow-50 rounded-xl border border-yellow-200">
-                <label class="block text-yellow-800 font-bold mb-2">🔒 File Password Protected Hai</label>
-                <div class="flex gap-2">
-                    <input type="password" id="pdfPass" placeholder="e.g., RAMA1990" class="flex-grow p-3 rounded-lg border focus:ring-2 focus:ring-yellow-400 outline-none">
-                    <button onclick="processPDF()" class="bg-yellow-600 text-white px-6 rounded-lg font-bold hover:bg-yellow-700 transition">Unlock</button>
-                </div>
-            </div>
-
-            <div id="loading" class="hidden mt-8 text-center space-y-4">
-                <div class="inline-block animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
-                <p class="text-blue-700 font-bold">Cutting & Rearranging...</p>
-            </div>
-
-            <button id="downloadBtn" class="hidden mt-8 w-full bg-green-600 text-white py-4 rounded-2xl font-black text-xl shadow-xl hover:bg-green-700 hover:-translate-y-1 transition-all">
-                DOWNLOAD PRINT READY PDF
-            </button>
+<body class="bg-gray-100 p-5">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg border">
+        <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Aadhar Bottom-33% Cutter</h2>
+        
+        <div class="border-4 border-dashed border-blue-200 p-10 text-center rounded-xl mb-6 cursor-pointer hover:bg-blue-50" onclick="document.getElementById('pdfInput').click()">
+            <input type="file" id="pdfInput" accept=".pdf" class="hidden">
+            <p class="text-blue-600 font-bold">Aadhar PDF Yahan Drop Karein</p>
         </div>
+
+        <div id="passwordSection" class="hidden mb-4 p-4 bg-red-50 rounded-lg">
+            <input type="password" id="pdfPass" placeholder="PDF Password" class="w-full p-2 border rounded mb-2">
+            <button onclick="processAadhar()" class="w-full bg-red-600 text-white py-2 rounded">Unlock & Crop</button>
+        </div>
+
+        <button id="downloadBtn" class="hidden w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-md">
+            DOWNLOAD A4 GRID PDF
+        </button>
     </div>
 
     <script>
+        let fileBytes = null;
         const { PDFDocument, PageSizes } = PDFLib;
-        let fileData = null;
-
-        document.getElementById('dropZone').onclick = () => document.getElementById('pdfInput').click();
 
         document.getElementById('pdfInput').onchange = async (e) => {
             const file = e.target.files[0];
-            if (!file) return;
-            fileData = await file.arrayBuffer();
-            processPDF();
+            fileBytes = await file.arrayBuffer();
+            processAadhar();
         };
 
-        async function processPDF() {
+        async function processAadhar() {
             const pass = document.getElementById('pdfPass').value;
-            const loading = document.getElementById('loading');
-            const passSection = document.getElementById('passwordSection');
-            
-            loading.classList.remove('hidden');
-            passSection.classList.add('hidden');
-
             try {
-                const srcDoc = await PDFDocument.load(fileData, { password: pass });
+                const srcDoc = await PDFDocument.load(fileBytes, { password: pass });
                 const outDoc = await PDFDocument.create();
                 const page = outDoc.addPage(PageSizes.A4);
                 const { width, height } = page.getSize();
 
                 const [embeddedPage] = await outDoc.embedPages(srcDoc.getPages());
                 
-                // Standard Aadhar Size (Approx 85mm x 55mm in points)
-                const cardW = 241; 
-                const cardH = 156;
+                // Standard Card Size (Approx 85mm x 55mm)
+                const cardW = 242; 
+                const cardH = 155;
 
-                // --- DYNAMIC CROP LOGIC ---
-                // Front Side (Bottom Left Corner of Aadhar PDF)
+                // --- 33% BOTTOM CROP LOGIC ---
+                // Neeche ke 33% hisse ko target karne ke liye clipY hamesha kam rahega (around 30-50 points)
+
+                // 1. LEFT CARD (Front) - Bottom Left se crop
                 page.drawPage(embeddedPage, {
-                    x: 50, y: height - 180, width: cardW, height: cardH,
-                    clipX: 30, clipY: 30, clipWidth: cardW, clipHeight: cardH
+                    x: 40, 
+                    y: height - 180, // A4 ke top mein set karne ke liye
+                    width: cardW, 
+                    height: cardH,
+                    clipX: 30,      // Left margin se cut
+                    clipY: 30,      // Sabse neeche se cut (33% area)
+                    clipWidth: cardW,
+                    clipHeight: cardH
                 });
 
-                // Back Side (Bottom Right Corner of Aadhar PDF)
+                // 2. RIGHT CARD (Back) - Bottom Right se crop
                 page.drawPage(embeddedPage, {
-                    x: 50 + cardW + 10, y: height - 180, width: cardW, height: cardH,
-                    clipX: 303, clipY: 30, clipWidth: cardW, clipHeight: cardH
+                    x: 40 + cardW + 15, // Front ke bagal mein doosra grid box
+                    y: height - 180, 
+                    width: cardW, 
+                    height: cardH,
+                    clipX: 303,     // Right margin se cut
+                    clipY: 30,      // Sabse neeche se cut (33% area)
+                    clipWidth: cardW,
+                    clipHeight: cardH
                 });
 
                 const pdfBytes = await outDoc.save();
                 const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-
-                loading.classList.add('hidden');
                 const btn = document.getElementById('downloadBtn');
                 btn.classList.remove('hidden');
+                document.getElementById('passwordSection').classList.add('hidden');
+                
                 btn.onclick = () => {
                     const a = document.createElement('a');
-                    a.href = url;
-                    a.download = "ToolFlyer_Aadhar_Print.pdf";
+                    a.href = URL.createObjectURL(blob);
+                    a.download = "Aadhar_A4_Top_Grid.pdf";
                     a.click();
                 };
-
             } catch (err) {
-                loading.classList.add('hidden');
                 if (err.message.includes('encrypted')) {
-                    passSection.classList.remove('hidden');
-                } else {
-                    alert("Error: " + err.message);
-                }
+                    document.getElementById('passwordSection').classList.remove('hidden');
+                } else { alert("Galti: " + err.message); }
             }
         }
     </script>
