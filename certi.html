@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internship Certificate & Performance Assessment Maker</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold: #b8860b;
+    --gold-light: #d4af37;
+    --emerald: #014421;
+    --emerald-light: #0b6e3b;
+    --paper: #fffdf7;
+    --official-blue: #0033aa;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Poppins','Inter',sans-serif;
+    background:#eef1f5;
+  }
+  .font-heading{font-family:'Cinzel','Playfair Display',serif;}
+  .font-title{font-family:'Playfair Display',serif;}
+
+  /* ---------- Certificate Sheet ---------- */
+  #certificate-wrapper{
+    width:210mm;
+    height:297mm;
+    margin:0 auto;
+    background:var(--paper);
+    position:relative;
+    box-shadow:0 10px 40px rgba(0,0,0,.25);
+    overflow:hidden;
+  }
+  .border-outer{
+    position:absolute;
+    inset:6mm;
+    border:2.2mm double var(--gold-light);
+    background:
+      linear-gradient(135deg, rgba(212,175,55,0.06) 0%, rgba(1,68,33,0.03) 50%, rgba(212,175,55,0.06) 100%);
+  }
+  .border-inner{
+    position:absolute;
+    inset:9.5mm;
+    border:1mm solid var(--emerald);
+    box-shadow: inset 0 0 0 1.2mm var(--gold-light), inset 0 0 0 1.6mm var(--emerald);
+  }
+  .corner{
+    position:absolute;
+    width:14mm;height:14mm;
+    border:1.4mm solid var(--gold-light);
+  }
+  .corner.tl{top:8mm;left:8mm;border-right:none;border-bottom:none;}
+  .corner.tr{top:8mm;right:8mm;border-left:none;border-bottom:none;}
+  .corner.bl{bottom:8mm;left:8mm;border-right:none;border-top:none;}
+  .corner.br{bottom:8mm;right:8mm;border-left:none;border-top:none;}
+
+  .cert-content{
+    position:absolute;
+    inset:13mm;
+    padding:4mm 8mm;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .badge-strip{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:4mm;
+    font-size:6.4pt;
+    font-weight:600;
+    color:var(--emerald);
+    letter-spacing:.2px;
+  }
+  .badge-strip span{
+    border:0.35mm solid var(--gold-light);
+    padding:0.6mm 2.4mm;
+    border-radius:2mm;
+    background:rgba(212,175,55,0.08);
+    white-space:nowrap;
+  }
+
+  .brand-title{
+    font-size:20pt;
+    letter-spacing:1.5px;
+    color:var(--emerald);
+    text-align:center;
+    font-weight:800;
+  }
+  .brand-sub{
+    text-align:center;
+    font-size:8pt;
+    color:#555;
+    letter-spacing:2px;
+    text-transform:uppercase;
+  }
+
+  .cert-heading{
+    text-align:center;
+    font-size:24pt;
+    color:var(--gold);
+    font-weight:700;
+    letter-spacing:3px;
+    margin-top:2mm;
+  }
+  .cert-heading-sub{
+    text-align:center;
+    font-size:9pt;
+    letter-spacing:5px;
+    color:var(--emerald);
+    text-transform:uppercase;
+    margin-top:-1mm;
+    font-weight:600;
+  }
+
+  .cert-body-text{
+    font-size:10pt;
+    line-height:1.75;
+    color:#2b2b2b;
+    text-align:justify;
+    margin-top:3mm;
+  }
+  .cert-body-text b{color:var(--emerald);}
+
+  table.eval-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:8.4pt;
+    margin-top:2mm;
+  }
+  table.eval-table th{
+    background:var(--emerald);
+    color:#fff;
+    padding:1.4mm 2.5mm;
+    text-align:left;
+    font-weight:600;
+    letter-spacing:.3px;
+  }
+  table.eval-table td{
+    padding:1.2mm 2.5mm;
+    border-bottom:0.25mm solid #d9cfa8;
+  }
+  table.eval-table tr:nth-child(even) td{
+    background:rgba(212,175,55,0.06);
+  }
+  .table-title{
+    font-size:8.4pt;
+    font-weight:700;
+    color:var(--gold);
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-top:3mm;
+    border-bottom:0.4mm solid var(--gold-light);
+    padding-bottom:1mm;
+  }
+
+  .rating-Outstanding{color:var(--emerald);font-weight:700;}
+  .rating-Good{color:#8a6d00;font-weight:700;}
+
+  .footer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-top:auto;
+    padding-top:2mm;
+    padding-bottom:1mm;
+  }
+  .qr-box{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:1.5mm;
+    padding-left:2mm;
+  }
+  .qr-box .qr-caption{
+    font-size:6.2pt;
+    max-width:48mm;
+    line-height:1.3;
+    color:#333;
+    margin-top:1mm;
+  }
+  
+  /* Upgraded High Quality Blue Stamp and Signature Block */
+  .sign-box{
+    text-align:center;
+    font-size:8pt;
+    color:#222;
+    position:relative;
+    padding-right:4mm;
+  }
+  .stamp-container {
+    position: absolute;
+    top: -22mm;
+    left: -18mm;
+    pointer-events: none;
+  }
+  .stamp{
+    width:28mm;
+    height:28mm;
+    border:0.8mm solid var(--official-blue);
+    box-shadow: 0 0 0 0.3mm var(--official-blue);
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:5.4pt;
+    font-weight:800;
+    color:var(--official-blue);
+    opacity:.85;
+    transform:rotate(-12deg);
+    padding:2mm;
+    line-height:1.2;
+    letter-spacing:.3px;
+    background: transparent;
+  }
+  .stamp-inner-circle {
+    position: absolute;
+    width: 25mm;
+    height: 25mm;
+    border: 0.2mm dashed var(--official-blue);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .stamp-tick {
+    font-size: 11pt;
+    font-weight: 900;
+    margin-top: -1px;
+    margin-bottom: -1px;
+  }
+  .sign-line{
+    width:52mm;
+    border-top:0.35mm solid #222;
+    margin:0 auto 2mm auto;
+    padding-top:1mm;
+    height: 12mm; /* Provides realistic signature spacing area */
+  }
+  .cert-no-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:7.4pt;
+    color:#444;
+    margin-top:2mm;
+    border-top: 0.2mm solid #e5e7eb;
+    padding-top: 1.5mm;
+    letter-spacing:.3px;
+  }
+
+  /* Government Logo Integration Grid Style */
+  .gov-logos-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 0.35mm solid var(--gold-light);
+    margin-top: 3mm;
+    padding-top: 2mm;
+    gap: 2mm;
+  }
+  .gov-logo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 5.5pt;
+    font-weight: 700;
+    color: #444;
+    text-align: center;
+    line-height: 1.1;
+    text-transform: uppercase;
+    border: 0.2mm solid #e2e8f0;
+    padding: 1mm 1.5mm;
+    background: #fff;
+    border-radius: 1mm;
+    min-width: 26mm;
+    height: 9mm;
+  }
+  .gov-logo-item b {
+    color: #000;
+    font-size: 6pt;
+  }
+
+  /* ---------- Print ---------- */
+  @media print{
+    @page{ size:A4 portrait; margin:0; }
+    html,body{
+      margin:0; padding:0;
+      background:#fff;
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+    }
+    #control-panel, .no-print{ display:none !important; }
+    #preview-panel{
+      padding:0 !important;
+      margin:0 !important;
+      display:block !important;
+    }
+    #certificate-wrapper{
+      box-shadow:none !important;
+      margin:0 !important;
+      width:210mm; height:297mm;
+    }
+    body *{ visibility:hidden; }
+    #certificate-wrapper, #certificate-wrapper *{ visibility:visible; }
+    #certificate-wrapper{ position:absolute; top:0; left:0; }
+  }
+
+  input[type="text"], input[type="date"], select{
+    transition:box-shadow .15s ease, border-color .15s ease;
+  }
+  input[type="text"]:focus, input[type="date"]:focus, select:focus{
+    outline:none;
+    border-color:#b8860b;
+    box-shadow:0 0 0 3px rgba(184,134,11,0.15);
+  }
+</style>
+</head>
+<body class="min-h-screen">
+
+<div class="max-w-[1500px] mx-auto py-6 px-4">
+  <div class="no-print mb-6 text-center">
+    <h1 class="font-heading text-2xl md:text-3xl font-bold text-emerald-900">Internship Certificate & Performance Assessment Maker</h1>
+    <p class="text-sm text-gray-500 mt-1">Bihar Digital Services · Live Generation Suite</p>
+  </div>
+
+  <div class="flex flex-col lg:flex-row gap-8 items-start justify-center">
+
+    <!-- CONTROL PANEL -->
+    <div id="control-panel" class="no-print w-full lg:w-[380px] bg-white rounded-2xl shadow-xl p-6 sticky top-6 border border-gray-100">
+      <h2 class="font-semibold text-lg text-emerald-900 mb-4 flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-amber-500"></span> Certificate Parameters
+      </h2>
+
+      <div class="space-y-4 max-h-[75vh] overflow-y-auto pr-1">
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">Certificate Number</label>
+          <input type="text" id="in-certNo" value="BDS/INT/2026/21795" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">Date of Certification</label>
+          <input type="text" id="in-certDate" value="20/06/2026" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">Student Full Name</label>
+          <input type="text" id="in-name" value="Kamlesh Yadav" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">University Roll Number</label>
+          <input type="text" id="in-roll" value="2322041080208" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">College Name</label>
+          <input type="text" id="in-college" value="M.M.T.M. College, Darbhanga" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">Session</label>
+          <input type="text" id="in-session" value="2023-2027" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">Major Subject</label>
+          <input type="text" id="in-major" value="UG (B.A. (History))" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">MSME Registration Number</label>
+          <input type="text" id="in-msme" value="UDYAM-BR-10-0039996" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+
+        <hr class="my-4 border-gray-200">
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Internship Metrics</p>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">Internship Domain</label>
+          <input type="text" id="in-domain" value="Digital Marketing & Social Media Management" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Start Date</label>
+            <input type="text" id="in-start" value="1 June 2026" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">End Date</label>
+            <input type="text" id="in-end" value="20 June 2026" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Total Hours</label>
+            <input type="text" id="in-hours" value="120 Hours" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Credits</label>
+            <input type="text" id="in-credits" value="4 Credits" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Mode</label>
+            <input type="text" id="in-mode" value="Online" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Overall Mark %</label>
+            <input type="text" id="in-percent" value="95%" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+        </div>
+
+        <hr class="my-4 border-gray-200">
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Performance Evaluation</p>
+
+        <div class="grid grid-cols-2 gap-3 items-end">
+          <div class="col-span-2 text-xs text-gray-500 -mb-1">Technical Knowledge & Application</div>
+          <select id="in-r1" class="col-span-2 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option>Outstanding</option><option>Good</option><option>Satisfactory</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3 items-end">
+          <div class="col-span-2 text-xs text-gray-500 -mb-1">Quality of Work & Completion</div>
+          <select id="in-r2" class="col-span-2 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option>Outstanding</option><option>Good</option><option>Satisfactory</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3 items-end">
+          <div class="col-span-2 text-xs text-gray-500 -mb-1">Initiative & Problem-Solving</div>
+          <select id="in-r3" class="col-span-2 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option>Outstanding</option><option selected>Good</option><option>Satisfactory</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3 items-end">
+          <div class="col-span-2 text-xs text-gray-500 -mb-1">Communication Skills</div>
+          <select id="in-r4" class="col-span-2 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option>Outstanding</option><option>Good</option><option>Satisfactory</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3 items-end">
+          <div class="col-span-2 text-xs text-gray-500 -mb-1">Punctuality & Conduct</div>
+          <select id="in-r5" class="col-span-2 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option>Outstanding</option><option selected>Good</option><option>Satisfactory</option>
+          </select>
+        </div>
+
+        <hr class="my-4 border-gray-200">
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">Verification URL Endpoint</label>
+          <input type="text" id="in-verifyurl" value="https://toolflyer.com/certi.no" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+      </div>
+
+      <button id="btn-print" class="mt-6 w-full bg-emerald-800 hover:bg-emerald-900 text-white font-semibold py-3 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2 cursor-pointer">
+        🖨️ Print / Save as PDF
+      </button>
+    </div>
+
+    <!-- PREVIEW PANEL -->
+    <div id="preview-panel" class="w-full flex justify-center overflow-x-auto">
+      <div id="certificate-wrapper">
+        <div class="border-outer"></div>
+        <div class="border-inner"></div>
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+
+        <div class="cert-content">
+
+          <div class="badge-strip">
+            <span>DPIIT #startupindia recognized</span>
+            <span>National Internship Portal</span>
+            <span>ISO 9001:2015 Certified</span>
+            <span>Ministry of MSME (Govt. of India)</span>
+            <span>Ministry of Corporate Affairs (MCA)</span>
+          </div>
+
+          <div class="brand-title font-heading mt-3">BIHAR DIGITAL SERVICES</div>
+          <div class="brand-sub">Empowering Digital Growth &middot; Darbhanga, Bihar</div>
+
+          <div class="cert-heading font-heading">CERTIFICATE</div>
+          <div class="cert-heading-sub">OF INTERNSHIP COMPLETION</div>
+
+          <div class="cert-body-text">
+            This is to certify that <b>Mr./Ms. <span id="out-name">Kamlesh Yadav</span></b>, bearing University Roll No.
+            <b><span id="out-roll">2322041080208</span></b> of <b><span id="out-college">M.M.T.M. College, Darbhanga</span></b>,
+            Session <b><span id="out-session">2023-2027</span></b>, with Major in <b><span id="out-major">UG (B.A. (History))</span></b>,
+            has successfully completed his/her internship with our organisation. During this period, the intern demonstrated
+            commendable dedication, professionalism, and skill development, and the performance was evaluated as detailed below.
+          </div>
+
+          <div class="table-title">Internship Overview</div>
+          <table class="eval-table">
+            <tbody>
+              <tr><td class="font-medium w-1/2">Internship Domain</td><td id="out-domain" class="font-semibold">Digital Marketing & Social Media Management</td></tr>
+              <tr><td class="font-medium">Internship Duration</td><td><span id="out-start">1 June 2026</span> - <span id="out-end">20 June 2026</span></td></tr>
+              <tr><td class="font-medium">Total Hours Completed</td><td id="out-hours">120 Hours</td></tr>
+              <tr><td class="font-medium">No. of Credits Recommended</td><td id="out-credits">4 Credits</td></tr>
+              <tr><td class="font-medium">Mode of Internship</td><td id="out-mode">Online</td></tr>
+              <tr><td class="font-medium">Overall Marks Percentage</td><td id="out-percent" class="font-bold">95%</td></tr>
+            </tbody>
+          </table>
+
+          <div class="table-title">Internship Performance Assessment</div>
+          <table class="eval-table">
+            <thead>
+              <tr><th style="width:65%">Criteria</th><th>Rating</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Technical Knowledge & Application</td><td id="out-r1" class="rating-Outstanding">Outstanding</td></tr>
+              <tr><td>Quality of Work & Task Completion</td><td id="out-r2" class="rating-Outstanding">Outstanding</td></tr>
+              <tr><td>Initiative & Problem-Solving Ability</td><td id="out-r3" class="rating-Good">Good</td></tr>
+              <tr><td>Communication & Interpersonal Skills</td><td id="out-r4" class="rating-Outstanding">Outstanding</td></tr>
+              <tr><td>Punctuality, Discipline & Professional Conduct</td><td id="out-r5" class="rating-Good">Good</td></tr>
+            </tbody>
+          </table>
+
+          <!-- Footer Area Layout -->
+          <div class="footer-row">
+            <!-- Safe Inward QR Box (Protected from Border clipping) -->
+            <div class="qr-box">
+              <div id="qrcode" class="p-1 bg-white border border-gray-200 rounded"></div>
+              <div class="qr-caption">Online Verification Token URL:<br><b id="out-verifyurl" class="text-emerald-900 break-all">https://toolflyer.com/certi.no</b></div>
+            </div>
+
+            <!-- Enhanced Blue Stamp / Signature Authorization Block -->
+            <div class="sign-box">
+              <div class="stamp-container">
+                <div class="stamp">
+                  <div class="stamp-inner-circle">
+                    <div>BIHAR DIGITAL</div>
+                    <div>SERVICES</div>
+                    <div class="stamp-tick">✓</div>
+                    <div>OFFICIAL SEAL</div>
+                  </div>
+                </div>
+              </div>
+              <div class="sign-line flex items-end justify-center">
+                <!-- Signature line placeholder space -->
+                <span class="font-serif italic text-blue-900 opacity-70 tracking-wide text-sm select-none pb-1">Chandraveer Yadav</span>
+              </div>
+              <div class="font-title font-bold text-gray-900" style="font-size:9.5pt;">Er. Chandraveer Yadav</div>
+              <div class="font-semibold text-emerald-800" style="font-size:7.6pt; uppercase">Founder & CEO</div>
+              <div class="font-medium text-gray-600" style="font-size:7.6pt;">BIHAR DIGITAL SERVICES</div>
+              <div style="font-size:6.8pt; color:#666;" class="font-mono mt-0.5">MSME Reg: <span id="out-msme-sign">UDYAM-BR-10-0039996</span></div>
+            </div>
+          </div>
+
+          <!-- Structural Verification Logos Row Layout -->
+          <div class="gov-logos-footer">
+            <div class="gov-logo-item">👑 <b>DPIIT</b> #startupindia</div>
+            <div class="gov-logo-item">🌐 <b>National</b> Internship Portal</div>
+            <div class="gov-logo-item">⚙️ <b>ISO 9001:2015</b> Certified Co.</div>
+            <div class="gov-logo-item">🏛️ Ministry of <b>MSME</b></div>
+            <div class="gov-logo-item">🏢 Ministry of <b>Corporate Affairs</b></div>
+          </div>
+
+          <div class="cert-no-row">
+            <span>Certificate No: <b id="out-certNo">BDS/INT/2026/21795</b></span>
+            <span>Date of Issue: <b id="out-certDate">20/06/2026</b></span>
+            <span>MSME Reg: <b id="out-msme">UDYAM-BR-10-0039996</b></span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const ids = {
+    certNo:'in-certNo', certDate:'in-certDate', name:'in-name', roll:'in-roll',
+    college:'in-college', session:'in-session', major:'in-major', msme:'in-msme',
+    domain:'in-domain', start:'in-start', end:'in-end', hours:'in-hours',
+    credits:'in-credits', mode:'in-mode', percent:'in-percent',
+    r1:'in-r1', r2:'in-r2', r3:'in-r3', r4:'in-r4', r5:'in-r5',
+    verifyurl:'in-verifyurl'
+  };
+
+  let qr = null;
+
+  function ratingClass(el, value){
+    el.classList.remove('rating-Outstanding','rating-Good');
+    if(value === 'Outstanding') el.classList.add('rating-Outstanding');
+    else if(value === 'Good') el.classList.add('rating-Good');
+  }
+
+  function syncAll(){
+    document.getElementById('out-name').textContent = document.getElementById(ids.name).value;
+    document.getElementById('out-roll').textContent = document.getElementById(ids.roll).value;
+    document.getElementById('out-college').textContent = document.getElementById(ids.college).value;
+    document.getElementById('out-session').textContent = document.getElementById(ids.session).value;
+    document.getElementById('out-major').textContent = document.getElementById(ids.major).value;
+    document.getElementById('out-msme').textContent = document.getElementById(ids.msme).value;
+    document.getElementById('out-msme-sign').textContent = document.getElementById(ids.msme).value;
+    document.getElementById('out-certNo').textContent = document.getElementById(ids.certNo).value;
+    document.getElementById('out-certDate').textContent = document.getElementById(ids.certDate).value;
+
+    document.getElementById('out-domain').textContent = document.getElementById(ids.domain).value;
+    document.getElementById('out-start').textContent = document.getElementById(ids.start).value;
+    document.getElementById('out-end').textContent = document.getElementById(ids.end).value;
+    document.getElementById('out-hours').textContent = document.getElementById(ids.hours).value;
+    document.getElementById('out-credits').textContent = document.getElementById(ids.credits).value;
+    document.getElementById('out-mode').textContent = document.getElementById(ids.mode).value;
+    document.getElementById('out-percent').textContent = document.getElementById(ids.percent).value;
+
+    const r1v = document.getElementById(ids.r1).value;
+    const r2v = document.getElementById(ids.r2).value;
+    const r3v = document.getElementById(ids.r3).value;
+    const r4v = document.getElementById(ids.r4).value;
+    const r5v = document.getElementById(ids.r5).value;
+
+    const outR1 = document.getElementById('out-r1'); outR1.textContent = r1v; ratingClass(outR1, r1v);
+    const outR2 = document.getElementById('out-r2'); outR2.textContent = r2v; ratingClass(outR2, r2v);
+    const outR3 = document.getElementById('out-r3'); outR3.textContent = r3v; ratingClass(outR3, r3v);
+    const outR4 = document.getElementById('out-r4'); outR4.textContent = r4v; ratingClass(outR4, r4v);
+    const outR5 = document.getElementById('out-r5'); outR5.textContent = r5v; ratingClass(outR5, r5v);
+
+    const url = document.getElementById(ids.verifyurl).value;
+    document.getElementById('out-verifyurl').textContent = url;
+
+    updateQR(url);
+  }
+
+  function updateQR(url){
+    const qrEl = document.getElementById('qrcode');
+    qrEl.innerHTML = '';
+    qr = new QRCode(qrEl, {
+      text: url,
+      width: 78, // Slightly optimized size to stay strictly inside padding safety boundaries
+      height: 78,
+      colorDark: '#014421',
+      colorLight: '#fffdf7',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }
+
+  Object.values(ids).forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', syncAll);
+    el.addEventListener('change', syncAll);
+  });
+
+  document.getElementById('btn-print').addEventListener('click', () => {
+    window.print();
+  });
+
+  syncAll();
+</script>
+
+</body>
+</html>
